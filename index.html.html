@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon_atoms.ico" type="image/x-icon">
+    <title>Control Panel - n8n + WAHA Chatbot</title>
+    <link rel="stylesheet" href="./gaya.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>⚙️ Control Panel Chatbot n8n + WAHA</h1>
+        <p class="subtitle">Kelola prompt AI, gambar, dan caption untuk workflow WhatsApp chatbot Anda</p>
+        <div class="base-url-section">
+            <label for="baseUrl">Base URL n8n Webhook:</label>
+            <input type="text" id="baseUrl" placeholder="https://your-n8n-instance.com" value="">
+            <button onclick="saveBaseUrl()" class="btn btn-small">Simpan URL</button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification hidden"></div>
+
+    <div class="container">
+
+        <!-- Section 1: Edit Prompt AI -->
+        <div class="section">
+            <div class="section-header">
+                <h2>🤖 1. Edit Prompt AI</h2>
+            </div>
+            <div class="section-body">
+                <label for="promptText">System Prompt:</label>
+                <textarea id="promptText" rows="18" placeholder="Masukkan prompt AI di sini..."></textarea>
+                <div class="btn-row">
+                    <button onclick="simpanPrompt()" class="btn btn-primary" id="btnPrompt">💾 Simpan Prompt</button>
+                    <span id="statusPrompt" class="status"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Setting Gambar WAHA -->
+        <div class="section">
+            <div class="section-header">
+                <h2>🖼️ 2. Setting Gambar WAHA</h2>
+            </div>
+            <div class="section-body">
+                <label for="image1">URL Gambar 1:</label>
+                <input type="text" id="image1" placeholder="https://example.com/gambar1.jpg">
+
+                <label for="image2">URL Gambar 2:</label>
+                <input type="text" id="image2" placeholder="https://example.com/gambar2.jpg">
+
+                <label for="image3">URL Gambar 3:</label>
+                <input type="text" id="image3" placeholder="https://example.com/gambar3.jpg">
+
+                <label for="image4">URL Gambar 4:</label>
+                <input type="text" id="image4" placeholder="https://example.com/gambar4.jpg">
+
+                <label for="image5">URL Gambar 5 (Warna):</label>
+                <input type="text" id="image5" placeholder="https://example.com/warna.jpg">
+
+                <!-- Preview -->
+                <div class="image-preview-row" id="imagePreviewRow"></div>
+
+                <div class="btn-row">
+                    <button onclick="previewGambar()" class="btn btn-secondary">👁️ Preview Gambar</button>
+                    <button onclick="simpanGambar()" class="btn btn-primary" id="btnGambar">💾 Simpan Gambar</button>
+                    <span id="statusGambar" class="status"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Setting Caption WAHA -->
+        <div class="section">
+            <div class="section-header">
+                <h2>📝 3. Setting Caption WAHA</h2>
+            </div>
+            <div class="section-body">
+                <label for="captionText">Caption:</label>
+                <textarea id="captionText" rows="10" placeholder="Masukkan caption di sini..."></textarea>
+                <div class="btn-row">
+                    <button onclick="simpanCaption()" class="btn btn-primary" id="btnCaption">💾 Simpan Caption</button>
+                    <span id="statusCaption" class="status"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Setting Teks Follow-up -->
+        <div class="section">
+            <div class="section-header">
+                <h2>💬 4. Setting Teks Follow-up (Setelah Harga)</h2>
+            </div>
+            <div class="section-body">
+                <label for="followupText">Teks setelah kirim harga:</label>
+                <textarea id="followupText" rows="6" placeholder="Masukkan teks follow-up di sini..."></textarea>
+                <div class="btn-row">
+                    <button onclick="simpanFollowup()" class="btn btn-primary" id="btnFollowup">💾 Simpan Follow-up</button>
+                    <span id="statusFollowup" class="status"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Control Panel n8n + WAHA Chatbot &copy; 2026 | Semua endpoint siap dihubungkan ke n8n webhook</p>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
