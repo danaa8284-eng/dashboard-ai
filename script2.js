@@ -146,7 +146,7 @@ async function save() {
     if (btn) btn.classList.add('saving');
     
     try {
-        const res = await fetch('https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/input', {
+        const res = await fetch('https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook-test/input', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
