@@ -1,116 +1,154 @@
 <!DOCTYPE html>
-<html lang="id">
 
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon_atoms.ico" type="image/x-icon">
-    <title>Control Panel - n8n + WAHA Chatbot</title>
-    <link rel="stylesheet" href="./gaya.css">
+<meta charset="UTF-8">
+<title>Goem Grup - Login</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: #0a0a0a;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Background glow animasi */
+body::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #00aaff, transparent 60%);
+  filter: blur(120px);
+  animation: moveGlow 6s infinite alternate;
+}
+
+@keyframes moveGlow {
+  from {
+    transform: translate(-100px, -100px);
+  }
+  to {
+    transform: translate(200px, 150px);
+  }
+}
+
+/* Card login */
+.card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  width: 320px;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 170, 255, 0.3);
+  text-align: center;
+  z-index: 1;
+}
+
+/* Header */
+h1 {
+  color: #cccccc;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+/* Input */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 18px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #00aaff;
+}
+
+/* Animasi muncul */
+.card {
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+</style>
+
 </head>
 
 <body>
-    <!-- Header -->
-    <div class="header">
-        <h1>⚙️ Control Panel Chatbot n8n + WAHA</h1>
-        <p class="subtitle">Kelola prompt AI, gambar, dan caption untuk workflow WhatsApp chatbot Anda</p>
-        <div class="base-url-section">
-            <label for="baseUrl">Base URL n8n Webhook:</label>
-            <input type="text" id="baseUrl" placeholder="https://your-n8n-instance.com" value="">
-            <button onclick="saveBaseUrl()" class="btn btn-small">Simpan URL</button>
-        </div>
-    </div>
 
-    <!-- Notification -->
-    <div id="notification" class="notification hidden"></div>
+<div class="card">
+  <h1>Goem Group</h1>
 
-    <div class="container">
+  <input type="text" id="user" placeholder="Username">
+  <input type="password" id="pass" placeholder="Password">
 
-        <!-- Section 1: Edit Prompt AI -->
-        <div class="section">
-            <div class="section-header">
-                <h2>🤖 1. Edit Prompt AI</h2>
-            </div>
-            <div class="section-body">
-                <label for="promptText">System Prompt:</label>
-                <textarea id="promptText" rows="18" placeholder="Masukkan prompt AI di sini..."></textarea>
-                <div class="btn-row">
-                    <button onclick="simpanPrompt()" class="btn btn-primary" id="btnPrompt">💾 Simpan Prompt</button>
-                    <span id="statusPrompt" class="status"></span>
-                </div>
-            </div>
-        </div>
+<button onclick="login()">Login</button>
 
-        <!-- Section 2: Setting Gambar WAHA -->
-        <div class="section">
-            <div class="section-header">
-                <h2>🖼️ 2. Setting Gambar WAHA</h2>
-            </div>
-            <div class="section-body">
-                <label for="image1">URL Gambar 1:</label>
-                <input type="text" id="image1" placeholder="https://example.com/gambar1.jpg">
+</div>
 
-                <label for="image2">URL Gambar 2:</label>
-                <input type="text" id="image2" placeholder="https://example.com/gambar2.jpg">
+<script>
+async function login() {
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
 
-                <label for="image3">URL Gambar 3:</label>
-                <input type="text" id="image3" placeholder="https://example.com/gambar3.jpg">
+  const res = await fetch("URL_WEBHOOK_N8N_KAMU", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ user, pass })
+  });
 
-                <label for="image4">URL Gambar 4:</label>
-                <input type="text" id="image4" placeholder="https://example.com/gambar4.jpg">
+  const data = await res.json();
 
-                <label for="image5">URL Gambar 5 (Warna):</label>
-                <input type="text" id="image5" placeholder="https://example.com/warna.jpg">
+  if (data.status === "success") {
+    localStorage.setItem("user", user);
+    alert("Login berhasil");
+    window.location.href = "dashboard.html";
+  } else {
+    alert("Login gagal");
+  }
+}
+</script>
 
-                <!-- Preview -->
-                <div class="image-preview-row" id="imagePreviewRow"></div>
-
-                <div class="btn-row">
-                    <button onclick="previewGambar()" class="btn btn-secondary">👁️ Preview Gambar</button>
-                    <button onclick="simpanGambar()" class="btn btn-primary" id="btnGambar">💾 Simpan Gambar</button>
-                    <span id="statusGambar" class="status"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 3: Setting Caption WAHA -->
-        <div class="section">
-            <div class="section-header">
-                <h2>📝 3. Setting Caption WAHA</h2>
-            </div>
-            <div class="section-body">
-                <label for="captionText">Caption:</label>
-                <textarea id="captionText" rows="10" placeholder="Masukkan caption di sini..."></textarea>
-                <div class="btn-row">
-                    <button onclick="simpanCaption()" class="btn btn-primary" id="btnCaption">💾 Simpan Caption</button>
-                    <span id="statusCaption" class="status"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 4: Setting Teks Follow-up -->
-        <div class="section">
-            <div class="section-header">
-                <h2>💬 4. Setting Teks Follow-up (Setelah Harga)</h2>
-            </div>
-            <div class="section-body">
-                <label for="followupText">Teks setelah kirim harga:</label>
-                <textarea id="followupText" rows="6" placeholder="Masukkan teks follow-up di sini..."></textarea>
-                <div class="btn-row">
-                    <button onclick="simpanFollowup()" class="btn btn-primary" id="btnFollowup">💾 Simpan Follow-up</button>
-                    <span id="statusFollowup" class="status"></span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">
-        <p>Control Panel n8n + WAHA Chatbot &copy; 2026 | Semua endpoint siap dihubungkan ke n8n webhook</p>
-    </div>
-
-    <script src="./script.js"></script>
 </body>
-
 </html>
