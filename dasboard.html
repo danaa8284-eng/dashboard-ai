@@ -66,6 +66,8 @@ async function loadData() {
   const status = document.getElementById("status");
   const user = localStorage.getItem("user");
 
+  console.log("USER:", user);
+
   if (!user) {
     alert("Belum login");
     window.location.href = "index.html";
@@ -87,16 +89,18 @@ async function loadData() {
     console.log("RAW RESPONSE:", text);
 
     const json = text ? JSON.parse(text) : {};
+    console.log("JSON:", json);
 
-    // 🔥 VALIDASI
+    // 🔥 VALIDASI RESPONSE
     if (!json.success || !json.data) {
       status.innerText = "⚠️ Data tidak ditemukan";
       return;
     }
 
     const d = json.data;
+    console.log("DATA DALAM:", d);
 
-    // 🔥 MAPPING BARU (FIX)
+    // 🔥 MAPPING YANG BENAR
     document.getElementById("prompt").value = d.prompt || "";
     document.getElementById("img1").value = d.img1 || "";
     document.getElementById("cap1").value = d.cap1 || "";
