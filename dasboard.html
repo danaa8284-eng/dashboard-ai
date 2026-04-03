@@ -61,10 +61,13 @@
 
 <script>
 
-// 🔹 LOAD DATA SAAT HALAMAN DIBUKA
+// 🔹 LOAD DATA
 async function loadData() {
   const status = document.getElementById("status");
   const user = localStorage.getItem("user");
+
+  console.log("LOAD DATA JALAN");
+  console.log("USER:", user);
 
   if (!user) {
     alert("Belum login");
@@ -83,13 +86,22 @@ async function loadData() {
       body: JSON.stringify({ user })
     });
 
-    const resData = await res.json();
-    console.log("RESPONSE:", resData);
+    const text = await res.text();
+    console.log("RAW RESPONSE:", text);
 
-    // handle array
+    // cegah error JSON kosong
+    const resData = text ? JSON.parse(text) : {};
+    console.log("PARSED:", resData);
+
     const data = Array.isArray(resData) ? resData[0] : resData;
 
-    // mapping data dari sheet
+    // kalau data kosong
+    if (!data || Object.keys(data).length === 0) {
+      status.innerText = "⚠️ Data tidak ditemukan";
+      return;
+    }
+
+    // mapping sesuai sheet kamu
     document.getElementById("prompt").value = data["promp"] || "";
     document.getElementById("img1").value = data["gambar 1"] || "";
     document.getElementById("cap1").value = data["caption 1"] || "";
@@ -105,13 +117,12 @@ async function loadData() {
 
     status.innerText = "✅ Data berhasil dimuat";
 
-    // hilangkan notif setelah 3 detik
     setTimeout(() => {
       status.innerText = "";
     }, 3000);
 
   } catch (err) {
-    console.error(err);
+    console.error("ERROR LOAD:", err);
     status.innerText = "❌ Gagal memuat data";
   }
 }
@@ -154,7 +165,8 @@ async function save() {
       body: JSON.stringify(data)
     });
 
-    await res.json();
+    const text = await res.text();
+    console.log("SAVE RESPONSE:", text);
 
     status.innerText = "✅ Data berhasil disimpan";
 
@@ -163,14 +175,16 @@ async function save() {
     }, 3000);
 
   } catch (error) {
-    console.error(error);
+    console.error("ERROR SAVE:", error);
     status.innerText = "❌ Gagal menyimpan data";
   }
 }
 
 
-// auto load saat buka halaman
-window.onload = loadData;
+// 🔹 LOAD OTOMATIS
+document.addEventListener("DOMContentLoaded", function () {
+  loadData();
+});
 
 </script>
 
