@@ -318,8 +318,8 @@ body {
 }
 
 .header-badge {
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 900;
     color: var(--cyan-accent);
     background: rgba(34, 211, 238, 0.1);
     border: 1px solid rgba(34, 211, 238, 0.25);
