@@ -78,21 +78,25 @@ async function loadData() {
       body: JSON.stringify({ user })
     });
 
-    const data = await res.json();
+    const resData = await res.json();
+    console.log("RESPONSE:", resData);
 
-    // isi form
-    document.getElementById("prompt").value = data.prompt || "";
-    document.getElementById("img1").value = data.img1 || "";
-    document.getElementById("cap1").value = data.cap1 || "";
-    document.getElementById("img2").value = data.img2 || "";
-    document.getElementById("cap2").value = data.cap2 || "";
-    document.getElementById("img3").value = data.img3 || "";
-    document.getElementById("cap3").value = data.cap3 || "";
-    document.getElementById("img4").value = data.img4 || "";
-    document.getElementById("cap4").value = data.cap4 || "";
-    document.getElementById("img5").value = data.img5 || "";
-    document.getElementById("cap5").value = data.cap5 || "";
-    document.getElementById("freecap").value = data.freecap || "";
+    // ambil data pertama kalau array
+    const data = Array.isArray(resData) ? resData[0] : resData;
+
+    // mapping sesuai Google Sheets kamu
+    document.getElementById("prompt").value = data["promp"] || "";
+    document.getElementById("img1").value = data["gambar 1"] || "";
+    document.getElementById("cap1").value = data["caption 1"] || "";
+    document.getElementById("img2").value = data["gambar 2"] || "";
+    document.getElementById("cap2").value = data["caption 2"] || "";
+    document.getElementById("img3").value = data["gambar 3"] || "";
+    document.getElementById("cap3").value = data["caption 3"] || "";
+    document.getElementById("img4").value = data["gambar 4"] || "";
+    document.getElementById("cap4").value = data["caption 4"] || "";
+    document.getElementById("img5").value = data["gambar 5"] || "";
+    document.getElementById("cap5").value = data["caption 5"] || "";
+    document.getElementById("freecap").value = data["Teks pesan "] || "";
 
   } catch (err) {
     console.error(err);
