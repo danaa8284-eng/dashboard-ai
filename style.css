@@ -289,8 +289,8 @@ body {
 
 .header-logo {
     width: auto;
-    height: 65px;
-    max-width: 200px;
+    height: 80px;
+    max-width: 300px;
     border-radius: 4px;
     object-fit: contain;
     border: none;
