@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -22,47 +21,45 @@ body {
   align-items: center;
 }
 
-/* Background glow animasi */
+/* BACKGROUND GLOW */
 body::before {
   content: "";
   position: absolute;
-  width: 600px;
-  height: 600px;
+  width: 700px;
+  height: 700px;
   background: radial-gradient(circle, #00aaff, transparent 60%);
-  filter: blur(120px);
-  animation: moveGlow 6s infinite alternate;
+  filter: blur(140px);
+  animation: moveGlow 8s infinite alternate ease-in-out;
 }
 
 @keyframes moveGlow {
-  from {
-    transform: translate(-100px, -100px);
-  }
-  to {
-    transform: translate(200px, 150px);
-  }
+  from { transform: translate(-150px, -150px); }
+  to { transform: translate(250px, 200px); }
 }
 
-/* Card login */
+/* CARD */
 .card {
   position: relative;
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   padding: 40px;
-  width: 320px;
-  border-radius: 12px;
-  box-shadow: 0 0 30px rgba(0, 170, 255, 0.3);
+  width: 340px;
+  border-radius: 14px;
+  box-shadow: 0 0 40px rgba(0, 170, 255, 0.35);
   text-align: center;
-  z-index: 1;
+  z-index: 2;
+
+  animation: fadeIn 1s ease;
 }
 
-/* Header */
+/* TITLE */
 h1 {
-  color: #cccccc;
+  color: #eaeaea;
   margin-bottom: 20px;
   letter-spacing: 1px;
 }
 
-/* Input */
+/* INPUT */
 input {
   width: 100%;
   padding: 12px;
@@ -72,9 +69,15 @@ input {
   outline: none;
   background: rgba(255,255,255,0.08);
   color: white;
+  transition: 0.3s;
 }
 
-/* Button */
+input:focus {
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 0 10px #00aaff;
+}
+
+/* BUTTON */
 button {
   width: 100%;
   padding: 12px;
@@ -90,14 +93,61 @@ button {
 
 button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 15px #00aaff;
+  box-shadow: 0 0 20px #00aaff;
 }
 
-/* Animasi muncul */
-.card {
-  animation: fadeIn 1s ease;
+/* LOADING OVERLAY */
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 10, 20, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
 }
 
+.loading.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* SPINNER */
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top: 4px solid #00c6ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 20px #00aaff;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* TEXT LOADING */
+.loading-text {
+  margin-top: 20px;
+  color: #ccc;
+  font-size: 14px;
+  letter-spacing: 1px;
+  animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+  0%,100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ANIMASI MASUK */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -110,7 +160,6 @@ button:hover {
 }
 
 </style>
-
 </head>
 
 <body>
@@ -121,31 +170,51 @@ button:hover {
   <input type="text" id="user" placeholder="Username">
   <input type="password" id="pass" placeholder="Password">
 
-<button onclick="login()">Login</button>
+  <button onclick="login()">Login</button>
+</div>
 
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div style="text-align:center">
+    <div class="spinner"></div>
+    <div class="loading-text">Memproses...</div>
+  </div>
 </div>
 
 <script>
 async function login() {
   const user = document.getElementById("user").value;
   const pass = document.getElementById("pass").value;
+  const loading = document.getElementById("loading");
 
-  const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ user, pass })
-  });
+  // tampilkan loading
+  loading.classList.add("active");
 
-  const data = await res.json();
+  try {
+    const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ user, pass })
+    });
 
-  if (data.status === "success") {
-    localStorage.setItem("user", user);
-    alert("Login berhasil");
-    window.location.href = "dasboard1.html";
-  } else {
-    alert("Login gagal");
+    const data = await res.json();
+
+    if (data.status === "success") {
+      localStorage.setItem("user", user);
+      window.location.href = "dasboard1.html";
+    } else {
+      loading.classList.remove("active");
+      document.querySelector(".loading-text").innerText = "Login gagal";
+      setTimeout(() => {
+        document.querySelector(".loading-text").innerText = "Memproses...";
+      }, 1500);
+    }
+
+  } catch (err) {
+    loading.classList.remove("active");
+    document.querySelector(".loading-text").innerText = "Error koneksi";
   }
 }
 </script>
