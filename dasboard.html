@@ -157,7 +157,7 @@ async function save() {
   status.innerText = "⏳ Menyimpan data...";
 
   try {
-    const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/data-input", {
+    const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/input", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
