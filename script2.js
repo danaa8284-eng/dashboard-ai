@@ -37,18 +37,26 @@ function hideLoadingScreen() {
 function setStatus(text, type) {
     const status = document.getElementById('status');
     if (!status) return;
-    
-    status.className = 'status-message';
+
     status.textContent = text;
-    
-    if (type) {
-        status.classList.add(type);
+
+    // pakai class header, bukan lama
+    status.className = 'header-notif';
+
+    if (type === 'success') {
+        status.style.color = '#22c55e';
+    } else if (type === 'error') {
+        status.style.color = '#ef4444';
+    } else if (type === 'warning') {
+        status.style.color = '#f59e0b';
+    } else {
+        status.style.color = '#60a5fa';
     }
-    
+
+    // auto hilang
     if (type === 'success') {
         setTimeout(() => {
             status.textContent = '';
-            status.className = 'status-message';
         }, 3000);
     }
 }
