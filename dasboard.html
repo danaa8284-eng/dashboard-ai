@@ -10,6 +10,8 @@
 
 <h2>Dashboard Setting</h2>
 
+<p id="status">Memuat data...</p>
+
 <p>Prompt untuk AI:</p>
 <textarea id="prompt"></textarea>
 
@@ -61,6 +63,7 @@
 
 // 🔹 LOAD DATA SAAT HALAMAN DIBUKA
 async function loadData() {
+  const status = document.getElementById("status");
   const user = localStorage.getItem("user");
 
   if (!user) {
@@ -68,6 +71,8 @@ async function loadData() {
     window.location.href = "index.html";
     return;
   }
+
+  status.innerText = "⏳ Memuat data...";
 
   try {
     const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/update", {
@@ -81,10 +86,10 @@ async function loadData() {
     const resData = await res.json();
     console.log("RESPONSE:", resData);
 
-    // ambil data pertama kalau array
+    // handle array
     const data = Array.isArray(resData) ? resData[0] : resData;
 
-    // mapping sesuai Google Sheets kamu
+    // mapping data dari sheet
     document.getElementById("prompt").value = data["promp"] || "";
     document.getElementById("img1").value = data["gambar 1"] || "";
     document.getElementById("cap1").value = data["caption 1"] || "";
@@ -98,15 +103,23 @@ async function loadData() {
     document.getElementById("cap5").value = data["caption 5"] || "";
     document.getElementById("freecap").value = data["Teks pesan "] || "";
 
+    status.innerText = "✅ Data berhasil dimuat";
+
+    // hilangkan notif setelah 3 detik
+    setTimeout(() => {
+      status.innerText = "";
+    }, 3000);
+
   } catch (err) {
     console.error(err);
-    alert("Gagal load data");
+    status.innerText = "❌ Gagal memuat data";
   }
 }
 
 
 // 🔹 SIMPAN DATA
 async function save() {
+  const status = document.getElementById("status");
   const user = localStorage.getItem("user");
 
   if (!user) {
@@ -130,6 +143,8 @@ async function save() {
     freecap: document.getElementById("freecap").value
   };
 
+  status.innerText = "⏳ Menyimpan data...";
+
   try {
     const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/data-input", {
       method: "POST",
@@ -141,11 +156,15 @@ async function save() {
 
     await res.json();
 
-    alert("Data berhasil disimpan");
+    status.innerText = "✅ Data berhasil disimpan";
+
+    setTimeout(() => {
+      status.innerText = "";
+    }, 3000);
 
   } catch (error) {
-    alert("Gagal mengirim data");
     console.error(error);
+    status.innerText = "❌ Gagal menyimpan data";
   }
 }
 
