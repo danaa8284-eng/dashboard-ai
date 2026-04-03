@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/GOEM.jpg" type="image/x-icon">
+    <title>Goem Group AI Mode - Dashboard</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ===== LOADING SCREEN ===== -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo-container">
+                <div class="loading-ring"></div>
+                <div class="loading-ring loading-ring-2"></div>
+                <div class="loading-ring loading-ring-3"></div>
+                <img src="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/GOEM.jpg" alt="GOEM Logo" class="loading-logo">
+            </div>
+            <h1 class="loading-title">Goem Group</h1>
+            <p class="loading-subtitle">AI Mode</p>
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <p class="loading-text">Memuat sistem...</p>
+        </div>
+        <div class="loading-particles" id="particles"></div>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div id="app" class="app hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <img src="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/logogoem.jpg" alt="Logo Goem" class="header-logo">
+                <div class="header-title-group">
+                    <h1 class="header-title">Goem Group</h1>
+                    <span class="header-badge">AI Mode</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-status" id="header-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Online</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="dashboard-header">
+                <h2 class="section-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    Dashboard Setting
+                </h2>
+                <p id="status" class="status-message"></p>
+            </div>
+
+            <!-- Prompt Section -->
+            <div class="card card-prompt">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3>Prompt untuk AI</h3>
+                </div>
+                <textarea id="prompt" class="input-textarea" placeholder="Masukkan prompt AI di sini..." rows="4"></textarea>
+            </div>
+
+            <!-- Image Cards Grid -->
+            <div class="cards-grid">
+                <div class="card card-image" style="--delay: 0.1s">
+                    <div class="card-header">
+                        <div class="card-icon card-icon-1">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Gambar 1</h3>
+                        <span class="card-number">#01</span>
+                    </div>
+                    <div class="card-body">
+                        <label class="input-label">URL Gambar</label>
+                        <input type="text" id="img1" class="input-field" placeholder="https://...">
+                        <label class="input-label">Caption</label>
+                        <input type="text" id="cap1" class="input-field" placeholder="Masukkan caption...">
+                    </div>
+                </div>
+
+                <div class="card card-image" style="--delay: 0.2s">
+                    <div class="card-header">
+                        <div class="card-icon card-icon-2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Gambar 2</h3>
+                        <span class="card-number">#02</span>
+                    </div>
+                    <div class="card-body">
+                        <label class="input-label">URL Gambar</label>
+                        <input type="text" id="img2" class="input-field" placeholder="https://...">
+                        <label class="input-label">Caption</label>
+                        <input type="text" id="cap2" class="input-field" placeholder="Masukkan caption...">
+                    </div>
+                </div>
+
+                <div class="card card-image" style="--delay: 0.3s">
+                    <div class="card-header">
+                        <div class="card-icon card-icon-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Gambar 3</h3>
+                        <span class="card-number">#03</span>
+                    </div>
+                    <div class="card-body">
+                        <label class="input-label">URL Gambar</label>
+                        <input type="text" id="img3" class="input-field" placeholder="https://...">
+                        <label class="input-label">Caption</label>
+                        <input type="text" id="cap3" class="input-field" placeholder="Masukkan caption...">
+                    </div>
+                </div>
+
+                <div class="card card-image" style="--delay: 0.4s">
+                    <div class="card-header">
+                        <div class="card-icon card-icon-4">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Gambar 4</h3>
+                        <span class="card-number">#04</span>
+                    </div>
+                    <div class="card-body">
+                        <label class="input-label">URL Gambar</label>
+                        <input type="text" id="img4" class="input-field" placeholder="https://...">
+                        <label class="input-label">Caption</label>
+                        <input type="text" id="cap4" class="input-field" placeholder="Masukkan caption...">
+                    </div>
+                </div>
+
+                <div class="card card-image" style="--delay: 0.5s">
+                    <div class="card-header">
+                        <div class="card-icon card-icon-5">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Gambar 5</h3>
+                        <span class="card-number">#05</span>
+                    </div>
+                    <div class="card-body">
+                        <label class="input-label">URL Gambar</label>
+                        <input type="text" id="img5" class="input-field" placeholder="https://...">
+                        <label class="input-label">Caption</label>
+                        <input type="text" id="cap5" class="input-field" placeholder="Masukkan caption...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Free Caption -->
+            <div class="card card-free-caption">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="17" y1="10" x2="3" y2="10"></line>
+                            <line x1="21" y1="6" x2="3" y2="6"></line>
+                            <line x1="21" y1="14" x2="3" y2="14"></line>
+                            <line x1="17" y1="18" x2="3" y2="18"></line>
+                        </svg>
+                    </div>
+                    <h3>Caption Bebas</h3>
+                </div>
+                <input type="text" id="freecap" class="input-field" placeholder="Masukkan caption bebas...">
+            </div>
+
+            <!-- Save Button -->
+            <div class="save-section">
+                <button onclick="save()" class="btn-save" id="btn-save">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    <span>SIMPAN</span>
+                </button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Goem Group AI Mode. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script type="module" src="./script2.js"></script>
+</body>
+
+</html>
