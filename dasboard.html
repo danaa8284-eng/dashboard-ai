@@ -66,9 +66,6 @@ async function loadData() {
   const status = document.getElementById("status");
   const user = localStorage.getItem("user");
 
-  console.log("LOAD DATA JALAN");
-  console.log("USER:", user);
-
   if (!user) {
     alert("Belum login");
     window.location.href = "index.html";
@@ -89,19 +86,14 @@ async function loadData() {
     const text = await res.text();
     console.log("RAW RESPONSE:", text);
 
-    // cegah error JSON kosong
-    const resData = text ? JSON.parse(text) : {};
-    console.log("PARSED:", resData);
+    const data = text ? JSON.parse(text) : {};
 
-    const data = Array.isArray(resData) ? resData[0] : resData;
-
-    // kalau data kosong
     if (!data || Object.keys(data).length === 0) {
       status.innerText = "⚠️ Data tidak ditemukan";
       return;
     }
 
-    // mapping sesuai sheet kamu
+    // mapping langsung (tanpa array)
     document.getElementById("prompt").value = data["promp"] || "";
     document.getElementById("img1").value = data["gambar 1"] || "";
     document.getElementById("cap1").value = data["caption 1"] || "";
@@ -122,7 +114,7 @@ async function loadData() {
     }, 3000);
 
   } catch (err) {
-    console.error("ERROR LOAD:", err);
+    console.error(err);
     status.innerText = "❌ Gagal memuat data";
   }
 }
@@ -134,7 +126,7 @@ async function save() {
   const user = localStorage.getItem("user");
 
   if (!user) {
-    alert("User tidak ditemukan, silakan login ulang");
+    alert("User tidak ditemukan");
     return;
   }
 
@@ -175,16 +167,14 @@ async function save() {
     }, 3000);
 
   } catch (error) {
-    console.error("ERROR SAVE:", error);
+    console.error(error);
     status.innerText = "❌ Gagal menyimpan data";
   }
 }
 
 
-// 🔹 LOAD OTOMATIS
-document.addEventListener("DOMContentLoaded", function () {
-  loadData();
-});
+// 🔹 AUTO LOAD
+document.addEventListener("DOMContentLoaded", loadData);
 
 </script>
 
