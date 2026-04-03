@@ -58,6 +58,50 @@
 <button onclick="save()">SIMPAN</button>
 
 <script>
+
+// 🔹 LOAD DATA SAAT HALAMAN DIBUKA
+async function loadData() {
+  const user = localStorage.getItem("user");
+
+  if (!user) {
+    alert("Belum login");
+    window.location.href = "index.html";
+    return;
+  }
+
+  try {
+    const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook-test/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ user })
+    });
+
+    const data = await res.json();
+
+    // isi form
+    document.getElementById("prompt").value = data.prompt || "";
+    document.getElementById("img1").value = data.img1 || "";
+    document.getElementById("cap1").value = data.cap1 || "";
+    document.getElementById("img2").value = data.img2 || "";
+    document.getElementById("cap2").value = data.cap2 || "";
+    document.getElementById("img3").value = data.img3 || "";
+    document.getElementById("cap3").value = data.cap3 || "";
+    document.getElementById("img4").value = data.img4 || "";
+    document.getElementById("cap4").value = data.cap4 || "";
+    document.getElementById("img5").value = data.img5 || "";
+    document.getElementById("cap5").value = data.cap5 || "";
+    document.getElementById("freecap").value = data.freecap || "";
+
+  } catch (err) {
+    console.error(err);
+    alert("Gagal load data");
+  }
+}
+
+
+// 🔹 SIMPAN DATA
 async function save() {
   const user = localStorage.getItem("user");
 
@@ -91,7 +135,7 @@ async function save() {
       body: JSON.stringify(data)
     });
 
-    const result = await res.json();
+    await res.json();
 
     alert("Data berhasil disimpan");
 
@@ -100,8 +144,12 @@ async function save() {
     console.error(error);
   }
 }
+
+
+// auto load saat buka halaman
+window.onload = loadData;
+
 </script>
 
 </body>
 </html>
-
