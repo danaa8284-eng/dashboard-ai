@@ -70,7 +70,7 @@ async function loadData() {
   }
 
   try {
-    const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook-test/update", {
+    const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/update", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -127,7 +127,7 @@ async function save() {
   };
 
   try {
-    const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook-test/data-input", {
+    const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/data-input", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
