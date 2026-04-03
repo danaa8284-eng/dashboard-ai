@@ -86,26 +86,29 @@ async function loadData() {
     const text = await res.text();
     console.log("RAW RESPONSE:", text);
 
-    const data = text ? JSON.parse(text) : {};
+    const json = text ? JSON.parse(text) : {};
 
-    if (!data || Object.keys(data).length === 0) {
+    // 🔥 VALIDASI
+    if (!json.success || !json.data) {
       status.innerText = "⚠️ Data tidak ditemukan";
       return;
     }
 
-    // mapping langsung (tanpa array)
-    document.getElementById("prompt").value = data["promp"] || "";
-    document.getElementById("img1").value = data["gambar 1"] || "";
-    document.getElementById("cap1").value = data["caption 1"] || "";
-    document.getElementById("img2").value = data["gambar 2"] || "";
-    document.getElementById("cap2").value = data["caption 2"] || "";
-    document.getElementById("img3").value = data["gambar 3"] || "";
-    document.getElementById("cap3").value = data["caption 3"] || "";
-    document.getElementById("img4").value = data["gambar 4"] || "";
-    document.getElementById("cap4").value = data["caption 4"] || "";
-    document.getElementById("img5").value = data["gambar 5"] || "";
-    document.getElementById("cap5").value = data["caption 5"] || "";
-    document.getElementById("freecap").value = data["Teks pesan "] || "";
+    const d = json.data;
+
+    // 🔥 MAPPING BARU (FIX)
+    document.getElementById("prompt").value = d.prompt || "";
+    document.getElementById("img1").value = d.img1 || "";
+    document.getElementById("cap1").value = d.cap1 || "";
+    document.getElementById("img2").value = d.img2 || "";
+    document.getElementById("cap2").value = d.cap2 || "";
+    document.getElementById("img3").value = d.img3 || "";
+    document.getElementById("cap3").value = d.cap3 || "";
+    document.getElementById("img4").value = d.img4 || "";
+    document.getElementById("cap4").value = d.cap4 || "";
+    document.getElementById("img5").value = d.img5 || "";
+    document.getElementById("cap5").value = d.cap5 || "";
+    document.getElementById("freecap").value = d.freecap || "";
 
     status.innerText = "✅ Data berhasil dimuat";
 
@@ -114,7 +117,7 @@ async function loadData() {
     }, 3000);
 
   } catch (err) {
-    console.error(err);
+    console.error("ERROR LOAD:", err);
     status.innerText = "❌ Gagal memuat data";
   }
 }
@@ -167,7 +170,7 @@ async function save() {
     }, 3000);
 
   } catch (error) {
-    console.error(error);
+    console.error("ERROR SAVE:", error);
     status.innerText = "❌ Gagal menyimpan data";
   }
 }
