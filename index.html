@@ -130,7 +130,7 @@ async function login() {
   const user = document.getElementById("user").value;
   const pass = document.getElementById("pass").value;
 
-  const res = await fetch("URL_WEBHOOK_N8N_KAMU", {
+  const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -143,7 +143,7 @@ async function login() {
   if (data.status === "success") {
     localStorage.setItem("user", user);
     alert("Login berhasil");
-    window.location.href = "dashboard.html";
+    window.location.href = "dasboard.html";
   } else {
     alert("Login gagal");
   }
