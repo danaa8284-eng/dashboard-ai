@@ -262,16 +262,20 @@ body {
 
 /* ===== HEADER ===== */
 .header {
+    position: fixed;   /* ⬅️ ganti dari sticky */
+    top: 0;
+    left: 0;           /* ⬅️ tambahkan */
+    width: 100%;       /* ⬅️ tambahkan */
+
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 16px 32px;
-    background: rgba(15, 21, 37, 0.85);
+
+    background: rgba(15, 21, 37, 0.95);
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
-    position: sticky;
-    top: 0;
+
     z-index: 100;
     animation: headerSlideDown 0.6s ease-out;
 }
@@ -823,7 +827,7 @@ body {
 /* ===== CONTENT SHIFT ===== */
 .content {
     margin-left: 240px;
-    margin-top: 20px;
+    margin-top: 120px; /* ⬅️ ganti ini */
     width: 100%;
 }
 
