@@ -212,8 +212,8 @@ function showPage(page) {
 let chart;
 
 const API_LIST = {
-  cs1: "https://script.google.com/macros/s/API_CS1/exec",
-  cs2: "https://script.google.com/macros/s/API_CS2/exec",
+  cs1: "https://script.google.com/macros/s/AKfycbzXDAiDRgwUZD4I9vsIYzM5YBF_z1fkDWOtVyJpQIlfoVSWd6FeIjU9Mbs6zjSjnG6xfg/exec",
+  cs2: "https://script.google.com/macros/s/AKfycbyi8P5qWCTqjZ_e1kjpNTamJBPy5yIUnGyWU69jGzK8_DohZPzWv8fhPiBBMHlEQnz_ew/exec",
   cs3: "https://script.google.com/macros/s/API_CS3/exec",
   cs4: "https://script.google.com/macros/s/API_CS4/exec"
 };
