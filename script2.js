@@ -220,8 +220,8 @@ function formatDateLocal(dateStr) {
   return `${year}-${month}-${day}`;
 }
 
-async function loadData() {
-  document.getElementById("loading").style.display = "flex";
+async function loadChartData() {
+document.getElementById("loading").style.display = "flex";
 
   try {
     const res = await fetch(API_URL);
@@ -318,4 +318,4 @@ function renderChart(labels, data) {
 }
 
 // auto load
-loadData();
+loadChartData();
