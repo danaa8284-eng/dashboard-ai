@@ -222,14 +222,20 @@ function formatDateLocal(dateStr) {
 }
 
 async function loadChartData() {
-document.getElementById("loading").style.display = "flex";
+
+  const loading = document.getElementById("loading");
+
+  if (loading) loading.style.display = "flex";
 
   try {
     const res = await fetch(API_URL);
     const data = await res.json();
 
-    const start = document.getElementById("startDate").value;
-    const end = document.getElementById("endDate").value;
+   const startEl = document.getElementById("startDate");
+const endEl = document.getElementById("endDate");
+
+const start = startEl ? startEl.value : "";
+const end = endEl ? endEl.value : "";
 
     let grouped = {};
     let total = 0;
@@ -291,7 +297,7 @@ document.getElementById("loading").style.display = "flex";
     alert("Gagal ambil data");
   }
 
-  document.getElementById("loading").style.display = "none";
+  if (loading) loading.style.display = "none";
 }
 
 function renderChart(labels, data) {
