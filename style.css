@@ -365,7 +365,9 @@ body {
 
 /* ===== MAIN CONTENT ===== */
 .main-content {
-    max-width: 1200px;
+    width: 100%;
+    max-width: none;   /* ⬅️ ini kunci utama */
+    padding: 30px 40px;
 }
 
 .dashboard-header {
@@ -511,8 +513,9 @@ body {
 /* ===== CARDS GRID ===== */
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+}
 }
 
 .cards-grid .card {
