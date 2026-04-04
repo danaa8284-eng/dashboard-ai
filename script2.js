@@ -202,3 +202,120 @@ function showPage(page) {
         dashboard.innerHTML = "<h2>Ini Setting AI Agent</h2>";
     }
 }
+
+
+
+
+
+
+let chart;
+
+const API_URL = "https://script.google.com/macros/s/AKfycby2ehtY358ZM9kkRF9tpyU9HInuevVZyKXnPltrbXY4PuigxVKmcyYTl3fwGzC-oN_Yrw/exec";
+
+function formatDateLocal(dateStr) {
+  const d = new Date(dateStr);
+  const year = d.getFullYear();
+  const month = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${year}-${month}-${day}`;
+}
+
+async function loadData() {
+  document.getElementById("loading").style.display = "flex";
+
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    const start = document.getElementById("startDate").value;
+    const end = document.getElementById("endDate").value;
+
+    let grouped = {};
+    let total = 0;
+
+    const isSingleDay = start && end && start === end;
+
+    data.forEach(item => {
+      let date = item.date;
+      let time = item.time;
+
+      if (!date) return;
+
+      date = formatDateLocal(date);
+
+      if (start && date < start) return;
+      if (end && date > end) return;
+
+      let label;
+
+      if (isSingleDay) {
+        if (!time) return;
+
+        let rawTime = String(time).trim().replace(".", ":");
+        let parts = rawTime.split(":");
+        let hour = parts[0].padStart(2, "0");
+
+        label = hour + ".00";
+
+      } else {
+        label = date;
+      }
+
+      if (!grouped[label]) grouped[label] = 0;
+      grouped[label]++;
+      total++;
+    });
+
+    document.getElementById("totalChat").innerText = total;
+
+    let labels;
+
+    if (isSingleDay) {
+      labels = [];
+      for (let i = 0; i < 24; i++) {
+        let h = String(i).padStart(2, "0") + ".00";
+        labels.push(h);
+        if (!grouped[h]) grouped[h] = 0;
+      }
+    } else {
+      labels = Object.keys(grouped).sort();
+    }
+
+    const values = labels.map(l => grouped[l]);
+
+    renderChart(labels, values);
+
+  } catch (err) {
+    console.error(err);
+    alert("Gagal ambil data");
+  }
+
+  document.getElementById("loading").style.display = "none";
+}
+
+function renderChart(labels, data) {
+  if (chart) chart.destroy();
+
+  const ctx = document.getElementById("chart");
+
+  chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Jumlah Chat",
+        data: data,
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+}
+
+// auto load
+loadData();
