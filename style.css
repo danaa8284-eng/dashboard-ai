@@ -782,14 +782,14 @@ body {
 
 /* ===== SIDEBAR ===== */
 .sidebar {
-    width: 240px;
+    width: 220px;
     background: #0b1220;
-    border-right: 1px solid var(--border-color);
+    border-right: 1px solid rgba(148, 163, 184, 0.15);
     padding: 20px;
 
     position: fixed;
+    top: 80px;
     left: 0;
-    top: 80px; /* ⬅️ penting */
     height: calc(100vh - 80px);
 }
 
@@ -820,16 +820,19 @@ body {
 }
 
 .menu-item.active {
-    background: var(--blue-primary);
-    color: white;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  font-weight: 500;
 }
 
 /* ===== CONTENT SHIFT ===== */
 .content {
-    margin-left: 240px;
-    margin-top: 120px; /* ⬅️ ganti ini */
+    margin-left: 220px;
+    margin-top: 90px;
+    padding: 20px 30px;
     width: 100%;
 }
+
 
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
@@ -873,12 +876,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 14px;
 }
 
-.sidebar {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  border-right: 1px solid rgba(148, 163, 184, 0.15);
-}
+
 
 .menu-item {
   display: flex;
@@ -910,15 +908,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 
-.menu-item.active::before {
-  content: "";
-  width: 4px;
-  height: 100%;
-  background: #60a5fa;
-  position: absolute;
-  left: 0;
-  border-radius: 4px;
-}
+
 
 .menu-item {
   position: relative;
