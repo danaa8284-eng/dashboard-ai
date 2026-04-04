@@ -48,18 +48,15 @@ body::before {
   box-shadow: 0 0 40px rgba(0, 170, 255, 0.35);
   text-align: center;
   z-index: 2;
-
   animation: fadeIn 1s ease;
 }
 
-/* TITLE */
 h1 {
   color: #eaeaea;
   margin-bottom: 20px;
   letter-spacing: 1px;
 }
 
-/* INPUT */
 input {
   width: 100%;
   padding: 12px;
@@ -69,7 +66,6 @@ input {
   outline: none;
   background: rgba(255,255,255,0.08);
   color: white;
-  transition: 0.3s;
 }
 
 input:focus {
@@ -77,7 +73,6 @@ input:focus {
   box-shadow: 0 0 10px #00aaff;
 }
 
-/* BUTTON */
 button {
   width: 100%;
   padding: 12px;
@@ -88,7 +83,6 @@ button {
   color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
 }
 
 button:hover {
@@ -96,7 +90,7 @@ button:hover {
   box-shadow: 0 0 20px #00aaff;
 }
 
-/* LOADING OVERLAY */
+/* LOADING */
 .loading {
   position: fixed;
   top: 0;
@@ -118,7 +112,6 @@ button:hover {
   pointer-events: all;
 }
 
-/* SPINNER */
 .spinner {
   width: 60px;
   height: 60px;
@@ -126,39 +119,22 @@ button:hover {
   border-top: 4px solid #00c6ff;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  box-shadow: 0 0 20px #00aaff;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* TEXT LOADING */
 .loading-text {
   margin-top: 20px;
   color: #ccc;
   font-size: 14px;
-  letter-spacing: 1px;
-  animation: blink 1.2s infinite;
 }
 
-@keyframes blink {
-  0%,100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-
-/* ANIMASI MASUK */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 </style>
 </head>
 
@@ -166,18 +142,15 @@ button:hover {
 
 <div class="card">
   <h1>Goem Group</h1>
-
   <input type="text" id="user" placeholder="Username">
   <input type="password" id="pass" placeholder="Password">
-
   <button onclick="login()">Login</button>
 </div>
 
-<!-- LOADING -->
 <div class="loading" id="loading">
   <div style="text-align:center">
     <div class="spinner"></div>
-    <div class="loading-text">Memproses...</div>
+    <div class="loading-text" id="loadingText">Memproses...</div>
   </div>
 </div>
 
@@ -186,9 +159,10 @@ async function login() {
   const user = document.getElementById("user").value;
   const pass = document.getElementById("pass").value;
   const loading = document.getElementById("loading");
+  const textEl = document.getElementById("loadingText");
 
-  // tampilkan loading
   loading.classList.add("active");
+  textEl.innerText = "Memproses...";
 
   try {
     const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/login", {
@@ -199,23 +173,35 @@ async function login() {
       body: JSON.stringify({ user, pass })
     });
 
-    const data = await res.json();
-const result = data[0]; // ⬅️ ini penting
+    // 🔥 ambil raw dulu biar aman
+    const raw = await res.text();
+    console.log("RAW RESPONSE:", raw);
 
-if (result.status === "success") {
-  localStorage.setItem("user", user);
-  window.location.href = "dasboard1.html";
-} else {
-  loading.classList.remove("active");
-  document.querySelector(".loading-text").innerText = "Login gagal";
-  setTimeout(() => {
-    document.querySelector(".loading-text").innerText = "Memproses...";
-  }, 1500);
-}
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      throw new Error("Response bukan JSON");
+    }
+
+    // 🔥 handle array / object
+    const result = Array.isArray(data) ? data[0] : data;
+
+    if (result && result.status === "success") {
+      localStorage.setItem("user", result.user || user);
+      window.location.href = "dasboard1.html";
+    } else {
+      loading.classList.remove("active");
+      textEl.innerText = "Login gagal";
+      setTimeout(() => {
+        textEl.innerText = "Memproses...";
+      }, 1500);
+    }
 
   } catch (err) {
+    console.error("ERROR:", err);
     loading.classList.remove("active");
-    document.querySelector(".loading-text").innerText = "Error koneksi";
+    textEl.innerText = "Error koneksi";
   }
 }
 </script>
