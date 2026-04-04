@@ -189,3 +189,16 @@ document.addEventListener('DOMContentLoaded', () => {
         loadData();
     }, 1000);
 });
+
+
+function showPage(page) {
+    const dashboard = document.querySelector(".main-content");
+    
+    if (page === "dashboard") {
+        dashboard.innerHTML = "<h2>Ini Dashboard Chat</h2>";
+    }
+
+    if (page === "setting") {
+        dashboard.innerHTML = "<h2>Ini Setting AI Agent</h2>";
+    }
+}
