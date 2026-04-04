@@ -366,7 +366,7 @@ body {
 /* ===== MAIN CONTENT ===== */
 .main-content {
     flex: 1;
-    max-width: 960px;
+    max-width: 11000px;
     width: 100%;
     margin: 0 auto;
     padding: 40px 24px 60px;
@@ -771,3 +771,64 @@ body {
     border-radius: 20px;
     white-space: nowrap;
 }
+
+
+/* ===== LAYOUT SIDEBAR ===== */
+.layout {
+    display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 240px;
+    background: #0b1220;
+    border-right: 1px solid var(--border-color);
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+}
+
+.sidebar-logo {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--blue-secondary);
+    margin-bottom: 30px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-item {
+    padding: 12px;
+    border-radius: 10px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.menu-item:hover {
+    background: rgba(59,130,246,0.1);
+    color: white;
+}
+
+.menu-item.active {
+    background: var(--blue-primary);
+    color: white;
+}
+
+/* ===== CONTENT SHIFT ===== */
+.content {
+    margin-left: 240px;
+    width: 100%;
+}
+
+.header {
+    margin-left: 240px;
+}
+
+
