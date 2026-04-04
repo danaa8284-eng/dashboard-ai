@@ -185,10 +185,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
     
     // Load data after app is visible
-    setTimeout(() => {
+  setTimeout(() => {
+    if (document.getElementById('prompt')) {
         loadData();
-    }, 1000);
-});
+    }
+}, 1000);
 
 
 function showPage(page) {
