@@ -211,7 +211,14 @@ function showPage(page) {
 
 let chart;
 
-const API_URL = "https://script.google.com/macros/s/AKfycby2ehtY358ZM9kkRF9tpyU9HInuevVZyKXnPltrbXY4PuigxVKmcyYTl3fwGzC-oN_Yrw/exec";
+const API_LIST = {
+  cs1: "https://script.google.com/macros/s/API_CS1/exec",
+  cs2: "https://script.google.com/macros/s/API_CS2/exec",
+  cs3: "https://script.google.com/macros/s/API_CS3/exec",
+  cs4: "https://script.google.com/macros/s/API_CS4/exec"
+};
+
+let selectedCS = "cs1"; // default
 
 function formatDateLocal(dateStr) {
   const d = new Date(dateStr);
@@ -228,7 +235,14 @@ async function loadChartData() {
   if (loading) loading.style.display = "flex";
 
   try {
-    const res = await fetch(API_URL);
+   const api = API_LIST[selectedCS];
+
+if (!api) {
+  alert("API tidak ditemukan");
+  return;
+}
+
+const res = await fetch(api);
     const data = await res.json();
 
    const startEl = document.getElementById("startDate");
@@ -330,3 +344,21 @@ document.addEventListener("DOMContentLoaded", () => {
     loadChartData();
   }
 });
+
+
+document.querySelectorAll(".cs-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".cs-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    selectedCS = btn.dataset.cs;
+  });
+});
+
+function applyCS() {
+  setStatus("🔄 Mengganti data CS...", "loading");
+  loadChartData();
+}
+
+
+
