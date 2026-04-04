@@ -365,11 +365,7 @@ body {
 
 /* ===== MAIN CONTENT ===== */
 .main-content {
-    flex: 1;
-    max-width: 11000px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 40px 24px 60px;
+    max-width: 1200px;
 }
 
 .dashboard-header {
@@ -515,9 +511,8 @@ body {
 /* ===== CARDS GRID ===== */
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    margin-bottom: 20px;
 }
 
 .cards-grid .card {
@@ -784,10 +779,11 @@ body {
     background: #0b1220;
     border-right: 1px solid var(--border-color);
     padding: 20px;
+
     position: fixed;
-    height: 100vh;
     left: 0;
-    top: 0;
+    top: 80px; /* ⬅️ penting */
+    height: calc(100vh - 80px);
 }
 
 .sidebar-logo {
@@ -824,11 +820,9 @@ body {
 /* ===== CONTENT SHIFT ===== */
 .content {
     margin-left: 240px;
+    margin-top: 20px;
     width: 100%;
 }
 
-.header {
-    margin-left: 240px;
-}
 
 
