@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/GOEM.jpg" type="image/x-icon">
+    <title>Goem Group AI Mode - Dashboard</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ===== LOADING SCREEN ===== -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo-container">
+                <div class="loading-ring"></div>
+                <div class="loading-ring loading-ring-2"></div>
+                <div class="loading-ring loading-ring-3"></div>
+                <img src="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/GOEM.jpg" alt="GOEM Logo" class="loading-logo">
+            </div>
+             <p class="loading-subtitle">AI Mode</p>
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <p class="loading-text">Memuat sistem...</p>
+        </div>
+        <div class="loading-particles" id="particles"></div>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+<div id="app" class="app hidden">
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">GOEM</div>
+
+            <div class="sidebar-menu">
+                <a href="analis.html" class="menu-item active">📊 Dashboard Chat</a>
+                 <a href="dasboard1.html" class="menu-item">⚙️ Setting AI Agent</a>
+            </div>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="content">
+            
+            <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <img src="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/goem2.jpg" class="header-logo">
+                <div class="header-title-group">
+               <span class="header-badge">AI Mode</span>
+              </div>
+            </div>
+            <div class="header-right">
+
+    <!-- NOTIF -->
+    <div id="status" class="header-notif"></div>
+
+    <!-- ONLINE -->
+    <div class="header-status" id="header-status">
+        <span class="status-dot"></span>
+        <span class="status-text">Online</span>
+    </div>
+
+</div>
+        </header>
+
+        <!-- Main Content -->
+        
+
+
+        <main class="main-content">
+
+  <div class="dashboard-header">
+    <h2 class="section-title">📊 Dashboard Chat</h2>
+  </div>
+
+  <!-- FILTER -->
+  <div class="card">
+    <div class="card-body" style="display:flex; gap:10px; flex-wrap:wrap;">
+      <input type="date" id="startDate" class="input-field">
+      <input type="date" id="endDate" class="input-field">
+      <button onclick="loadData()" class="btn-save" style="padding:10px 20px;">
+        Filter
+      </button>
+    </div>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="card">
+    <h3>Total Chat</h3>
+    <div style="font-size:40px; font-weight:bold;" id="totalChat">0</div>
+  </div>
+
+  <!-- CHART -->
+  <div class="card">
+    <canvas id="chart"></canvas>
+  </div>
+
+</main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Goem Group AI Mode. All rights reserved.</p>
+        </footer>
+    </div>
+        </div> <!-- content -->
+    </div> <!-- layout -->
+</div>
+    <script type="module" src="./script2.js"></script>
+</body>
+
+</html>
