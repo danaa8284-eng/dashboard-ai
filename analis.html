@@ -73,20 +73,37 @@
         
 
 
-        <main class="main-content">
-<div id="loading" style="display:none;"></div>
+      <main class="main-content">
+
+  <div id="loading" style="display:none;"></div>
+
   <div class="dashboard-header">
     <h2 class="section-title">📊 Dashboard Chat</h2>
   </div>
 
   <!-- FILTER -->
   <div class="card">
-    <div class="card-body" style="display:flex; gap:10px; flex-wrap:wrap;">
-      <input type="date" id="startDate" class="input-field">
-      <input type="date" id="endDate" class="input-field">
-      <button onclick="loadChartData()" class="btn-save" style="padding:10px 20px;">
-        Filter
-      </button>
+    <div class="card-body" style="display:flex; gap:20px; flex-wrap:wrap; align-items:end;">
+
+      <!-- Tanggal Mulai -->
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <label style="font-size:13px; color:#94a3b8;">Tanggal Mulai</label>
+        <input type="date" id="startDate" class="input-field" onclick="this.showPicker()">
+      </div>
+
+      <!-- Tanggal Berakhir -->
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <label style="font-size:13px; color:#94a3b8;">Tanggal Berakhir</label>
+        <input type="date" id="endDate" class="input-field" onclick="this.showPicker()">
+      </div>
+
+      <!-- Button -->
+      <div>
+        <button onclick="loadChartData()" class="btn-save" style="padding:10px 24px;">
+          Filter
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -102,7 +119,6 @@
   </div>
 
 </main>
-
         <!-- Footer -->
         <footer class="footer">
             <p>&copy; 2026 Goem Group AI Mode. All rights reserved.</p>
