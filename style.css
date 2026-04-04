@@ -873,3 +873,53 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 14px;
 }
 
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  color: #cbd5f5;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+  background: rgba(59, 130, 246, 0.15);
+  color: #ffffff;
+}
+
+
+.menu-item.active {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  font-weight: 500;
+}
+
+.sidebar-menu {
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  margin-top: 15px;
+  padding-top: 15px;
+}
+
+
+.menu-item.active::before {
+  content: "";
+  width: 4px;
+  height: 100%;
+  background: #60a5fa;
+  position: absolute;
+  left: 0;
+  border-radius: 4px;
+}
+
+.menu-item {
+  position: relative;
+}
