@@ -287,7 +287,8 @@ const end = endEl ? endEl.value : "";
       total++;
     });
 
-    document.getElementById("totalChat").innerText = total;
+   const prev = parseInt(document.getElementById("totalChat").innerText) || 0;
+animateValue("totalChat", prev, total);
 
     let labels;
 
@@ -315,28 +316,39 @@ const end = endEl ? endEl.value : "";
 }
 
 function renderChart(labels, data) {
-  if (chart) chart.destroy();
-
   const ctx = document.getElementById("chart");
 
-  chart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Jumlah Chat",
-        data: data,
-        borderWidth: 2,
-        tension: 0.3,
-        pointRadius: 3
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
-    }
-  });
+  if (!chart) {
+    chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Jumlah Chat",
+          data: data,
+          borderWidth: 2,
+          tension: 0.4,
+          pointRadius: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+          duration: 800,
+          easing: 'easeInOutQuart'
+        }
+      }
+    });
+  } else {
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = data;
+    chart.update(); // 🔥 smooth
+  }
 }
+      
+
+  
 
 // auto load aman (hanya kalau halaman ada chart)
 document.addEventListener("DOMContentLoaded", () => {
@@ -360,5 +372,22 @@ function applyCS() {
   loadChartData();
 }
 
+function animateValue(id, start, end, duration = 800) {
+  const obj = document.getElementById(id);
+  let startTime = null;
 
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
 
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const value = Math.floor(progress * (end - start) + start);
+
+    obj.innerText = value;
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
