@@ -200,17 +200,18 @@ async function login() {
     });
 
     const data = await res.json();
+const result = data[0]; // ⬅️ ini penting
 
-    if (data.status === "success") {
-      localStorage.setItem("user", user);
-      window.location.href = "dasboard1.html";
-    } else {
-      loading.classList.remove("active");
-      document.querySelector(".loading-text").innerText = "Login gagal";
-      setTimeout(() => {
-        document.querySelector(".loading-text").innerText = "Memproses...";
-      }, 1500);
-    }
+if (result.status === "success") {
+  localStorage.setItem("user", user);
+  window.location.href = "dasboard1.html";
+} else {
+  loading.classList.remove("active");
+  document.querySelector(".loading-text").innerText = "Login gagal";
+  setTimeout(() => {
+    document.querySelector(".loading-text").innerText = "Memproses...";
+  }, 1500);
+}
 
   } catch (err) {
     loading.classList.remove("active");
