@@ -317,5 +317,9 @@ function renderChart(labels, data) {
   });
 }
 
-// auto load
-loadChartData();
+// auto load aman (hanya kalau halaman ada chart)
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("chart")) {
+    loadChartData();
+  }
+});
