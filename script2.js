@@ -179,17 +179,17 @@ window.save = save;
 document.addEventListener('DOMContentLoaded', () => {
     createParticles();
     
-    // Show loading briefly then reveal app
     setTimeout(() => {
         hideLoadingScreen();
     }, 500);
     
-    // Load data after app is visible
-  setTimeout(() => {
-    if (document.getElementById('prompt')) {
-        loadData();
-    }
-}, 1000);
+    setTimeout(() => {
+        if (document.getElementById('prompt')) {
+            loadData();
+        }
+    }, 1000);
+
+}); // ⬅️ INI WAJIB
 
 
 function showPage(page) {
