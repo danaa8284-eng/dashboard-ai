@@ -1,142 +1,152 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/GOEM.jpg">
-  <title>Goem Group AI Mode - Dashboard</title>
-
-  <link rel="stylesheet" href="./style.css">
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/GOEM.jpg" type="image/x-icon">
+<title>Goem Group AI Mode - Dashboard</title>
+<link rel="stylesheet" href="./style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<!-- ===== LOADING ===== -->
+<!-- ===== LOADING SCREEN ===== -->
 <div id="loading-screen" class="loading-screen">
   <div class="loading-content">
-    <img src="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/GOEM.jpg" class="loading-logo">
-    <p>Memuat sistem...</p>
+    <div class="loading-logo-container">
+      <div class="loading-ring"></div>
+      <div class="loading-ring loading-ring-2"></div>
+      <div class="loading-ring loading-ring-3"></div>
+      <img src="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/GOEM.jpg" alt="GOEM Logo" class="loading-logo">
+    </div>
+    <p class="loading-subtitle">AI Mode</p>
+    <div class="loading-bar-container">
+      <div class="loading-bar"></div>
+    </div>
+    <p class="loading-text">Memuat sistem...</p>
   </div>
+  <div class="loading-particles" id="particles"></div>
 </div>
 
-<!-- ===== APP ===== -->
+<!-- ===== MAIN APP ===== -->
 <div id="app" class="app hidden">
-
   <div class="layout">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-logo">GOEM</div>
-
       <div class="sidebar-menu">
         <a href="analis.html" class="menu-item">📊 Dashboard Chat</a>
-        <a href="dasboard1.html" class="menu-item">⚙️ Setting AI</a>
+        <a href="dasboard1.html" class="menu-item">⚙️ Setting AI Agent</a>
       </div>
     </aside>
 
     <!-- CONTENT -->
     <div class="content">
 
-      <!-- HEADER -->
+      <!-- Header -->
       <header class="header">
         <div class="header-left">
           <img src="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/goem2.jpg" class="header-logo">
-          <span class="header-badge">AI Mode</span>
+          <div class="header-title-group">
+            <span class="header-badge">AI Mode</span>
+          </div>
         </div>
 
         <div class="header-right">
+          <!-- NOTIF -->
           <div id="status" class="header-notif"></div>
 
-          <div class="header-status">
+          <!-- ONLINE -->
+          <div class="header-status" id="header-status">
             <span class="status-dot"></span>
-            <span>Online</span>
+            <span class="status-text">Online</span>
           </div>
         </div>
       </header>
 
-      <!-- MAIN -->
+      <!-- Main Content -->
       <main class="main-content">
 
-        <!-- LOADING -->
         <div id="loading" class="loading-overlay">
           <div class="spinner"></div>
           <p>Memuat data...</p>
         </div>
 
-        <h2 class="section-title">📊 Dashboard Chat</h2>
+        <div class="dashboard-header">
+          <h2 class="section-title">📊 Dashboard Chat</h2>
+        </div>
 
         <!-- FILTER -->
         <div class="card">
-          <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:end;">
-            
-            <div>
-              <label>Tanggal Mulai</label>
-              <input type="date" id="startDate" class="input-field">
+          <div class="card-body" style="display:flex; gap:20px; flex-wrap:wrap; align-items:end; justify-content:flex-start;">
+
+            <!-- Tanggal Mulai -->
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <label style="font-size:13px; color:#94a3b8;">Tanggal Mulai</label>
+              <input type="date" id="startDate" class="input-field" onclick="this.showPicker()">
             </div>
 
-            <div>
-              <label>Tanggal Akhir</label>
-              <input type="date" id="endDate" class="input-field">
+            <!-- Tanggal Berakhir -->
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <label style="font-size:13px; color:#94a3b8;">Tanggal Berakhir</label>
+              <input type="date" id="endDate" class="input-field" onclick="this.showPicker()">
             </div>
 
-            <button onclick="loadChartDataMulti()" class="btn-save">
-              Filter
-            </button>
+            <!-- Button -->
+            <div>
+              <button onclick="loadChartData()" class="btn-save" style="padding:10px 24px;">
+                Filter
+              </button>
+            </div>
 
           </div>
         </div>
 
-        <!-- CS BUTTON -->
+        <!-- PILIH CS -->
         <div class="card">
-          <div id="csButtons" style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="cs-btn active" data-cs="cs1">CS Kulit</button>
-            <button class="cs-btn" data-cs="cs2">CS Kanvas</button>
-            <button class="cs-btn" data-cs="cs3">CS 3</button>
-            <button class="cs-btn" data-cs="cs4">CS 4</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+
+            <!-- BUTTON CS -->
+            <div id="csButtons" style="display:flex; gap:12px; flex-wrap:wrap;">
+              <button class="cs-btn active" data-cs="cs1">CS Tas Kulit</button>
+              <button class="cs-btn" data-cs="cs2">CS Tas Kanvas</button>
+              <button class="cs-btn" data-cs="cs3">CS 3</button>
+              <button class="cs-btn" data-cs="cs4">CS 4</button>
+            </div>
+
+            <!-- APPLY -->
+            <div>
+              <button onclick="applyCS()" class="btn-save">Apply</button>
+            </div>
+
           </div>
         </div>
 
-        <!-- DASHBOARD FLEX -->
-        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <!-- TOTAL -->
+        <div class="card">
+          <h3>Total Chat</h3>
+          <div style="font-size:40px; font-weight:bold;" id="totalChat">0</div>
+        </div>
 
-          <!-- LEFT -->
-          <div style="flex:3; min-width:300px; display:flex; flex-direction:column; gap:20px;">
-
-            <!-- TOTAL SEMUA -->
-            <div class="card">
-              <h3>Total Semua Chat</h3>
-              <div id="totalChat" style="font-size:36px; font-weight:bold;">0</div>
-            </div>
-
-            <!-- CHART -->
-            <div class="card" style="height:400px;">
-              <canvas id="chart"></canvas>
-            </div>
-
-          </div>
-
-          <!-- RIGHT -->
-          <div style="flex:1; min-width:220px;">
-            <div class="card">
-              <h3>Total per CS</h3>
-              <div id="csSummary"></div>
-            </div>
-          </div>
-
+        <!-- CHART -->
+        <div class="card">
+          <canvas id="chart"></canvas>
         </div>
 
       </main>
 
-      <!-- FOOTER -->
+      <!-- Footer -->
       <footer class="footer">
-        <p>&copy; 2026 Goem Group</p>
+        <p>&copy; 2026 Goem Group AI Mode. All rights reserved.</p>
       </footer>
 
     </div>
+    <!-- content -->
+
   </div>
+  <!-- layout -->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
