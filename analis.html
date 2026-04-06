@@ -11,7 +11,7 @@
 
 <body>
 
-<!-- ===== LOADING SCREEN ===== -->
+<!-- ===== LOADING SCREEN (TIDAK DIUBAH) ===== -->
 <div id="loading-screen" class="loading-screen">
   <div class="loading-content">
     <div class="loading-logo-container">
@@ -45,7 +45,7 @@
     <!-- CONTENT -->
     <div class="content">
 
-      <!-- Header -->
+      <!-- HEADER -->
       <header class="header">
         <div class="header-left">
           <img src="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/goem2.jpg" class="header-logo">
@@ -55,10 +55,7 @@
         </div>
 
         <div class="header-right">
-          <!-- NOTIF -->
           <div id="status" class="header-notif"></div>
-
-          <!-- ONLINE -->
           <div class="header-status" id="header-status">
             <span class="status-dot"></span>
             <span class="status-text">Online</span>
@@ -66,37 +63,36 @@
         </div>
       </header>
 
-      <!-- Main Content -->
+      <!-- MAIN -->
       <main class="main-content">
 
+        <!-- LOADING -->
         <div id="loading" class="loading-overlay">
           <div class="spinner"></div>
           <p>Memuat data...</p>
         </div>
 
-        <div class="dashboard-header">
+        <!-- TITLE -->
+        <div class="section-header">
           <h2 class="section-title">📊 Dashboard Chat</h2>
         </div>
 
         <!-- FILTER -->
-        <div class="card">
-          <div class="card-body" style="display:flex; gap:20px; flex-wrap:wrap; align-items:end; justify-content:flex-start;">
+        <div class="card filter-card">
+          <div class="card-body filter-container">
 
-            <!-- Tanggal Mulai -->
-            <div style="display:flex; flex-direction:column; gap:6px;">
-              <label style="font-size:13px; color:#94a3b8;">Tanggal Mulai</label>
+            <div class="filter-group">
+              <label>Tanggal Mulai</label>
               <input type="date" id="startDate" class="input-field" onclick="this.showPicker()">
             </div>
 
-            <!-- Tanggal Berakhir -->
-            <div style="display:flex; flex-direction:column; gap:6px;">
-              <label style="font-size:13px; color:#94a3b8;">Tanggal Berakhir</label>
+            <div class="filter-group">
+              <label>Tanggal Berakhir</label>
               <input type="date" id="endDate" class="input-field" onclick="this.showPicker()">
             </div>
 
-            <!-- Button -->
-            <div>
-              <button onclick="loadChartData()" class="btn-save" style="padding:10px 24px;">
+            <div class="filter-action">
+              <button onclick="loadChartData()" class="btn-save">
                 Filter
               </button>
             </div>
@@ -104,20 +100,18 @@
           </div>
         </div>
 
-        <!-- PILIH CS -->
-        <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+        <!-- CS SELECTOR -->
+        <div class="card cs-card">
+          <div class="cs-wrapper">
 
-            <!-- BUTTON CS -->
-            <div id="csButtons" style="display:flex; gap:12px; flex-wrap:wrap;">
+            <div id="csButtons" class="cs-container">
               <button class="cs-btn active" data-cs="cs1">CS Tas Kulit</button>
               <button class="cs-btn" data-cs="cs2">CS Tas Kanvas</button>
               <button class="cs-btn" data-cs="cs3">CS 3</button>
               <button class="cs-btn" data-cs="cs4">CS 4</button>
             </div>
 
-            <!-- APPLY -->
-            <div>
+            <div class="cs-action">
               <button onclick="applyCS()" class="btn-save">Apply</button>
             </div>
 
@@ -125,28 +119,30 @@
         </div>
 
         <!-- TOTAL -->
-        <div class="card">
-          <h3>Total Chat</h3>
-          <div style="font-size:40px; font-weight:bold;" id="totalChat">0</div>
+        <div class="card total-card">
+          <div class="card-header">
+            <h3>Total Chat</h3>
+          </div>
+
+          <div class="card-body total-body">
+            <div class="total-value" id="totalChat">0</div>
+          </div>
         </div>
 
         <!-- CHART -->
-        <div class="card">
+        <div class="card chart-card">
           <canvas id="chart"></canvas>
         </div>
 
       </main>
 
-      <!-- Footer -->
+      <!-- FOOTER -->
       <footer class="footer">
         <p>&copy; 2026 Goem Group AI Mode. All rights reserved.</p>
       </footer>
 
     </div>
-    <!-- content -->
-
   </div>
-  <!-- layout -->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
