@@ -520,7 +520,7 @@ body {
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
-}
+
 
 .cards-grid .card {
     margin-bottom: 0;
@@ -935,4 +935,50 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: white;
   border: none;
   box-shadow: 0 0 10px rgba(59,130,246,0.5);
+}
+
+
+/* ===== DASHBOARD FLEX FIX ===== */
+.dashboard-flex {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.dashboard-left {
+  flex: 3;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard-right {
+  flex: 1;
+  min-width: 220px;
+}
+
+/* ===== CHART FIX ===== */
+.chart-card {
+  height: 400px;
+}
+
+.chart-card canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ===== SUMMARY CS ===== */
+#csSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cs-item {
+  padding: 10px;
+  border-radius: 8px;
+  background: #0f172a;
+  border-left: 4px solid #3b82f6;
+  font-size: 14px;
 }
