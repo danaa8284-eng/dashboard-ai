@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formatter Alamat</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b1e3a;
+    color: #fff;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 15px;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.logo img {
+    width: 80px;
+    border-radius: 10px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    background: #132b50;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+select, button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+}
+
+select {
+    background: #132b50;
+    color: #fff;
+}
+
+button {
+    background: #1e88ff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1565c0;
+}
+
+.output {
+    background: #132b50;
+    padding: 10px;
+    border-radius: 10px;
+    white-space: pre-line;
+    min-height: 120px;
+}
+
+.copy-btn {
+    background: #00c853;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <img src="https://raw.githubusercontent.com/danaa8284-eng/geolin/refs/heads/main/GOEM.jpg">
+    </div>
+
+    <h2>Formatter Alamat</h2>
+
+    <!-- INPUT -->
+    <textarea id="inputAlamat" placeholder="Tempel alamat mentah di sini..."></textarea>
+
+    <!-- METODE -->
+    <select id="metode">
+        <option value="COD">Cash On Delivery</option>
+        <option value="TRANSFER">Transfer</option>
+    </select>
+
+    <!-- PRODUK -->
+    <select id="produk">
+        <option value="Tas Pinggang Kulit">Tas Pinggang Kulit</option>
+        <option value="Korset Punggung">Korset Punggung</option>
+        <option value="Produk Custom">Produk Custom</option>
+    </select>
+
+    <!-- BUTTON -->
+    <button onclick="kirimData()">Proses</button>
+
+    <!-- OUTPUT -->
+    <div class="output" id="hasilOutput"></div>
+
+    <button class="copy-btn" onclick="copyText()">Copy Hasil</button>
+
+</div>
+
+<script>
+async function kirimData() {
+    const alamat = document.getElementById("inputAlamat").value.trim();
+    const metode = document.getElementById("metode").value;
+    const produk = document.getElementById("produk").value;
+
+    const output = document.getElementById("hasilOutput");
+
+    if (!alamat) {
+        output.innerText = "Alamat belum diisi!";
+        return;
+    }
+
+    const webhookURL = "https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook-test/perbaiki-alamat";
+
+    output.innerText = "Memproses...";
+
+    try {
+        const res = await fetch(webhookURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                alamat: alamat,
+                metode: metode,
+                produk: produk
+            })
+        });
+
+        const text = await res.text();
+
+        output.innerText = text;
+
+    } catch (err) {
+        output.innerText = "Error koneksi ke webhook!";
+    }
+}
+
+function copyText() {
+    const text = document.getElementById("hasilOutput").innerText;
+
+    if (!text) {
+        alert("Belum ada hasil!");
+        return;
+    }
+
+    navigator.clipboard.writeText(text);
+    alert("Berhasil disalin!");
+}
+</script>
+
+</body>
+</html>
