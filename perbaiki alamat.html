@@ -94,26 +94,21 @@ button:hover {
 
     <h2>Formatter Alamat</h2>
 
-    <!-- INPUT -->
     <textarea id="inputAlamat" placeholder="Tempel alamat mentah di sini..."></textarea>
 
-    <!-- METODE -->
     <select id="metode">
         <option value="COD">Cash On Delivery</option>
         <option value="TRANSFER">Transfer</option>
     </select>
 
-    <!-- PRODUK -->
     <select id="produk">
         <option value="Tas Pinggang Kulit">Tas Pinggang Kulit</option>
         <option value="Korset Punggung">Korset Punggung</option>
         <option value="Produk Custom">Produk Custom</option>
     </select>
 
-    <!-- BUTTON -->
     <button onclick="kirimData()">Proses</button>
 
-    <!-- OUTPUT -->
     <div class="output" id="hasilOutput"></div>
 
     <button class="copy-btn" onclick="copyText()">Copy Hasil</button>
@@ -125,7 +120,6 @@ async function kirimData() {
     const alamat = document.getElementById("inputAlamat").value.trim();
     const metode = document.getElementById("metode").value;
     const produk = document.getElementById("produk").value;
-
     const output = document.getElementById("hasilOutput");
 
     if (!alamat) {
@@ -144,13 +138,27 @@ async function kirimData() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                alamat: alamat,
-                metode: metode,
-                produk: produk
+                alamat: alamat
             })
         });
 
-        const text = await res.text();
+        let text = await res.text();
+
+        // ===== GABUNG KE DALAM FORMAT =====
+
+        // metode pembayaran (replace kalau ada, tambah kalau tidak)
+        if (text.match(/metode pembayaran\s*:/i)) {
+            text = text.replace(/metode pembayaran\s*:\s*.*/i, "metode pembayaran : " + metode);
+        } else {
+            text += "\nmetode pembayaran : " + metode;
+        }
+
+        // produk (replace kalau ada warna / produk)
+        if (text.match(/(warna|produk)\s*:/i)) {
+            text = text.replace(/(warna|produk)\s*:\s*.*/i, "produk : " + produk);
+        } else {
+            text += "\nproduk : " + produk;
+        }
 
         output.innerText = text;
 
