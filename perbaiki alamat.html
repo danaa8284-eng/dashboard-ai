@@ -142,20 +142,25 @@ async function kirimData() {
             })
         });
 
-        let text = await res.text();
+        // ✅ ambil JSON
+        const data = await res.json();
+        let text = data.output || "";
 
-        // ===== GABUNG KE DALAM FORMAT =====
+        // ✅ rapikan enter berlebih
+        text = text.replace(/\n{3,}/g, "\n\n").trim();
 
-        // metode pembayaran (replace kalau ada, tambah kalau tidak)
+        // ✅ metode pembayaran
         if (text.match(/metode pembayaran\s*:/i)) {
             text = text.replace(/metode pembayaran\s*:\s*.*/i, "metode pembayaran : " + metode);
         } else {
             text += "\nmetode pembayaran : " + metode;
         }
 
-        // produk (replace kalau ada warna / produk)
-        if (text.match(/(warna|produk)\s*:/i)) {
-            text = text.replace(/(warna|produk)\s*:\s*.*/i, "produk : " + produk);
+        // ✅ produk
+        if (text.match(/produk\s*:/i)) {
+            text = text.replace(/produk\s*:\s*.*/i, "produk : " + produk);
+        } else if (text.match(/warna\s*:/i)) {
+            text = text.replace(/warna\s*:\s*.*/i, "produk : " + produk);
         } else {
             text += "\nproduk : " + produk;
         }
@@ -164,6 +169,7 @@ async function kirimData() {
 
     } catch (err) {
         output.innerText = "Error koneksi ke webhook!";
+        console.error(err);
     }
 }
 
