@@ -73,6 +73,23 @@ button:hover {
 .copy-btn {
     background: #00c853;
 }
+
+/* toggle kecil */
+.toggle-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #132b50;
+    padding: 8px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.test-label {
+    color: #ff5252;
+    font-weight: bold;
+}
 </style>
 </head>
 
@@ -88,6 +105,15 @@ button:hover {
 
     <textarea id="inputAlamat" placeholder="Tempel alamat mentah di sini..."></textarea>
 
+    <!-- TOGGLE TEST -->
+    <div class="toggle-box">
+        <span>Mode</span>
+        <label>
+            <input type="checkbox" id="modeTest">
+            <span class="test-label">TEST</span>
+        </label>
+    </div>
+
     <button onclick="kirimData()">Proses</button>
 
     <div class="output" id="hasilOutput"></div>
@@ -100,15 +126,20 @@ button:hover {
 async function kirimData() {
     const alamat = document.getElementById("inputAlamat").value.trim();
     const output = document.getElementById("hasilOutput");
+    const isTest = document.getElementById("modeTest").checked;
 
     if (!alamat) {
         output.innerText = "Alamat belum diisi!";
         return;
     }
 
-    const webhookURL = "https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/perbaiki";
+    const webhookURL = isTest
+        ? "https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook-test/perbaiki"
+        : "https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/perbaiki";
 
-    output.innerText = "Memproses...";
+    output.innerText = isTest 
+        ? "⚠️ MODE TEST\nMemproses..." 
+        : "🚀 MODE PRODUKSI\nMemproses...";
 
     try {
         const res = await fetch(webhookURL, {
@@ -122,9 +153,9 @@ async function kirimData() {
         });
 
         const data = await res.json();
-        let text = data.output || "";
 
-        // rapikan enter berlebih
+        let text = data.output || data.result || JSON.stringify(data);
+
         text = text.replace(/\n{3,}/g, "\n\n").trim();
 
         output.innerText = text;
