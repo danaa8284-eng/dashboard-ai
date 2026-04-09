@@ -45,21 +45,13 @@ textarea {
     margin-bottom: 10px;
 }
 
-select, button {
+button {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
     border: none;
     font-size: 14px;
-}
-
-select {
-    background: #132b50;
-    color: #fff;
-}
-
-button {
     background: #1e88ff;
     color: white;
     font-weight: bold;
@@ -96,17 +88,6 @@ button:hover {
 
     <textarea id="inputAlamat" placeholder="Tempel alamat mentah di sini..."></textarea>
 
-    <select id="metode">
-        <option value="COD">Cash On Delivery</option>
-        <option value="TRANSFER">Transfer</option>
-    </select>
-
-    <select id="produk">
-        <option value="Tas Pinggang Kulit">Tas Pinggang Kulit</option>
-        <option value="Korset Punggung">Korset Punggung</option>
-        <option value="Produk Custom">Produk Custom</option>
-    </select>
-
     <button onclick="kirimData()">Proses</button>
 
     <div class="output" id="hasilOutput"></div>
@@ -118,8 +99,6 @@ button:hover {
 <script>
 async function kirimData() {
     const alamat = document.getElementById("inputAlamat").value.trim();
-    const metode = document.getElementById("metode").value;
-    const produk = document.getElementById("produk").value;
     const output = document.getElementById("hasilOutput");
 
     if (!alamat) {
@@ -142,33 +121,16 @@ async function kirimData() {
             })
         });
 
-        // ✅ ambil JSON
         const data = await res.json();
         let text = data.output || "";
 
-        // ✅ rapikan enter berlebih
+        // rapikan enter berlebih
         text = text.replace(/\n{3,}/g, "\n\n").trim();
-
-        // ✅ metode pembayaran
-        if (text.match(/metode pembayaran\s*:/i)) {
-            text = text.replace(/metode pembayaran\s*:\s*.*/i, "metode pembayaran : " + metode);
-        } else {
-            text += "\nmetode pembayaran : " + metode;
-        }
-
-        // ✅ produk
-        if (text.match(/produk\s*:/i)) {
-            text = text.replace(/produk\s*:\s*.*/i, "produk : " + produk);
-        } else if (text.match(/warna\s*:/i)) {
-            text = text.replace(/warna\s*:\s*.*/i, "produk : " + produk);
-        } else {
-            text += "\nproduk : " + produk;
-        }
 
         output.innerText = text;
 
     } catch (err) {
-        output.innerText = "Error koneksi ke webhook!";
+        output.innerText = "error coba koreksi alamat mu dengan benar cek di google dan pastikan nama desa, kecamatan, kabupaten tidak typo 😊🙏";
         console.error(err);
     }
 }
