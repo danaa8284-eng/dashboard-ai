@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool</title>
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #ffffff;
+    padding: 20px;
+    margin: 0;
+  }
+
+  .container {
+    position: relative;
+    max-width: 400px;
+    margin: auto;
+    background: #0b423c;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .title {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0.9;
+  }
+
+  .logo {
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 20px;
+  }
+
+  .logo img {
+    width: 180px;
+    max-width: 85%;
+  }
+
+  select, button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+  }
+
+  select {
+    background: #ffffff;
+    color: #000;
+  }
+
+  button {
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #0b423c, #062e2a);
+    cursor: pointer;
+
+    box-shadow: 
+      0 6px 0 #041f1c,
+      0 10px 20px rgba(0,0,0,0.3);
+
+    transition: all 0.15s ease;
+  }
+
+  button:active {
+    transform: translateY(4px);
+    box-shadow: 
+      0 2px 0 #041f1c,
+      0 5px 10px rgba(0,0,0,0.3);
+  }
+
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .output {
+    margin-top: 15px;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 10px;
+    min-height: 60px;
+    font-size: 14px;
+    color: #000;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="title">Follow Up Tools</div>
+
+  <div class="logo">
+    <img src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png">
+  </div>
+
+  <select id="akun">
+    <option value="">Pilih Akun</option>
+    <option value="Tas_premium">WA 1</option>
+    <option value="toko-grosir">WA 2</option>
+  </select>
+
+  <select id="aksi">
+    <option value="">Pilih Aksi</option>
+    <option value="TOPI">TAWARKAN TOPI</option>
+    <option value="TAS">FOLLUP TAS KULIT</option>
+  </select>
+
+  <button id="btn" onclick="proses()">Proses Sekarang</button>
+
+  <div class="output" id="output"></div>
+
+</div>
+
+<script>
+async function proses() {
+  const akun = document.getElementById("akun").value;
+  const aksi = document.getElementById("aksi").value;
+  const output = document.getElementById("output");
+  const btn = document.getElementById("btn");
+
+  if (!akun || !aksi) {
+    output.innerText = "Pilih akun dan aksi dulu!";
+    return;
+  }
+
+  btn.disabled = true;
+  output.innerText = "Mengirim...";
+
+  try {
+    const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/24d3b1ae-883a-4867-a79e-6d8625e01afb", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        akun: akun,
+        aksi: aksi
+      })
+    });
+
+    if (res.ok) {
+      output.innerText = "permintaan sukses mohon di tunggu untuk hasil nya";
+    } else {
+      output.innerText = "gagal kirim";
+    }
+
+  } catch (e) {
+    output.innerText = "error koneksi";
+  }
+
+  btn.disabled = false;
+}
+</script>
+
+</body>
+</html>
