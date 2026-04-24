@@ -17,9 +17,7 @@
     background: #0b423c;
     margin: 0;
 
-    height: 100vh;
-    overflow: hidden;
-
+    min-height: 100vh; /* FIX */
     display: flex;
     flex-direction: column;
   }
@@ -29,6 +27,8 @@
     width: 100%;
     margin: 0 auto;
     padding: 20px 15px 10px;
+
+    flex: 1; /* dorong footer ke bawah */
   }
 
   .logo {
@@ -99,8 +99,7 @@
     color: #ffffff;
     font-size: 10px;
     opacity: 0.6;
-    margin-top: auto;
-    padding-bottom: 15px;
+    padding: 10px 0 20px;
   }
 </style>
 </head>
