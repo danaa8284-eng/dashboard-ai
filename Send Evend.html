@@ -294,15 +294,16 @@ function closePopup() {
 
 async function kirimData() {
   closePopup();
-  const pixelIdx = document.getElementById("pixel").value;
-  const promo    = document.getElementById("promo").value.trim();
-  const nomor    = document.getElementById("nomor").value.trim();
-  const output   = document.getElementById("output");
-  const btn      = document.getElementById("btn");
-  const webhook  = localStorage.getItem("geolin_webhook_se") || "";
+
+  const pixelEl = document.getElementById("pixel");
+  const promoEl = document.getElementById("promo");
+  const nomorEl = document.getElementById("nomor");
+  const output  = document.getElementById("output");
+  const btn     = document.getElementById("btn");
+  const webhook = localStorage.getItem("geolin_webhook_se") || "";
 
   const pixelList = getData("geolin_pixels");
-  const pixel = pixelList[parseInt(pixelIdx)];
+  const pixel = pixelList[parseInt(pixelEl.value)];
 
   btn.disabled = true;
   output.className = "output show";
@@ -316,22 +317,42 @@ async function kirimData() {
         pixel_id:    pixel.id,
         pixel_nama:  pixel.nama,
         pixel_token: pixel.token,
-        kode_promo:  promo,
-        nomor_user:  nomor
+        kode_promo:  promoEl.value.trim(),
+        nomor_user:  nomorEl.value.trim()
       })
     });
-    output.className = res.ok ? "output show success" : "output show error";
-    output.innerText = res.ok
-      ? "✅ Event berhasil dikirim! Mohon ditunggu untuk hasilnya."
-      : "❌ Gagal mengirim event. Coba lagi.";
-  } catch {
+
+    const data = await res.json();
+
+    // 🔥 HANDLE ARRAY / OBJECT
+    const result = Array.isArray(data) ? data[0] : data;
+
+    if (res.ok && result.success) {
+
+      // ✅ NOTIF BAWAH
+      output.className = "output show success";
+      output.innerText = "✅ Event sukses dikirim";
+
+      // ✅ CLEAR FORM
+      promoEl.value = "";
+      nomorEl.value = "";
+      pixelEl.value = "";
+
+    } else {
+      output.className = "output show error";
+      output.innerText = result.message || "❌ Gagal dari server";
+    }
+
+  } catch (err) {
     output.className = "output show error";
-    output.innerText = "❌ Error koneksi. Periksa jaringan kamu.";
+    output.innerText = "❌ Error koneksi / webhook gagal";
   }
 
   btn.disabled = false;
 }
 
+
+  
 function openMenu() {
   const menu = document.getElementById("sideMenu");
   const overlay = document.getElementById("overlay");
