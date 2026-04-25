@@ -253,7 +253,7 @@ function loadDropdowns() {
   sel.innerHTML = '<option value="">Pilih Pixel Tujuan</option>';
   pixelList.forEach((p, i) => {
     const opt = document.createElement("option");
-    opt.value = i; // index untuk referensi data lengkap
+    opt.value = i;
     opt.textContent = `${p.nama} (ID: ${p.id})`;
     sel.appendChild(opt);
   });
@@ -323,26 +323,20 @@ async function kirimData() {
     });
 
     const data = await res.json();
-
-    // 🔥 HANDLE ARRAY / OBJECT
     const result = Array.isArray(data) ? data[0] : data;
 
-   if (res.ok && result.success) {
+    if (res.ok && result.success) {
+      output.className = "output show success";
+      output.innerText = "✅ Event sukses dikirim";
 
-  output.className = "output show success";
-  output.innerText = "✅ Event sukses dikirim";
-  output.style.display = "block"; // 🔥 WAJIB
+      promoEl.value = "";
+      nomorEl.value = "";
+      pixelEl.value = "";
 
-  // clear form
-  promoEl.value = "";
-  nomorEl.value = "";
-  pixelEl.value = "";
-}
-
-    setTimeout(() => {
-  output.className = "output";
-  output.style.display = "none";
-}, 3000);
+      setTimeout(() => {
+        output.className = "output";
+        output.style.display = "none";
+      }, 3000);
 
     } else {
       output.className = "output show error";
@@ -355,10 +349,8 @@ async function kirimData() {
   }
 
   btn.disabled = false;
-}
+} // ✅ PENUTUP fungsi kirimData() — INI YANG HILANG
 
-
-  
 function openMenu() {
   const menu = document.getElementById("sideMenu");
   const overlay = document.getElementById("overlay");
@@ -367,6 +359,7 @@ function openMenu() {
     menu.classList.add("open"); overlay.classList.add("active");
   }));
 }
+
 function closeMenu() {
   const menu = document.getElementById("sideMenu");
   const overlay = document.getElementById("overlay");
