@@ -23,26 +23,28 @@ body {
 .logo img { width: 140px; max-width: 80%; }
 
 input, select {
-  width: 100%; padding: 12px; margin-top: 10px;
+  width: 100%; padding: 12px; margin-top: 6px;
   border-radius: 10px; border: none; font-size: 14px;
   background: #ffffff !important; color: #000000 !important;
   font-family: 'Poppins', sans-serif; outline: none;
   -webkit-appearance: none; appearance: none;
 }
-input::placeholder { color: #999; }
-input:focus { box-shadow: 0 0 0 2px #4ecca3; }
+input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 
 .input-label {
   font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.55);
   letter-spacing: 0.5px; margin-top: 12px; display: block;
+}
+.hint-text {
+  font-size: 10px; color: rgba(255,255,255,0.35);
+  margin-top: 4px; padding-left: 2px;
 }
 
 .proc-btn {
   width: 100%; padding: 14px; margin-top: 14px;
   border-radius: 12px; border: none;
   font-size: 15px; font-weight: 600;
-  font-family: 'Poppins', sans-serif;
-  color: #ffffff;
+  font-family: 'Poppins', sans-serif; color: #ffffff;
   background: linear-gradient(135deg, #0b423c, #062e2a);
   cursor: pointer;
   box-shadow: 0 6px 0 #041f1c, 0 10px 20px rgba(0,0,0,0.3);
@@ -50,7 +52,7 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
   display: flex; align-items: center; justify-content: center; gap: 10px;
   position: relative; overflow: hidden;
 }
-.proc-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #041f1c, 0 5px 10px rgba(0,0,0,0.3); }
+.proc-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #041f1c; }
 .proc-btn:disabled { opacity: 0.85; cursor: not-allowed; transform: none; box-shadow: 0 3px 0 #041f1c; }
 
 .btn-spinner {
@@ -60,14 +62,12 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
 .proc-btn.loading .btn-spinner { display: block; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .proc-btn.loading::after {
-  content: '';
-  position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
   animation: shimmer 1.2s infinite;
 }
 @keyframes shimmer { to { left: 160%; } }
 
-/* RESULT CARD */
 .result-card {
   margin-top: 14px; border-radius: 14px; overflow: hidden;
   display: none; animation: fadeUp 0.3s ease;
@@ -77,22 +77,17 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 .result-header {
-  padding: 12px 16px;
-  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; display: flex; align-items: center; gap: 10px;
 }
-.result-card.found .result-header { background: #0b9e72; }
+.result-card.found    .result-header { background: #0b9e72; }
 .result-card.notfound .result-header { background: #c0392b; }
-.result-card.warning .result-header { background: #e67e22; }
-.result-card.error .result-header { background: #555; }
+.result-card.warning  .result-header { background: #e67e22; }
+.result-card.error    .result-header { background: #555; }
 
-.result-icon { font-size: 20px; }
+.result-icon  { font-size: 20px; }
 .result-title { font-size: 13px; font-weight: 600; color: #fff; }
-
-.result-body {
-  background: #ffffff; padding: 14px 16px;
-}
+.result-body  { background: #ffffff; padding: 14px 16px; }
 
 .result-row {
   display: flex; justify-content: space-between; align-items: flex-start;
@@ -108,15 +103,11 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
   font-size: 13px; color: #111; font-weight: 600;
   text-align: right; word-break: break-all;
 }
-.result-val.promo { color: #0b6b4a; font-size: 15px; letter-spacing: 1px; }
-.result-val.selisih-ok { color: #0b9e72; }
+.result-val.promo        { color: #0b6b4a; font-size: 15px; letter-spacing: 1px; }
+.result-val.selisih-ok   { color: #0b9e72; }
 .result-val.selisih-warn { color: #e67e22; }
+.result-msg { font-size: 13px; color: #555; padding: 4px 0; line-height: 1.6; }
 
-.result-msg {
-  font-size: 13px; color: #555; padding: 4px 0;
-}
-
-/* INFO BOX */
 .info-box {
   margin-top: 10px; padding: 10px 14px;
   background: rgba(255,255,255,0.08); border-radius: 10px;
@@ -129,7 +120,6 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
   font-size: 10px; opacity: 0.6; padding: 30px 0 90px;
 }
 
-/* TOPBAR & MENU (sama persis dengan tools lain) */
 .topbar { padding: 5px; }
 .menu-btn {
   font-size: 24px; color: white; cursor: pointer;
@@ -138,7 +128,6 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
   border-radius: 8px; transition: background 0.2s;
 }
 .menu-btn:hover { background: rgba(255,255,255,0.1); }
-
 .overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0); display: none; z-index: 9;
@@ -146,7 +135,6 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
   transition: background 0.35s ease, backdrop-filter 0.35s ease;
 }
 .overlay.active { background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); }
-
 .side-menu {
   position: fixed; top: 0; left: 0; width: 260px; height: 100%;
   background: #0d4f47; transform: translateX(-100%);
@@ -230,7 +218,7 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
     <div class="menu-section-label">Navigasi</div>
     <div class="menu-item" onclick="window.location.href='follup-tools.html'">Follow up</div>
     <div class="menu-item" onclick="window.location.href='Send Evend.html'">Send Event</div>
-    <div class="menu-item active">Cari Promo</div>
+    <div class="menu-item active"><span class="menu-icon">🔍</span> Cari Promo</div>
     <div class="menu-divider"></div>
     <div class="menu-section-label">Lainnya</div>
     <div class="menu-item" onclick="window.location.href='pengaturan.html'"><span class="menu-icon">⚙️</span> Pengaturan</div>
@@ -244,8 +232,9 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
     <img src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png">
   </div>
 
-  <span class="input-label">Waktu Pesan Masuk (WA)</span>
-  <input type="time" id="waktuPesan" />
+  <span class="input-label">Waktu Pesan Masuk (Tanggal &amp; Jam)</span>
+  <input type="datetime-local" id="waktuPesan" />
+  <div class="hint-text">📋 Otomatis terisi waktu sekarang — koreksi sesuai pesan WA customer</div>
 
   <span class="input-label">Toleransi Waktu</span>
   <select id="toleransi">
@@ -264,23 +253,28 @@ input:focus { box-shadow: 0 0 0 2px #4ecca3; }
   </button>
 
   <div class="info-box">
-    💡 Masukkan waktu pesan WA customer masuk, tools akan mencari kode promo yang <strong>paling dekat</strong> waktunya di database.
+    💡 Bisa cari meski <strong>beda tanggal</strong> — misalnya customer klik jam 23:58 tapi pesan masuk jam 00:02 keesokan harinya.
   </div>
 
-  <!-- RESULT -->
   <div class="result-card" id="resultCard">
-    <div class="result-header" id="resultHeader">
+    <div class="result-header">
       <span class="result-icon" id="resultIcon"></span>
       <span class="result-title" id="resultTitle"></span>
     </div>
     <div class="result-body" id="resultBody"></div>
   </div>
-
 </div>
 
 <div class="footer">© 2026 Follow Up Tools by Geolin Group. All rights reserved.</div>
 
 <script>
+function setDefaultDatetime() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const val = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  document.getElementById("waktuPesan").value = val;
+}
+
 function getString(key) { return localStorage.getItem(key) || ""; }
 
 function setLoading(on) {
@@ -300,11 +294,14 @@ function showResult(type, icon, title, bodyHTML) {
   document.getElementById("resultIcon").textContent = icon;
   document.getElementById("resultTitle").textContent = title;
   document.getElementById("resultBody").innerHTML = bodyHTML;
+  card.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 function formatSelisih(detik) {
   if (detik < 60) return detik + " detik";
-  return Math.round(detik / 60) + " menit";
+  const m = Math.floor(detik / 60);
+  const s = detik % 60;
+  return s > 0 ? `${m} mnt ${s} dtk` : `${m} menit`;
 }
 
 async function cariPromo() {
@@ -312,21 +309,26 @@ async function cariPromo() {
   const toleransi  = parseInt(document.getElementById("toleransi").value);
 
   if (!waktuInput) {
-    showResult("warning", "⚠️", "Waktu belum diisi", `<p class="result-msg">Masukkan waktu pesan WA customer terlebih dahulu.</p>`);
+    showResult("warning", "⚠️", "Waktu belum diisi",
+      `<p class="result-msg">Masukkan tanggal dan waktu pesan WA customer.</p>`);
     return;
   }
 
   const webhook = getString("geolin_webhook_cari_promo");
   if (!webhook) {
-    showResult("error", "⚙️", "Webhook belum diatur", `<p class="result-msg">Webhook Cari Promo belum diatur. Buka menu <strong>Pengaturan</strong> dan tambahkan Webhook Cari Promo.</p>`);
+    showResult("error", "⚙️", "Webhook belum diatur",
+      `<p class="result-msg">Webhook Cari Promo belum diatur. Buka menu <strong>Pengaturan</strong> dan isi Webhook Cari Promo.</p>`);
     return;
   }
 
-  // Konversi waktu input (HH:MM) ke timestamp hari ini
-  const [jam, menit] = waktuInput.split(":").map(Number);
-  const sekarang = new Date();
-  const targetDate = new Date(sekarang.getFullYear(), sekarang.getMonth(), sekarang.getDate(), jam, menit, 0);
-  const targetTs = targetDate.getTime(); // ms
+  // new Date("2026-04-26T23:58") → timestamp ms lokal, handle beda tanggal otomatis
+  const targetTs = new Date(waktuInput).getTime();
+
+  if (isNaN(targetTs)) {
+    showResult("warning", "⚠️", "Format waktu salah",
+      `<p class="result-msg">Format waktu tidak valid. Silakan pilih ulang.</p>`);
+    return;
+  }
 
   setLoading(true);
 
@@ -335,9 +337,9 @@ async function cariPromo() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        waktu_input: waktuInput,
-        timestamp_target: targetTs,
-        toleransi_menit: toleransi
+        waktu_input:      waktuInput,   // "2026-04-26T23:58"
+        timestamp_target: targetTs,     // ms — sudah handle lintas tanggal
+        toleransi_menit:  toleransi
       })
     });
 
@@ -348,7 +350,6 @@ async function cariPromo() {
       result = Array.isArray(parsed) ? parsed[0] : (parsed || {});
     } catch(e) {}
 
-    // Cek tidak ditemukan
     const rawLower = rawText.toLowerCase();
     const tidakDitemukan =
       result.status === "not_found" ||
@@ -357,29 +358,39 @@ async function cariPromo() {
       rawLower.includes("kosong");
 
     if (tidakDitemukan) {
+      const tgl = new Date(waktuInput).toLocaleString("id-ID", {
+        day: "2-digit", month: "long", year: "numeric",
+        hour: "2-digit", minute: "2-digit"
+      });
       showResult("notfound", "🔍", "Tidak Ditemukan",
-        `<p class="result-msg">Tidak ada kode promo dalam rentang <strong>± ${toleransi} menit</strong> dari pukul <strong>${waktuInput}</strong>.<br><br>Coba perluas toleransi waktu.</p>`
+        `<p class="result-msg">Tidak ada kode promo dalam rentang <strong>± ${toleransi} menit</strong> dari:<br><strong>${tgl}</strong><br><br>Coba perluas toleransi atau periksa tanggalnya.</p>`
       );
       setLoading(false);
       return;
     }
 
-    // Hitung selisih waktu
     const tsData = result.timestamp || result.ts || result.click_time || null;
-    let selisihText = "-";
-    let selisihClass = "";
+    let selisihText = "-", selisihClass = "";
     if (tsData) {
-      const selisihDetik = Math.abs(targetTs - parseInt(tsData)) / 1000;
-      selisihText = formatSelisih(selisihDetik);
+      const selisihDetik = Math.round(Math.abs(targetTs - parseInt(tsData)) / 1000);
+      selisihText  = formatSelisih(selisihDetik);
       selisihClass = selisihDetik <= 120 ? "selisih-ok" : "selisih-warn";
     }
 
-    const kodePromo   = result.promo || result.kode_promo || result.promo_code || "-";
-    const fbclid      = result.fbclid || "-";
+    const waktuKlik = tsData
+      ? new Date(parseInt(tsData)).toLocaleString("id-ID", {
+          day: "2-digit", month: "short", year: "numeric",
+          hour: "2-digit", minute: "2-digit", second: "2-digit"
+        })
+      : "-";
+
+    const kodePromo   = result.promo        || "-";
+    const fbclid      = result.fbclid       || "-";
     const utmCampaign = result.utm_campaign || "-";
-    const utmContent  = result.utm_content || "-";
-    const page        = result.page || "-";
-    const waktuKlik   = tsData ? new Date(parseInt(tsData)).toLocaleTimeString("id-ID", {hour:"2-digit", minute:"2-digit", second:"2-digit"}) : "-";
+    const utmContent  = result.utm_content  || "-";
+    const page        = result.page         || "-";
+    const phone       = result.phone        || "-";
+    const sumber      = utmCampaign !== "-" ? utmCampaign : (fbclid !== "-" ? "Meta Ads" : "Organik");
 
     showResult("found", "✅", "Kode Promo Ditemukan!", `
       <div class="result-row">
@@ -395,8 +406,12 @@ async function cariPromo() {
         <span class="result-val ${selisihClass}">${selisihText}</span>
       </div>
       <div class="result-row">
+        <span class="result-key">No. HP</span>
+        <span class="result-val">${phone}</span>
+      </div>
+      <div class="result-row">
         <span class="result-key">Sumber</span>
-        <span class="result-val">${utmCampaign !== "-" ? utmCampaign : (fbclid !== "-" ? "Meta Ads" : "Organik")}</span>
+        <span class="result-val">${sumber}</span>
       </div>
       <div class="result-row">
         <span class="result-key">UTM Content</span>
@@ -404,7 +419,7 @@ async function cariPromo() {
       </div>
       <div class="result-row">
         <span class="result-key">Halaman</span>
-        <span class="result-val">${page.replace("https://", "").split("/")[0]}</span>
+        <span class="result-val">${page.replace("https://","").split("/")[0]}</span>
       </div>
     `);
 
@@ -431,6 +446,8 @@ function closeMenu() {
   menu.classList.remove("open"); overlay.classList.remove("active");
   setTimeout(() => { overlay.style.display = "none"; }, 380);
 }
+
+setDefaultDatetime();
 </script>
 </body>
 </html>
