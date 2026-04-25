@@ -4,69 +4,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Send Event</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
 <meta name="theme-color" content="#0b423c">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   font-family: 'Poppins', sans-serif;
-  background: #0b423c;
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  background: #0b423c; margin: 0;
+  min-height: 100vh; display: flex; flex-direction: column;
 }
-
 .container {
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px 15px 10px;
-  flex: 1;
+  max-width: 400px; width: 100%;
+  margin: 0 auto; padding: 20px 15px 10px; flex: 1;
 }
-
 .logo { text-align: center; margin-top: 10px; margin-bottom: 15px; }
 .logo img { width: 140px; max-width: 80%; }
 
-select, input, button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: none;
-  font-size: 14px;
-}
-
 select, input {
-  background: #ffffff;
-  color: #000;
-  font-family: 'Poppins', sans-serif;
-  outline: none;
+  width: 100%; padding: 12px; margin-top: 10px;
+  border-radius: 10px; border: none; font-size: 14px;
+  background: #ffffff !important; color: #000000 !important;
+  font-family: 'Poppins', sans-serif; outline: none;
+  -webkit-appearance: none; appearance: none;
 }
-
 input::placeholder { color: #999; }
-input:focus { box-shadow: 0 0 0 2px #4ecca3; }
+input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 
-button {
-  padding: 14px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  font-family: 'Poppins', sans-serif;
+.proc-btn {
+  width: 100%; padding: 14px; margin-top: 10px;
+  border-radius: 12px; border: none;
+  font-size: 15px; font-weight: 600; font-family: 'Poppins', sans-serif;
   color: #ffffff;
   background: linear-gradient(135deg, #0b423c, #062e2a);
   cursor: pointer;
   box-shadow: 0 6px 0 #041f1c, 0 10px 20px rgba(0,0,0,0.3);
   transition: all 0.15s ease;
 }
-button:active { transform: translateY(4px); box-shadow: 0 2px 0 #041f1c, 0 5px 10px rgba(0,0,0,0.3); }
-button:disabled { opacity: 0.6; cursor: not-allowed; }
+.proc-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #041f1c, 0 5px 10px rgba(0,0,0,0.3); }
+.proc-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .output {
   margin-top: 12px; padding: 10px;
@@ -76,20 +53,17 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 .output.show { display: block; }
 .output.success { background: #e6f9f2; color: #0b6b4a; font-weight: 600; border-left: 4px solid #4ecca3; }
-.output.error { background: #fff0f0; color: #c0392b; font-weight: 600; border-left: 4px solid #e74c3c; }
+.output.error   { background: #fff0f0; color: #c0392b; font-weight: 600; border-left: 4px solid #e74c3c; }
 
 .empty-hint {
   margin-top: 10px; padding: 10px 12px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 10px; font-size: 12px;
-  color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.08); border-radius: 10px;
+  font-size: 12px; color: rgba(255,255,255,0.6);
   text-align: center; display: none;
 }
-
 .footer {
   text-align: center; color: #ffffff;
-  font-size: 10px; opacity: 0.6;
-  padding: 30px 0 90px;
+  font-size: 10px; opacity: 0.6; padding: 30px 0 90px;
 }
 
 .topbar { padding: 5px; }
@@ -102,8 +76,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 .menu-btn:hover { background: rgba(255,255,255,0.1); }
 
 .overlay {
-  position: fixed; top: 0; left: 0;
-  width: 100%; height: 100%;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0); display: none; z-index: 9;
   backdrop-filter: blur(0px);
   transition: background 0.35s ease, backdrop-filter 0.35s ease;
@@ -111,16 +84,13 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 .overlay.active { background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); }
 
 .side-menu {
-  position: fixed; top: 0; left: 0;
-  width: 260px; height: 100%;
-  background: #0d4f47;
-  transform: translateX(-100%);
+  position: fixed; top: 0; left: 0; width: 260px; height: 100%;
+  background: #0d4f47; transform: translateX(-100%);
   transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
   z-index: 10; box-shadow: 6px 0 30px rgba(0,0,0,0.4);
   display: flex; flex-direction: column; overflow: hidden;
 }
 .side-menu.open { transform: translateX(0); }
-
 .menu-header {
   background: #062e2a; padding: 50px 20px 24px;
   position: relative; border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -128,68 +98,54 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 .menu-header-logo { width: 100px; margin-bottom: 10px; display: block; }
 .menu-header-title { font-size: 18px; font-weight: 600; color: #fff; }
 .menu-header-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
-
 .menu-close-btn {
   position: absolute; top: 14px; right: 14px;
-  width: 32px; height: 32px;
-  background: rgba(255,255,255,0.1);
-  border: none; border-radius: 8px;
-  color: #fff; font-size: 16px; cursor: pointer;
+  width: 32px; height: 32px; background: rgba(255,255,255,0.1);
+  border: none; border-radius: 8px; color: #fff; font-size: 16px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: background 0.2s; font-family: 'Poppins', sans-serif;
 }
 .menu-close-btn:hover { background: rgba(255,255,255,0.2); }
-
 .menu-body { flex: 1; padding: 16px 12px; overflow-y: auto; }
-
 .menu-section-label {
-  font-size: 10px; font-weight: 600;
-  color: rgba(255,255,255,0.35);
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 8px 10px 4px;
+  font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.35);
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 10px 4px;
 }
-
 .menu-item {
   display: flex; align-items: center; gap: 12px;
   padding: 13px 14px; border-radius: 12px; cursor: pointer;
   transition: background 0.2s, transform 0.15s;
-  color: rgba(255,255,255,0.85);
-  font-size: 14px; font-weight: 400;
+  color: rgba(255,255,255,0.85); font-size: 14px; font-weight: 400;
   position: relative; overflow: hidden;
 }
 .menu-item::before {
   content: ''; position: absolute; inset: 0;
-  background: rgba(255,255,255,0);
-  transition: background 0.2s; border-radius: 12px;
+  background: rgba(255,255,255,0); transition: background 0.2s; border-radius: 12px;
 }
 .menu-item:hover::before { background: rgba(255,255,255,0.07); }
 .menu-item:active { transform: scale(0.98); }
 .menu-item.active { background: rgba(255,255,255,0.12); color: #fff; font-weight: 600; }
 .menu-item.active::after {
-  content: ''; position: absolute;
-  left: 0; top: 20%; height: 60%; width: 3px;
+  content: ''; position: absolute; left: 0; top: 20%; height: 60%; width: 3px;
   background: #4ecca3; border-radius: 0 3px 3px 0;
 }
 .menu-icon { font-size: 18px; width: 22px; text-align: center; flex-shrink: 0; }
-
 .side-menu.open .menu-item { animation: slideInItem 0.3s ease both; }
 .side-menu.open .menu-item:nth-child(1) { animation-delay: 0.05s; }
 .side-menu.open .menu-item:nth-child(2) { animation-delay: 0.1s; }
 .side-menu.open .menu-item:nth-child(3) { animation-delay: 0.15s; }
 .side-menu.open .menu-item:nth-child(4) { animation-delay: 0.2s; }
-
 @keyframes slideInItem {
   from { opacity: 0; transform: translateX(-16px); }
   to   { opacity: 1; transform: translateX(0); }
 }
-
 .menu-footer {
-  padding: 16px 20px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08);
   font-size: 11px; color: rgba(255,255,255,0.3); text-align: center;
 }
 .menu-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 10px; }
 
+/* POPUP */
 .popup-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
@@ -197,31 +153,25 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
 }
 .popup-overlay.show { opacity: 1; pointer-events: all; }
-
 .popup-box {
   background: #fff; border-radius: 16px;
-  padding: 24px 20px; max-width: 300px; width: 90%;
-  text-align: center;
+  padding: 24px 20px; max-width: 300px; width: 90%; text-align: center;
   transform: scale(0.88) translateY(16px);
   transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
 .popup-overlay.show .popup-box { transform: scale(1) translateY(0); }
-
 .popup-icon { font-size: 36px; margin-bottom: 10px; }
 .popup-title { font-size: 14px; font-weight: 600; color: #0b423c; margin-bottom: 8px; }
 .popup-text { font-size: 12px; color: #555; line-height: 1.6; margin-bottom: 20px; }
 .popup-actions { display: flex; gap: 10px; }
-
 .popup-cancel {
   flex: 1; padding: 11px; border-radius: 10px;
   border: 1.5px solid #ddd; background: #fff;
   color: #666; font-size: 13px; font-weight: 600;
-  font-family: 'Poppins', sans-serif; cursor: pointer;
-  box-shadow: none;
+  font-family: 'Poppins', sans-serif; cursor: pointer; box-shadow: none;
 }
 .popup-cancel:active { transform: none; box-shadow: none; }
-
 .popup-confirm {
   flex: 1; padding: 11px; border-radius: 10px; border: none;
   background: linear-gradient(135deg, #0b423c, #062e2a);
@@ -249,20 +199,12 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   </div>
   <div class="menu-body">
     <div class="menu-section-label">Navigasi</div>
-    <div class="menu-item" onclick="window.location.href='follup-tools.html'">
-       Follow up
-    </div>
-    <div class="menu-item active">
-       Send Event
-    </div>
+    <div class="menu-item" onclick="window.location.href='follup-tools.html'">Follow up</div>
+    <div class="menu-item active">Send Event</div>
     <div class="menu-divider"></div>
     <div class="menu-section-label">Lainnya</div>
-    <div class="menu-item" onclick="window.location.href='pengaturan.html'">
-      <span class="menu-icon">⚙️</span> Pengaturan
-    </div>
-    <div class="menu-item" onclick="closeMenu()">
-      <span class="menu-icon">❓</span> Bantuan
-    </div>
+    <div class="menu-item" onclick="window.location.href='pengaturan.html'"><span class="menu-icon">⚙️</span> Pengaturan</div>
+    <div class="menu-item" onclick="closeMenu()"><span class="menu-icon">❓</span> Bantuan</div>
   </div>
   <div class="menu-footer">© 2026 Geolin Group</div>
 </div>
@@ -271,7 +213,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   <div class="popup-box">
     <div class="popup-icon">⚠️</div>
     <div class="popup-title">Konfirmasi Pengiriman</div>
-    <div class="popup-text">Pastikan data sudah sesuai dan pastikan tidak ada kesalahan!</div>
+    <div class="popup-text">Pastikan data sudah sesuai dan tidak ada kesalahan!</div>
     <div class="popup-actions">
       <button class="popup-cancel" onclick="closePopup()">Batal</button>
       <button class="popup-confirm" onclick="kirimData()">Ya, Kirim</button>
@@ -284,9 +226,7 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
     <img src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png">
   </div>
 
-  <select id="pixel">
-    <option value="">Pilih Pixel Tujuan</option>
-  </select>
+  <select id="pixel"></select>
 
   <div class="empty-hint" id="emptyHint">
     ⚙️ Belum ada pixel. Tambahkan di menu <strong>Pengaturan</strong>.
@@ -295,15 +235,13 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
   <input type="text" id="promo" placeholder="Masukkan Kode Promo" />
   <input type="number" id="nomor" placeholder="Masukkan Nomor User" min="0" />
 
-  <button id="btn" onclick="showPopup()">Proses Sekarang</button>
+  <button class="proc-btn" id="btn" onclick="showPopup()">Proses Sekarang</button>
   <div class="output" id="output"></div>
 </div>
 
 <div class="footer">© 2026 Follow Up Tools by Geolin Group. All rights reserved.</div>
 
 <script>
-const WEBHOOK = "https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook-test/8ba061be-fd8b-4f1b-9fc3-4ff26d8e7fa3";
-
 function getData(key) {
   try { return JSON.parse(localStorage.getItem(key)) || []; }
   catch { return []; }
@@ -313,9 +251,9 @@ function loadDropdowns() {
   const pixelList = getData("geolin_pixels");
   const sel = document.getElementById("pixel");
   sel.innerHTML = '<option value="">Pilih Pixel Tujuan</option>';
-  pixelList.forEach(p => {
+  pixelList.forEach((p, i) => {
     const opt = document.createElement("option");
-    opt.value = p.id;
+    opt.value = i; // index untuk referensi data lengkap
     opt.textContent = `${p.nama} (ID: ${p.id})`;
     sel.appendChild(opt);
   });
@@ -323,14 +261,21 @@ function loadDropdowns() {
 }
 
 function showPopup() {
-  const pixel = document.getElementById("pixel").value.trim();
-  const promo = document.getElementById("promo").value.trim();
-  const nomor = document.getElementById("nomor").value.trim();
-  const output = document.getElementById("output");
+  const pixelIdx = document.getElementById("pixel").value;
+  const promo    = document.getElementById("promo").value.trim();
+  const nomor    = document.getElementById("nomor").value.trim();
+  const output   = document.getElementById("output");
 
-  if (!pixel || !promo || !nomor) {
+  if (pixelIdx === "" || !promo || !nomor) {
     output.className = "output show error";
     output.innerText = "⚠️ Semua kolom harus diisi terlebih dahulu!";
+    return;
+  }
+
+  const webhook = localStorage.getItem("geolin_webhook_se") || "";
+  if (!webhook) {
+    output.className = "output show error";
+    output.innerText = "⚠️ Webhook Send Event belum diatur! Buka Pengaturan.";
     return;
   }
 
@@ -349,23 +294,32 @@ function closePopup() {
 
 async function kirimData() {
   closePopup();
-  const pixel = document.getElementById("pixel").value.trim();
-  const promo = document.getElementById("promo").value.trim();
-  const nomor = document.getElementById("nomor").value.trim();
-  const output = document.getElementById("output");
-  const btn = document.getElementById("btn");
+  const pixelIdx = document.getElementById("pixel").value;
+  const promo    = document.getElementById("promo").value.trim();
+  const nomor    = document.getElementById("nomor").value.trim();
+  const output   = document.getElementById("output");
+  const btn      = document.getElementById("btn");
+  const webhook  = localStorage.getItem("geolin_webhook_se") || "";
+
+  const pixelList = getData("geolin_pixels");
+  const pixel = pixelList[parseInt(pixelIdx)];
 
   btn.disabled = true;
   output.className = "output show";
   output.innerText = "Mengirim...";
 
   try {
-    const res = await fetch(WEBHOOK, {
+    const res = await fetch(webhook, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pixel_tujuan: pixel, kode_promo: promo, nomor_user: nomor })
+      body: JSON.stringify({
+        pixel_id:    pixel.id,
+        pixel_nama:  pixel.nama,
+        pixel_token: pixel.token,
+        kode_promo:  promo,
+        nomor_user:  nomor
+      })
     });
-
     output.className = res.ok ? "output show success" : "output show error";
     output.innerText = res.ok
       ? "✅ Event berhasil dikirim! Mohon ditunggu untuk hasilnya."
@@ -383,16 +337,13 @@ function openMenu() {
   const overlay = document.getElementById("overlay");
   overlay.style.display = "block";
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    menu.classList.add("open");
-    overlay.classList.add("active");
+    menu.classList.add("open"); overlay.classList.add("active");
   }));
 }
-
 function closeMenu() {
   const menu = document.getElementById("sideMenu");
   const overlay = document.getElementById("overlay");
-  menu.classList.remove("open");
-  overlay.classList.remove("active");
+  menu.classList.remove("open"); overlay.classList.remove("active");
   setTimeout(() => { overlay.style.display = "none"; }, 380);
 }
 
