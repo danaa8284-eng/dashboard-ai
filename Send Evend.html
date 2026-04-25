@@ -294,6 +294,16 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   color: #fff; box-shadow: 0 4px 0 #a0571a;
 }
 .notif-close:active { transform: translateY(3px); box-shadow: 0 1px 0; }
+.notif-box.type-notfound::before { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+.notif-box.type-notfound .notif-icon-wrap {
+  background: #fff0f0;
+  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+}
+.notif-box.type-notfound .notif-title { color: #c0392b; }
+.notif-box.type-notfound .notif-close {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff; box-shadow: 0 4px 0 #922b21;
+}
 </style>
 </head>
 <body>
@@ -321,6 +331,17 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
     <div class="menu-item" onclick="closeMenu()"><span class="menu-icon">❓</span> Bantuan</div>
   </div>
   <div class="menu-footer">© 2026 Geolin Group</div>
+</div>
+
+
+<!-- ===== NOTIF EVENT TIDAK DITEMUKAN ===== -->
+<div class="notif-overlay" id="notifTidakDitemukan">
+  <div class="notif-box type-notfound">
+    <div class="notif-icon-wrap">🔍</div>
+    <div class="notif-title">Event Tidak Ditemukan!</div>
+    <div class="notif-text">Kode promo tidak ada di database. Pastikan kode promo sudah benar.</div>
+    <button class="notif-close" onclick="closeNotif('notifTidakDitemukan')">Oke, Cek Lagi</button>
+  </div>
 </div>
 
 <!-- POPUP KONFIRMASI (asli) -->
@@ -533,16 +554,22 @@ async function kirimData() {
 
     console.log("[SendEvent] Result object:", result);
 
-    // Cek DUPLIKAT dulu (prioritas tertinggi)
     const rawLower = rawText.toLowerCase();
+
+    // Deteksi DUPLIKAT
     const isDuplikat =
       result.my_field_1 === "data sudah ada" ||
       rawLower.includes("data sudah ada") ||
       rawLower.includes("sudah ada");
 
-    // Cek SUKSES — wajib ada konfirmasi eksplisit di body
-    // TIDAK boleh hanya andalkan HTTP 200, karena n8n responseNode
-    // langsung balas 200 sebelum workflow selesai (body masih kosong)
+    // Deteksi EVENT TIDAK DITEMUKAN
+    const isTidakDitemukan =
+      result.my_field_1 === "evend tidak di temukan" ||
+      rawLower.includes("tidak di temukan") ||
+      rawLower.includes("tidak ditemukan") ||
+      rawLower.includes("evend tidak");
+
+    // Deteksi SUKSES — wajib ada konfirmasi eksplisit dari body
     const isSukses =
       result.success === true ||
       (typeof result.message === "string" && result.message.toLowerCase().includes("berhasil")) ||
@@ -551,6 +578,10 @@ async function kirimData() {
     if (isDuplikat) {
       console.log("[SendEvent] → Duplikat terdeteksi");
       showNotif("notifDuplikat");
+
+    } else if (isTidakDitemukan) {
+      console.log("[SendEvent] → Event tidak ditemukan");
+      showNotif("notifTidakDitemukan");
 
     } else if (isSukses) {
       console.log("[SendEvent] → Sukses dikonfirmasi dari body");
