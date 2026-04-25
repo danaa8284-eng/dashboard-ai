@@ -7,6 +7,12 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b423c">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+
 <style>
   * {
     box-sizing: border-box;
@@ -16,8 +22,7 @@
     font-family: 'Poppins', sans-serif;
     background: #0b423c;
     margin: 0;
-
-    min-height: 100vh; /* FIX */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
   }
@@ -27,8 +32,7 @@
     width: 100%;
     margin: 0 auto;
     padding: 20px 15px 10px;
-
-    flex: 1; /* dorong footer ke bawah */
+    flex: 1;
   }
 
   .logo {
@@ -172,6 +176,13 @@ async function proses() {
   }
 
   btn.disabled = false;
+}
+</script>
+
+<!-- SERVICE WORKER -->
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
 }
 </script>
 
