@@ -540,22 +540,34 @@ async function kirimData() {
       rawLower.includes("data sudah ada") ||
       rawLower.includes("sudah ada");
 
+    // Cek SUKSES — wajib ada konfirmasi eksplisit di body
+    // TIDAK boleh hanya andalkan HTTP 200, karena n8n responseNode
+    // langsung balas 200 sebelum workflow selesai (body masih kosong)
+    const isSukses =
+      result.success === true ||
+      (typeof result.message === "string" && result.message.toLowerCase().includes("berhasil")) ||
+      typeof result.events_received === "number";
+
     if (isDuplikat) {
       console.log("[SendEvent] → Duplikat terdeteksi");
       showNotif("notifDuplikat");
 
-    } else if (res.ok) {
-      // HTTP 200-299 = sukses
-      console.log("[SendEvent] → Sukses");
+    } else if (isSukses) {
+      console.log("[SendEvent] → Sukses dikonfirmasi dari body");
       promoEl.value = "";
       nomorEl.value = "";
       pixelEl.value = "";
       showNotif("notifSukses");
 
-    } else {
-      console.error("[SendEvent] → HTTP error", res.status, result);
+    } else if (rawText.trim() === "") {
+      console.warn("[SendEvent] → Body kosong, workflow belum selesai atau error");
       output.className = "output show error";
-      output.innerText = result.message || `❌ Server error (HTTP ${res.status})`;
+      output.innerText = "⚠️ Tidak ada respon dari server. Pastikan workflow n8n sudah aktif.";
+
+    } else {
+      console.error("[SendEvent] → Respon tidak dikenali", res.status, rawText);
+      output.className = "output show error";
+      output.innerText = result.message || "❌ Respon tidak dikenali dari server.";
     }
 
   } catch (err) {
