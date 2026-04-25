@@ -1,6 +1,6 @@
 {
   "name": "Geolin Tools",
-  "short_name": "Geolin",
+  "short_name": "Tools",
   "start_url": "/dashboard-ai/follup-tools.html",
   "display": "standalone",
   "background_color": "#0b423c",
