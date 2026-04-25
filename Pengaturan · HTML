@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pengaturan</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0b423c">
+<link rel="icon" href="icon-192.png">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #0b423c;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  padding: 5px;
+}
+
+.menu-btn {
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.menu-btn:hover { background: rgba(255,255,255,0.1); }
+
+.container {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px 15px 20px;
+  flex: 1;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.logo img { width: 120px; max-width: 80%; }
+
+/* SECTION CARD */
+.section-card {
+  background: rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4ecca3;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* INPUT ROW */
+.input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.input-row input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  background: #fff;
+  color: #000;
+  outline: none;
+}
+
+.input-row input:focus {
+  box-shadow: 0 0 0 2px #4ecca3;
+}
+
+.add-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #4ecca3;
+  color: #062e2a;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+.add-btn:active { transform: scale(0.93); }
+
+/* LIST ITEMS */
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 9px 12px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.item-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 1px;
+}
+
+.delete-btn {
+  background: rgba(255,80,80,0.2);
+  border: none;
+  border-radius: 8px;
+  color: #ff6b6b;
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  font-family: 'Poppins', sans-serif;
+}
+.delete-btn:hover { background: rgba(255,80,80,0.35); }
+
+.empty-text {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  padding: 8px 0;
+  font-style: italic;
+}
+
+.footer {
+  text-align: center;
+  color: #ffffff;
+  font-size: 10px;
+  opacity: 0.6;
+  padding: 20px 0 60px;
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0);
+  display: none;
+  z-index: 9;
+  backdrop-filter: blur(0px);
+  transition: background 0.35s ease, backdrop-filter 0.35s ease;
+}
+.overlay.active {
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(3px);
+}
+
+/* SIDE MENU */
+.side-menu {
+  position: fixed;
+  top: 0; left: 0;
+  width: 260px; height: 100%;
+  background: #0d4f47;
+  transform: translateX(-100%);
+  transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+  z-index: 10;
+  box-shadow: 6px 0 30px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.side-menu.open { transform: translateX(0); }
+
+.menu-header {
+  background: #062e2a;
+  padding: 50px 20px 24px;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.menu-header-logo { width: 100px; margin-bottom: 10px; display: block; }
+.menu-header-title { font-size: 18px; font-weight: 600; color: #fff; }
+.menu-header-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+.menu-close-btn {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.1);
+  border: none; border-radius: 8px;
+  color: #fff; font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+.menu-close-btn:hover { background: rgba(255,255,255,0.2); }
+
+.menu-body { flex: 1; padding: 16px 12px; overflow-y: auto; }
+
+.menu-section-label {
+  font-size: 10px; font-weight: 600;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 10px 4px;
+}
+
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 14px; border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  color: rgba(255,255,255,0.85);
+  font-size: 14px; font-weight: 400;
+  position: relative; overflow: hidden;
+}
+.menu-item::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s; border-radius: 12px;
+}
+.menu-item:hover::before { background: rgba(255,255,255,0.07); }
+.menu-item:active { transform: scale(0.98); }
+.menu-item.active {
+  background: rgba(255,255,255,0.12);
+  color: #fff; font-weight: 600;
+}
+.menu-item.active::after {
+  content: ''; position: absolute;
+  left: 0; top: 20%; height: 60%; width: 3px;
+  background: #4ecca3;
+  border-radius: 0 3px 3px 0;
+}
+.menu-icon { font-size: 18px; width: 22px; text-align: center; flex-shrink: 0; }
+
+.side-menu.open .menu-item { animation: slideInItem 0.3s ease both; }
+.side-menu.open .menu-item:nth-child(1) { animation-delay: 0.05s; }
+.side-menu.open .menu-item:nth-child(2) { animation-delay: 0.1s; }
+.side-menu.open .menu-item:nth-child(3) { animation-delay: 0.15s; }
+.side-menu.open .menu-item:nth-child(4) { animation-delay: 0.2s; }
+
+@keyframes slideInItem {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.menu-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 11px; color: rgba(255,255,255,0.3); text-align: center;
+}
+.menu-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 10px; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #4ecca3;
+  color: #062e2a;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 200;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="menu-btn" onclick="openMenu()">☰</div>
+</div>
+
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+<div id="sideMenu" class="side-menu">
+  <div class="menu-header">
+    <button class="menu-close-btn" onclick="closeMenu()">✕</button>
+    <img class="menu-header-logo" src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png" alt="Logo">
+    <div class="menu-header-title">Geolin Group</div>
+    <div class="menu-header-sub">Tools v1.0</div>
+  </div>
+  <div class="menu-body">
+    <div class="menu-section-label">Navigasi</div>
+    <div class="menu-item" onclick="window.location.href='follup-tools.html'">
+      <span class="menu-icon">📨</span> Follow up
+    </div>
+    <div class="menu-item" onclick="window.location.href='perbaiki alamat.html'">
+      <span class="menu-icon">📍</span> Send Event
+    </div>
+    <div class="menu-divider"></div>
+    <div class="menu-section-label">Lainnya</div>
+    <div class="menu-item active">
+      <span class="menu-icon">⚙️</span> Pengaturan
+    </div>
+    <div class="menu-item" onclick="closeMenu()">
+      <span class="menu-icon">❓</span> Bantuan
+    </div>
+  </div>
+  <div class="menu-footer">© 2026 Geolin Group</div>
+</div>
+
+<div class="container">
+  <div class="logo">
+    <img src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png">
+  </div>
+
+  <!-- SECTION 1: PIXEL -->
+  <div class="section-card">
+    <div class="section-title">🎯 Pixel Tujuan</div>
+    <div class="input-row">
+      <input type="number" id="pixelId" placeholder="ID Pixel (angka)">
+      <input type="text" id="pixelNama" placeholder="Nama Pixel">
+      <button class="add-btn" onclick="tambahPixel()">+</button>
+    </div>
+    <div class="item-list" id="listPixel">
+      <div class="empty-text" id="emptyPixel">Belum ada pixel ditambahkan</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: AKUN WA -->
+  <div class="section-card">
+    <div class="section-title">📱 Akun WhatsApp</div>
+    <div class="input-row">
+      <input type="text" id="akunId" placeholder="ID Akun">
+      <input type="text" id="akunNama" placeholder="Nama Akun">
+      <button class="add-btn" onclick="tambahAkun()">+</button>
+    </div>
+    <div class="item-list" id="listAkun">
+      <div class="empty-text" id="emptyAkun">Belum ada akun ditambahkan</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: AKSI -->
+  <div class="section-card">
+    <div class="section-title">⚡ Teks Aksi Follow Up</div>
+    <div class="input-row">
+      <input type="text" id="aksiValue" placeholder="Value (kode)">
+      <input type="text" id="aksiLabel" placeholder="Teks Tampilan">
+      <button class="add-btn" onclick="tambahAksi()">+</button>
+    </div>
+    <div class="item-list" id="listAksi">
+      <div class="empty-text" id="emptyAksi">Belum ada aksi ditambahkan</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">© 2026 Follow Up Tools by Geolin Group. All rights reserved.</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ========== STORAGE HELPERS ==========
+function getData(key) {
+  try { return JSON.parse(localStorage.getItem(key)) || []; }
+  catch { return []; }
+}
+function saveData(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+// ========== TOAST ==========
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.innerText = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+// ========== PIXEL ==========
+function tambahPixel() {
+  const id = document.getElementById("pixelId").value.trim();
+  const nama = document.getElementById("pixelNama").value.trim();
+  if (!id || !nama) { showToast("⚠️ ID dan Nama Pixel wajib diisi!"); return; }
+
+  const list = getData("geolin_pixels");
+  list.push({ id, nama });
+  saveData("geolin_pixels", list);
+
+  document.getElementById("pixelId").value = "";
+  document.getElementById("pixelNama").value = "";
+  renderPixel();
+  showToast("✅ Pixel berhasil ditambahkan!");
+}
+
+function hapusPixel(idx) {
+  const list = getData("geolin_pixels");
+  list.splice(idx, 1);
+  saveData("geolin_pixels", list);
+  renderPixel();
+  showToast("🗑️ Pixel dihapus");
+}
+
+function renderPixel() {
+  const list = getData("geolin_pixels");
+  const container = document.getElementById("listPixel");
+  const empty = document.getElementById("emptyPixel");
+
+  const rows = container.querySelectorAll(".item-row");
+  rows.forEach(r => r.remove());
+
+  if (list.length === 0) {
+    empty.style.display = "block";
+  } else {
+    empty.style.display = "none";
+    list.forEach((p, i) => {
+      const div = document.createElement("div");
+      div.className = "item-row";
+      div.innerHTML = `
+        <div class="item-info">
+          <span class="item-name">${p.nama}</span>
+          <span class="item-sub">ID: ${p.id}</span>
+        </div>
+        <button class="delete-btn" onclick="hapusPixel(${i})">✕</button>
+      `;
+      container.appendChild(div);
+    });
+  }
+}
+
+// ========== AKUN WA ==========
+function tambahAkun() {
+  const id = document.getElementById("akunId").value.trim();
+  const nama = document.getElementById("akunNama").value.trim();
+  if (!id || !nama) { showToast("⚠️ ID dan Nama Akun wajib diisi!"); return; }
+
+  const list = getData("geolin_akun");
+  list.push({ id, nama });
+  saveData("geolin_akun", list);
+
+  document.getElementById("akunId").value = "";
+  document.getElementById("akunNama").value = "";
+  renderAkun();
+  showToast("✅ Akun WA berhasil ditambahkan!");
+}
+
+function hapusAkun(idx) {
+  const list = getData("geolin_akun");
+  list.splice(idx, 1);
+  saveData("geolin_akun", list);
+  renderAkun();
+  showToast("🗑️ Akun dihapus");
+}
+
+function renderAkun() {
+  const list = getData("geolin_akun");
+  const container = document.getElementById("listAkun");
+  const empty = document.getElementById("emptyAkun");
+
+  const rows = container.querySelectorAll(".item-row");
+  rows.forEach(r => r.remove());
+
+  if (list.length === 0) {
+    empty.style.display = "block";
+  } else {
+    empty.style.display = "none";
+    list.forEach((a, i) => {
+      const div = document.createElement("div");
+      div.className = "item-row";
+      div.innerHTML = `
+        <div class="item-info">
+          <span class="item-name">${a.nama}</span>
+          <span class="item-sub">ID: ${a.id}</span>
+        </div>
+        <button class="delete-btn" onclick="hapusAkun(${i})">✕</button>
+      `;
+      container.appendChild(div);
+    });
+  }
+}
+
+// ========== AKSI ==========
+function tambahAksi() {
+  const value = document.getElementById("aksiValue").value.trim();
+  const label = document.getElementById("aksiLabel").value.trim();
+  if (!value || !label) { showToast("⚠️ Value dan Teks Aksi wajib diisi!"); return; }
+
+  const list = getData("geolin_aksi");
+  list.push({ value, label });
+  saveData("geolin_aksi", list);
+
+  document.getElementById("aksiValue").value = "";
+  document.getElementById("aksiLabel").value = "";
+  renderAksi();
+  showToast("✅ Aksi berhasil ditambahkan!");
+}
+
+function hapusAksi(idx) {
+  const list = getData("geolin_aksi");
+  list.splice(idx, 1);
+  saveData("geolin_aksi", list);
+  renderAksi();
+  showToast("🗑️ Aksi dihapus");
+}
+
+function renderAksi() {
+  const list = getData("geolin_aksi");
+  const container = document.getElementById("listAksi");
+  const empty = document.getElementById("emptyAksi");
+
+  const rows = container.querySelectorAll(".item-row");
+  rows.forEach(r => r.remove());
+
+  if (list.length === 0) {
+    empty.style.display = "block";
+  } else {
+    empty.style.display = "none";
+    list.forEach((a, i) => {
+      const div = document.createElement("div");
+      div.className = "item-row";
+      div.innerHTML = `
+        <div class="item-info">
+          <span class="item-name">${a.label}</span>
+          <span class="item-sub">Value: ${a.value}</span>
+        </div>
+        <button class="delete-btn" onclick="hapusAksi(${i})">✕</button>
+      `;
+      container.appendChild(div);
+    });
+  }
+}
+
+// ========== MENU ==========
+function openMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("overlay");
+  overlay.style.display = "block";
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    menu.classList.add("open");
+    overlay.classList.add("active");
+  }));
+}
+
+function closeMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("overlay");
+  menu.classList.remove("open");
+  overlay.classList.remove("active");
+  setTimeout(() => { overlay.style.display = "none"; }, 380);
+}
+
+// ========== INIT ==========
+renderPixel();
+renderAkun();
+renderAksi();
+</script>
+</body>
+</html>
