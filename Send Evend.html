@@ -327,16 +327,22 @@ async function kirimData() {
     // 🔥 HANDLE ARRAY / OBJECT
     const result = Array.isArray(data) ? data[0] : data;
 
-    if (res.ok && result.success) {
+   if (res.ok && result.success) {
 
-      // ✅ NOTIF BAWAH
-      output.className = "output show success";
-      output.innerText = "✅ Event sukses dikirim";
+  output.className = "output show success";
+  output.innerText = "✅ Event sukses dikirim";
+  output.style.display = "block"; // 🔥 WAJIB
 
-      // ✅ CLEAR FORM
-      promoEl.value = "";
-      nomorEl.value = "";
-      pixelEl.value = "";
+  // clear form
+  promoEl.value = "";
+  nomorEl.value = "";
+  pixelEl.value = "";
+}
+
+    setTimeout(() => {
+  output.className = "output";
+  output.style.display = "none";
+}, 3000);
 
     } else {
       output.className = "output show error";
