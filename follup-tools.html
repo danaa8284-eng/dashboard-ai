@@ -7,108 +7,372 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b423c">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 
 <style>
-  * {
-    box-sizing: border-box;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #0b423c;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 15px 10px;
+  flex: 1;
+}
+
+.logo {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.logo img {
+  width: 140px;
+  max-width: 80%;
+}
+
+select, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+}
+
+select {
+  background: #ffffff;
+  color: #000;
+  font-family: 'Poppins', sans-serif;
+}
+
+button {
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  background: linear-gradient(135deg, #0b423c, #062e2a);
+  cursor: pointer;
+  box-shadow: 0 6px 0 #041f1c, 0 10px 20px rgba(0,0,0,0.3);
+  transition: all 0.15s ease;
+}
+
+button:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #041f1c, 0 5px 10px rgba(0,0,0,0.3);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.output {
+  margin-top: 12px;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 10px;
+  min-height: 50px;
+  font-size: 13px;
+  color: #000;
+}
+
+.footer {
+  text-align: center;
+  color: #ffffff;
+  font-size: 10px;
+  opacity: 0.6;
+  padding: 30px 0 90px;
+}
+
+/* TOP BAR */
+.topbar {
+  padding: 5px;
+}
+
+.menu-btn {
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.menu-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0);
+  display: none;
+  z-index: 9;
+  backdrop-filter: blur(0px);
+  transition: background 0.35s ease, backdrop-filter 0.35s ease;
+}
+
+.overlay.active {
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(3px);
+}
+
+/* SIDE MENU */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100%;
+  background: #0d4f47;
+  padding: 0;
+  transform: translateX(-100%);
+  transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  box-shadow: 6px 0 30px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.side-menu.open {
+  transform: translateX(0);
+}
+
+/* Menu Header */
+.menu-header {
+  background: #062e2a;
+  padding: 50px 20px 24px;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.menu-header-logo {
+  width: 100px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.menu-header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.menu-header-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2px;
+}
+
+.menu-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.menu-close-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Menu Body */
+.menu-body {
+  flex: 1;
+  padding: 16px 12px;
+  overflow-y: auto;
+}
+
+.menu-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 10px 4px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  color: rgba(255,255,255,0.85);
+  font-size: 14px;
+  font-weight: 400;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s;
+  border-radius: 12px;
+}
+
+.menu-item:hover::before {
+  background: rgba(255,255,255,0.07);
+}
+
+.menu-item:active {
+  transform: scale(0.98);
+}
+
+.menu-item.active {
+  background: rgba(255,255,255,0.12);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.menu-item.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 3px;
+  background: #4ecca3;
+  border-radius: 0 3px 3px 0;
+}
+
+.menu-icon {
+  font-size: 18px;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Stagger animation for menu items */
+.side-menu.open .menu-item {
+  animation: slideInItem 0.3s ease both;
+}
+
+.side-menu.open .menu-item:nth-child(1) { animation-delay: 0.05s; }
+.side-menu.open .menu-item:nth-child(2) { animation-delay: 0.1s; }
+.side-menu.open .menu-item:nth-child(3) { animation-delay: 0.15s; }
+.side-menu.open .menu-item:nth-child(4) { animation-delay: 0.2s; }
+
+@keyframes slideInItem {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
   }
-
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: #0b423c;
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
+}
 
-  .container {
-    max-width: 400px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 20px 15px 10px;
-    flex: 1;
-  }
+/* Menu Footer */
+.menu-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+}
 
-  .logo {
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 15px;
-  }
-
-  .logo img {
-    width: 140px;
-    max-width: 80%;
-  }
-
-  select, button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 10px;
-    border: none;
-    font-size: 14px;
-  }
-
-  select {
-    background: #ffffff;
-    color: #000;
-  }
-
-  button {
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #ffffff;
-    background: linear-gradient(135deg, #0b423c, #062e2a);
-    cursor: pointer;
-
-    box-shadow: 
-      0 6px 0 #041f1c,
-      0 10px 20px rgba(0,0,0,0.3);
-
-    transition: all 0.15s ease;
-  }
-
-  button:active {
-    transform: translateY(4px);
-    box-shadow: 
-      0 2px 0 #041f1c,
-      0 5px 10px rgba(0,0,0,0.3);
-  }
-
-  button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  .output {
-    margin-top: 12px;
-    padding: 10px;
-    background: #ffffff;
-    border-radius: 10px;
-    min-height: 50px;
-    font-size: 13px;
-    color: #000;
-  }
-
-  .footer {
-    text-align: center;
-    color: #ffffff;
-    font-size: 10px;
-    opacity: 0.6;
-    padding: 30px 0 90px;
-  }
+/* Divider */
+.menu-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.07);
+  margin: 8px 10px;
+}
 </style>
 </head>
 
 <body>
+
+<div class="topbar">
+  <div class="menu-btn" onclick="openMenu()">☰</div>
+</div>
+
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+<div id="sideMenu" class="side-menu">
+
+  <div class="menu-header">
+    <button class="menu-close-btn" onclick="closeMenu()">✕</button>
+    <img class="menu-header-logo" src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png" alt="Logo">
+    <div class="menu-header-title">Geolin Group</div>
+    <div class="menu-header-sub">  Tools v1.0</div>
+  </div>
+
+  <div class="menu-body">
+    <div class="menu-section-label">Navigasi</div>
+
+    <div class="menu-item active" onclick="window.location.href='follup-tools.html'">
+     
+      Follow up
+    </div>
+
+    <div class="menu-item" onclick="window.location.href='perbaiki alamat.html'">
+     
+      Send Event
+    </div>
+
+    <div class="menu-divider"></div>
+    <div class="menu-section-label">Lainnya</div>
+
+    <div class="menu-item" onclick="closeMenu()">
+      <span class="menu-icon">⚙️</span>
+      Pengaturan
+    </div>
+
+    <div class="menu-item" onclick="closeMenu()">
+      <span class="menu-icon">❓</span>
+      Bantuan
+    </div>
+
+  </div>
+
+  <div class="menu-footer">
+    © 2026 Geolin Group
+  </div>
+
+</div>
 
 <div class="container">
 
@@ -156,31 +420,63 @@ async function proses() {
   try {
     const res = await fetch("https://n8n-wyv7h4exvgre.jkt1.sumopod.my.id/webhook/24d3b1ae-883a-4867-a79e-6d8625e01afb", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        akun: akun,
-        aksi: aksi
-      })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ akun, aksi })
     });
 
-    if (res.ok) {
-      output.innerText = "permintaan sukses mohon di tunggu untuk hasil nya";
-    } else {
-      output.innerText = "gagal kirim";
-    }
+    output.innerText = res.ok
+      ? "permintaan sukses mohon di tunggu untuk hasil nya"
+      : "gagal kirim";
 
-  } catch (e) {
+  } catch {
     output.innerText = "error koneksi";
   }
 
   btn.disabled = false;
 }
-</script>
 
-<!-- SERVICE WORKER -->
-<script>
+/* MENU */
+function openMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("overlay");
+
+  overlay.style.display = "block";
+  // slight delay so display:block triggers before transition
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      menu.classList.add("open");
+      overlay.classList.add("active");
+    });
+  });
+}
+
+function closeMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("overlay");
+
+  menu.classList.remove("open");
+  overlay.classList.remove("active");
+
+  // hide overlay after transition ends
+  setTimeout(() => {
+    overlay.style.display = "none";
+  }, 380);
+}
+
+function menuA() {
+  // set active state
+  document.querySelectorAll(".menu-item").forEach(el => el.classList.remove("active"));
+  event.currentTarget.classList.add("active");
+  closeMenu();
+}
+
+function menuB() {
+  document.querySelectorAll(".menu-item").forEach(el => el.classList.remove("active"));
+  event.currentTarget.classList.add("active");
+  closeMenu();
+}
+
+/* SERVICE WORKER */
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
