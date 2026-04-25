@@ -32,6 +32,7 @@ select, input {
 input::placeholder { color: #999; }
 input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 
+/* ===== TOMBOL PROSES + LOADING ===== */
 .proc-btn {
   width: 100%; padding: 14px; margin-top: 10px;
   border-radius: 12px; border: none;
@@ -41,9 +42,34 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   cursor: pointer;
   box-shadow: 0 6px 0 #041f1c, 0 10px 20px rgba(0,0,0,0.3);
   transition: all 0.15s ease;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  position: relative; overflow: hidden;
 }
-.proc-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #041f1c, 0 5px 10px rgba(0,0,0,0.3); }
-.proc-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.proc-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #041f1c; }
+.proc-btn:disabled {
+  opacity: 0.85; cursor: not-allowed;
+  transform: none; box-shadow: 0 3px 0 #041f1c;
+}
+
+/* Spinner SVG di dalam tombol */
+.btn-spinner {
+  display: none;
+  width: 20px; height: 20px;
+  animation: spin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+.proc-btn.loading .btn-spinner { display: block; }
+.proc-btn.loading .btn-text { opacity: 0.85; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Shimmer saat loading */
+.proc-btn.loading::after {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer { to { left: 160%; } }
 
 .output {
   margin-top: 12px; padding: 10px;
@@ -145,7 +171,7 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 }
 .menu-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 10px; }
 
-/* POPUP */
+/* ===== POPUP KONFIRMASI (sama seperti asli) ===== */
 .popup-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
@@ -180,6 +206,94 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   box-shadow: 0 4px 0 #041f1c; transition: all 0.15s ease; margin-top: 0;
 }
 .popup-confirm:active { transform: translateY(3px); box-shadow: 0 1px 0 #041f1c; }
+
+/* ===== NOTIF POPUP (sukses & data sudah ada) ===== */
+.notif-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+  z-index: 200; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.notif-overlay.show { opacity: 1; pointer-events: all; }
+
+.notif-box {
+  background: #fff; border-radius: 20px;
+  padding: 30px 24px 24px; max-width: 300px; width: 90%;
+  text-align: center;
+  transform: scale(0.82) translateY(24px);
+  transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.28);
+  position: relative; overflow: hidden;
+}
+.notif-overlay.show .notif-box { transform: scale(1) translateY(0); }
+
+/* Garis aksen atas */
+.notif-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  border-radius: 20px 20px 0 0;
+}
+.notif-box.type-success::before { background: linear-gradient(90deg, #4ecca3, #0b9e72); }
+.notif-box.type-duplicate::before { background: linear-gradient(90deg, #f5a623, #e67e22); }
+
+/* Lingkaran ikon animasi */
+.notif-icon-wrap {
+  width: 68px; height: 68px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px; font-size: 30px;
+  position: relative;
+}
+.notif-box.type-success .notif-icon-wrap {
+  background: #e6f9f2;
+  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+}
+.notif-box.type-duplicate .notif-icon-wrap {
+  background: #fff5e6;
+  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+}
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* Lingkaran "ripple" di belakang ikon saat sukses */
+.notif-box.type-success .notif-icon-wrap::after {
+  content: '';
+  position: absolute; inset: -6px; border-radius: 50%;
+  border: 2px solid #4ecca3; opacity: 0;
+  animation: ripple 1.5s ease-out 0.3s infinite;
+}
+@keyframes ripple {
+  0%   { transform: scale(0.85); opacity: 0.6; }
+  100% { transform: scale(1.4);  opacity: 0; }
+}
+
+.notif-title {
+  font-size: 15px; font-weight: 600; margin-bottom: 6px;
+}
+.notif-box.type-success .notif-title { color: #0b6b4a; }
+.notif-box.type-duplicate .notif-title { color: #c07a10; }
+
+.notif-text {
+  font-size: 12px; color: #777; line-height: 1.6; margin-bottom: 20px;
+}
+
+.notif-close {
+  width: 100%; padding: 12px; border-radius: 12px; border: none;
+  font-size: 13px; font-weight: 600; font-family: 'Poppins', sans-serif;
+  cursor: pointer; transition: all 0.15s ease;
+  box-shadow: 0 4px 0;
+}
+.notif-box.type-success .notif-close {
+  background: linear-gradient(135deg, #0b9e72, #0b423c);
+  color: #fff; box-shadow: 0 4px 0 #084f39;
+}
+.notif-box.type-duplicate .notif-close {
+  background: linear-gradient(135deg, #f5a623, #e67e22);
+  color: #fff; box-shadow: 0 4px 0 #a0571a;
+}
+.notif-close:active { transform: translateY(3px); box-shadow: 0 1px 0; }
 </style>
 </head>
 <body>
@@ -209,6 +323,7 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   <div class="menu-footer">© 2026 Geolin Group</div>
 </div>
 
+<!-- POPUP KONFIRMASI (asli) -->
 <div class="popup-overlay" id="popupOverlay">
   <div class="popup-box">
     <div class="popup-icon">⚠️</div>
@@ -218,6 +333,26 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
       <button class="popup-cancel" onclick="closePopup()">Batal</button>
       <button class="popup-confirm" onclick="kirimData()">Ya, Kirim</button>
     </div>
+  </div>
+</div>
+
+<!-- ===== NOTIF SUKSES ===== -->
+<div class="notif-overlay" id="notifSukses">
+  <div class="notif-box type-success">
+    <div class="notif-icon-wrap">✅</div>
+    <div class="notif-title">Event Berhasil Dikirim!</div>
+    <div class="notif-text">Data Purchase sudah terkirim ke Facebook CAPI dengan sukses.</div>
+    <button class="notif-close" onclick="closeNotif('notifSukses')">Oke, Tutup</button>
+  </div>
+</div>
+
+<!-- ===== NOTIF DATA SUDAH ADA ===== -->
+<div class="notif-overlay" id="notifDuplikat">
+  <div class="notif-box type-duplicate">
+    <div class="notif-icon-wrap">⚠️</div>
+    <div class="notif-title">Data Sudah Ada!</div>
+    <div class="notif-text">Kode promo ini sudah pernah dikirim sebelumnya. Tidak perlu kirim ulang.</div>
+    <button class="notif-close" onclick="closeNotif('notifDuplikat')">Mengerti</button>
   </div>
 </div>
 
@@ -235,7 +370,15 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   <input type="text" id="promo" placeholder="Masukkan Kode Promo" />
   <input type="text" id="nomor" placeholder="Masukkan Nomor User" />
 
-  <button class="proc-btn" id="btn" onclick="showPopup()">Proses Sekarang</button>
+  <button class="proc-btn" id="btn" onclick="showPopup()">
+    <!-- Spinner SVG -->
+    <svg class="btn-spinner" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+      <path d="M12 2a10 10 0 0 1 10 10" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <span class="btn-text">Proses Sekarang</span>
+  </button>
+
   <div class="output" id="output"></div>
 </div>
 
@@ -258,6 +401,32 @@ function loadDropdowns() {
     sel.appendChild(opt);
   });
   document.getElementById("emptyHint").style.display = pixelList.length === 0 ? "block" : "none";
+}
+
+/* ===== NOTIF HELPERS ===== */
+function showNotif(id) {
+  const el = document.getElementById(id);
+  el.style.display = "flex";
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("show")));
+}
+function closeNotif(id) {
+  const el = document.getElementById(id);
+  el.classList.remove("show");
+  setTimeout(() => { el.style.display = "none"; }, 280);
+}
+
+/* ===== LOADING STATE TOMBOL ===== */
+function setLoading(on) {
+  const btn = document.getElementById("btn");
+  if (on) {
+    btn.classList.add("loading");
+    btn.disabled = true;
+    btn.querySelector(".btn-text").textContent = "Mengirim...";
+  } else {
+    btn.classList.remove("loading");
+    btn.disabled = false;
+    btn.querySelector(".btn-text").textContent = "Proses Sekarang";
+  }
 }
 
 function showPopup() {
@@ -299,57 +468,104 @@ async function kirimData() {
   const promoEl = document.getElementById("promo");
   const nomorEl = document.getElementById("nomor");
   const output  = document.getElementById("output");
-  const btn     = document.getElementById("btn");
   const webhook = localStorage.getItem("geolin_webhook_se") || "";
 
-  const pixelList = getData("geolin_pixels");
-  const pixel = pixelList[parseInt(pixelEl.value)];
+  // --- GUARD: validasi ulang sebelum fetch ---
+  if (!webhook) {
+    output.className = "output show error";
+    output.innerText = "⚠️ Webhook belum diatur di Pengaturan!";
+    return;
+  }
 
-  btn.disabled = true;
-  output.className = "output show";
-  output.innerText = "Mengirim...";
+  const pixelList = getData("geolin_pixels");
+  const pixelIdx  = parseInt(pixelEl.value);
+  const pixel     = pixelList[pixelIdx];
+
+  if (!pixel) {
+    output.className = "output show error";
+    output.innerText = "⚠️ Pixel tidak ditemukan. Tambahkan pixel di Pengaturan.";
+    return;
+  }
+
+  const kode_promo = promoEl.value.trim();
+  const nomor_user = nomorEl.value.trim();
+
+  if (!kode_promo || !nomor_user) {
+    output.className = "output show error";
+    output.innerText = "⚠️ Kode promo dan nomor user harus diisi!";
+    return;
+  }
+
+  setLoading(true);
+  output.className = "output";
+  output.style.display = "none";
+
+  const payload = {
+    pixel_id:    pixel.id,
+    pixel_nama:  pixel.nama,
+    pixel_token: pixel.token,
+    kode_promo,
+    nomor_user
+  };
+
+  console.log("[SendEvent] Mengirim ke:", webhook);
+  console.log("[SendEvent] Payload:", JSON.stringify(payload));
 
   try {
     const res = await fetch(webhook, {
-      method: "POST",
+      method:  "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        pixel_id:    pixel.id,
-        pixel_nama:  pixel.nama,
-        pixel_token: pixel.token,
-        kode_promo:  promoEl.value.trim(),
-        nomor_user:  nomorEl.value.trim()
-      })
+      body:    JSON.stringify(payload)
     });
 
-    const data = await res.json();
-    const result = Array.isArray(data) ? data[0] : data;
+    const rawText = await res.text();
+    console.log("[SendEvent] Status HTTP:", res.status);
+    console.log("[SendEvent] Raw response:", rawText);
 
-    if (res.ok && result.success) {
-      output.className = "output show success";
-      output.innerText = "✅ Event sukses dikirim";
+    // Parse JSON, kalau kosong/gagal tetap lanjut
+    let result = {};
+    try {
+      const parsed = JSON.parse(rawText);
+      result = Array.isArray(parsed) ? parsed[0] : (parsed || {});
+    } catch (e) {
+      console.warn("[SendEvent] Response bukan JSON:", rawText);
+    }
 
+    console.log("[SendEvent] Result object:", result);
+
+    // Cek DUPLIKAT dulu (prioritas tertinggi)
+    const rawLower = rawText.toLowerCase();
+    const isDuplikat =
+      result.my_field_1 === "data sudah ada" ||
+      rawLower.includes("data sudah ada") ||
+      rawLower.includes("sudah ada");
+
+    if (isDuplikat) {
+      console.log("[SendEvent] → Duplikat terdeteksi");
+      showNotif("notifDuplikat");
+
+    } else if (res.ok) {
+      // HTTP 200-299 = sukses
+      console.log("[SendEvent] → Sukses");
       promoEl.value = "";
       nomorEl.value = "";
       pixelEl.value = "";
-
-      setTimeout(() => {
-        output.className = "output";
-        output.style.display = "none";
-      }, 3000);
+      showNotif("notifSukses");
 
     } else {
+      console.error("[SendEvent] → HTTP error", res.status, result);
       output.className = "output show error";
-      output.innerText = result.message || "❌ Gagal dari server";
+      output.innerText = result.message || `❌ Server error (HTTP ${res.status})`;
     }
 
   } catch (err) {
+    console.error("[SendEvent] → Network/fetch error:", err);
     output.className = "output show error";
-    output.innerText = "❌ Error koneksi / webhook gagal";
+    output.innerText = "❌ Gagal terhubung ke webhook. Cek URL atau jaringan.";
   }
 
-  btn.disabled = false;
-} // ✅ PENUTUP fungsi kirimData() — INI YANG HILANG
+  setLoading(false);
+}
 
 function openMenu() {
   const menu = document.getElementById("sideMenu");
