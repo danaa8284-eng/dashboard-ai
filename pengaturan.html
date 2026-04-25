@@ -32,7 +32,6 @@ body {
 .logo { text-align: center; margin-bottom: 18px; }
 .logo img { width: 120px; max-width: 80%; }
 
-/* SECTION CARD */
 .section-card {
   background: rgba(255,255,255,0.07);
   border-radius: 16px; padding: 16px;
@@ -45,7 +44,6 @@ body {
   text-transform: uppercase; margin-bottom: 12px;
 }
 
-/* INPUT VERTIKAL */
 .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
 .input-group input {
   width: 100%; padding: 11px 13px;
@@ -66,7 +64,6 @@ body {
 }
 .add-btn:active { transform: scale(0.97); opacity: 0.85; }
 
-/* LIST ITEMS */
 .item-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
 .item-row {
   display: flex; align-items: center;
@@ -96,8 +93,7 @@ body {
   text-align: center; padding: 8px 0; font-style: italic;
 }
 
-/* WEBHOOK SECTION */
-.webhook-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+.webhook-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
 .webhook-label { font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 600; letter-spacing: 0.5px; }
 .webhook-input {
   width: 100%; padding: 11px 13px;
@@ -109,7 +105,6 @@ body {
 .webhook-input:focus { box-shadow: 0 0 0 2px #4ecca3; }
 .webhook-input::placeholder { color: #aaa; font-size: 11px; }
 
-/* STICKY SAVE BAR */
 .save-bar {
   position: fixed; bottom: 0; left: 0; right: 0;
   background: #062e2a;
@@ -129,7 +124,6 @@ body {
 }
 .save-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #041f1c; }
 
-/* OVERLAY */
 .overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0); display: none; z-index: 9;
@@ -138,7 +132,6 @@ body {
 }
 .overlay.active { background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); }
 
-/* SIDE MENU */
 .side-menu {
   position: fixed; top: 0; left: 0; width: 260px; height: 100%;
   background: #0d4f47; transform: translateX(-100%);
@@ -191,6 +184,7 @@ body {
 .side-menu.open .menu-item:nth-child(2) { animation-delay: 0.1s; }
 .side-menu.open .menu-item:nth-child(3) { animation-delay: 0.15s; }
 .side-menu.open .menu-item:nth-child(4) { animation-delay: 0.2s; }
+.side-menu.open .menu-item:nth-child(5) { animation-delay: 0.25s; }
 @keyframes slideInItem {
   from { opacity: 0; transform: translateX(-16px); }
   to   { opacity: 1; transform: translateX(0); }
@@ -201,7 +195,6 @@ body {
 }
 .menu-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 10px; }
 
-/* TOAST */
 .toast {
   position: fixed; bottom: 90px; left: 50%;
   transform: translateX(-50%) translateY(20px);
@@ -233,6 +226,7 @@ body {
     <div class="menu-section-label">Navigasi</div>
     <div class="menu-item" onclick="window.location.href='follup-tools.html'">Follow up</div>
     <div class="menu-item" onclick="window.location.href='Send Evend.html'">Send Event</div>
+    <div class="menu-item" onclick="window.location.href='cari-promo.html'">Cari Promo</div>
     <div class="menu-divider"></div>
     <div class="menu-section-label">Lainnya</div>
     <div class="menu-item active"><span class="menu-icon">⚙️</span> Pengaturan</div>
@@ -253,9 +247,13 @@ body {
       <div class="webhook-label">Webhook Follow Up</div>
       <input class="webhook-input" type="url" id="webhookFollowUp" placeholder="https://n8n.../webhook/...">
     </div>
-    <div class="webhook-row" style="margin-top:10px;">
+    <div class="webhook-row">
       <div class="webhook-label">Webhook Send Event</div>
       <input class="webhook-input" type="url" id="webhookSendEvent" placeholder="https://n8n.../webhook/...">
+    </div>
+    <div class="webhook-row">
+      <div class="webhook-label">Webhook Cari Promo </div>
+      <input class="webhook-input" type="url" id="webhookCariPromo" placeholder="https://n8n.../webhook/...">
     </div>
   </div>
 
@@ -299,10 +297,8 @@ body {
       <div class="empty-text" id="emptyAksi">Belum ada aksi ditambahkan</div>
     </div>
   </div>
-
 </div>
 
-<!-- STICKY SAVE BAR -->
 <div class="save-bar">
   <div class="save-bar-inner">
     <button class="save-btn" id="saveBtn" onclick="simpanSemua()">Simpan Pengaturan</button>
@@ -326,13 +322,12 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-// ===== WEBHOOK =====
 function loadWebhooks() {
-  document.getElementById("webhookFollowUp").value = getString("geolin_webhook_fu");
+  document.getElementById("webhookFollowUp").value  = getString("geolin_webhook_fu");
   document.getElementById("webhookSendEvent").value = getString("geolin_webhook_se");
+  document.getElementById("webhookCariPromo").value = getString("geolin_webhook_cari_promo");
 }
 
-// ===== PIXEL =====
 function tambahPixel() {
   const id    = document.getElementById("pixelId").value.trim();
   const nama  = document.getElementById("pixelNama").value.trim();
@@ -344,8 +339,7 @@ function tambahPixel() {
   document.getElementById("pixelId").value = "";
   document.getElementById("pixelNama").value = "";
   document.getElementById("pixelToken").value = "";
-  renderPixel();
-  showToast("✅ Pixel ditambahkan!");
+  renderPixel(); showToast("✅ Pixel ditambahkan!");
 }
 function hapusPixel(idx) {
   const list = getData("geolin_pixels");
@@ -368,7 +362,6 @@ function renderPixel() {
   });
 }
 
-// ===== AKUN WA =====
 function tambahAkun() {
   const nama    = document.getElementById("akunNama").value.trim();
   const session = document.getElementById("akunSession").value.trim();
@@ -380,8 +373,7 @@ function tambahAkun() {
   document.getElementById("akunNama").value = "";
   document.getElementById("akunSession").value = "";
   document.getElementById("akunLabel").value = "";
-  renderAkun();
-  showToast("✅ Akun WA ditambahkan!");
+  renderAkun(); showToast("✅ Akun WA ditambahkan!");
 }
 function hapusAkun(idx) {
   const list = getData("geolin_akun");
@@ -404,7 +396,6 @@ function renderAkun() {
   });
 }
 
-// ===== AKSI =====
 function tambahAksi() {
   const value = document.getElementById("aksiValue").value.trim();
   const label = document.getElementById("aksiLabel").value.trim();
@@ -414,8 +405,7 @@ function tambahAksi() {
   saveData("geolin_aksi", list);
   document.getElementById("aksiValue").value = "";
   document.getElementById("aksiLabel").value = "";
-  renderAksi();
-  showToast("✅ Aksi ditambahkan!");
+  renderAksi(); showToast("✅ Aksi ditambahkan!");
 }
 function hapusAksi(idx) {
   const list = getData("geolin_aksi");
@@ -438,12 +428,10 @@ function renderAksi() {
   });
 }
 
-// ===== SIMPAN SEMUA =====
 function simpanSemua() {
-  const wfu = document.getElementById("webhookFollowUp").value.trim();
-  const wse = document.getElementById("webhookSendEvent").value.trim();
-  saveString("geolin_webhook_fu", wfu);
-  saveString("geolin_webhook_se", wse);
+  saveString("geolin_webhook_fu",          document.getElementById("webhookFollowUp").value.trim());
+  saveString("geolin_webhook_se",          document.getElementById("webhookSendEvent").value.trim());
+  saveString("geolin_webhook_cari_promo",  document.getElementById("webhookCariPromo").value.trim());
   const btn = document.getElementById("saveBtn");
   btn.innerText = "✅ Tersimpan!";
   btn.style.background = "linear-gradient(135deg, #2d8f72, #1a6b5c)";
@@ -454,7 +442,6 @@ function simpanSemua() {
   }, 2000);
 }
 
-// ===== MENU =====
 function openMenu() {
   const menu = document.getElementById("sideMenu");
   const overlay = document.getElementById("overlay");
@@ -470,7 +457,6 @@ function closeMenu() {
   setTimeout(() => { overlay.style.display = "none"; }, 380);
 }
 
-// ===== INIT =====
 loadWebhooks();
 renderPixel();
 renderAkun();
