@@ -411,7 +411,7 @@ function tambahPixel() {
   document.getElementById("pixelId").value = "";
   document.getElementById("pixelNama").value = "";
   renderPixel();
-  showToast("✅ Pixel ditambahkan!");
+  showToast("Pixel ditambahkan!");
 }
 
 function hapusPixel(idx) {
@@ -419,7 +419,7 @@ function hapusPixel(idx) {
   list.splice(idx, 1);
   saveData("geolin_pixels", list);
   renderPixel();
-  showToast("🗑️ Pixel dihapus");
+  showToast("Pixel dihapus");
 }
 
 function renderPixel() {
@@ -451,7 +451,7 @@ function tambahAkun() {
   document.getElementById("akunId").value = "";
   document.getElementById("akunNama").value = "";
   renderAkun();
-  showToast("✅ Akun WA ditambahkan!");
+  showToast("Akun WA ditambahkan!");
 }
 
 function hapusAkun(idx) {
@@ -459,7 +459,7 @@ function hapusAkun(idx) {
   list.splice(idx, 1);
   saveData("geolin_akun", list);
   renderAkun();
-  showToast("🗑️ Akun dihapus");
+  showToast("Akun dihapus");
 }
 
 function renderAkun() {
@@ -491,7 +491,7 @@ function tambahAksi() {
   document.getElementById("aksiValue").value = "";
   document.getElementById("aksiLabel").value = "";
   renderAksi();
-  showToast("✅ Aksi ditambahkan!");
+  showToast("Aksi ditambahkan!");
 }
 
 function hapusAksi(idx) {
@@ -499,7 +499,7 @@ function hapusAksi(idx) {
   list.splice(idx, 1);
   saveData("geolin_aksi", list);
   renderAksi();
-  showToast("🗑️ Aksi dihapus");
+  showToast("Aksi dihapus");
 }
 
 function renderAksi() {
@@ -527,7 +527,7 @@ function simpanSemua() {
   btn.style.background = "linear-gradient(135deg, #2d8f72, #1a6b5c)";
   showToast("✅ Semua pengaturan berhasil disimpan!");
   setTimeout(() => {
-    btn.innerText = "💾 Simpan Pengaturan";
+    btn.innerText = "Simpan Pengaturan";
     btn.style.background = "";
   }, 2000);
 }
