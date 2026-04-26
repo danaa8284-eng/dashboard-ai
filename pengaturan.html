@@ -32,6 +32,43 @@ body {
 .logo { text-align: center; margin-bottom: 18px; }
 .logo img { width: 120px; max-width: 80%; }
 
+/* ===== TAB NAV ===== */
+.tab-nav {
+  display: flex; gap: 6px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px; padding: 5px;
+  margin-bottom: 16px;
+}
+.tab-btn {
+  flex: 1; padding: 9px 6px;
+  border-radius: 9px; border: none;
+  font-size: 11px; font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  color: rgba(255,255,255,0.5);
+  background: transparent;
+  cursor: pointer; transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: #4ecca3;
+  color: #062e2a;
+  box-shadow: 0 2px 8px rgba(78,204,163,0.3);
+}
+.tab-btn:not(.active):hover {
+  color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.07);
+}
+
+/* ===== TAB PANELS ===== */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== SECTION CARDS ===== */
 .section-card {
   background: rgba(255,255,255,0.07);
   border-radius: 16px; padding: 16px;
@@ -42,8 +79,18 @@ body {
   font-size: 12px; font-weight: 600;
   color: #4ecca3; letter-spacing: 1.2px;
   text-transform: uppercase; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 6px;
+}
+.section-badge {
+  display: inline-block;
+  background: rgba(78,204,163,0.15);
+  color: #4ecca3;
+  font-size: 10px; font-weight: 600;
+  padding: 2px 8px; border-radius: 20px;
+  letter-spacing: 0.5px;
 }
 
+/* ===== INPUTS ===== */
 .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
 .input-group input {
   width: 100%; padding: 11px 13px;
@@ -55,6 +102,27 @@ body {
 .input-group input:focus { box-shadow: 0 0 0 2px #4ecca3; }
 .input-group input::placeholder { color: #999; }
 
+.webhook-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.webhook-label { font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 600; letter-spacing: 0.5px; }
+.webhook-input {
+  width: 100%; padding: 11px 13px;
+  border-radius: 10px; border: none;
+  font-size: 12px; font-family: 'Poppins', sans-serif;
+  background: #ffffff !important; color: #000000 !important;
+  outline: none; -webkit-appearance: none;
+}
+.webhook-input:focus { box-shadow: 0 0 0 2px #4ecca3; }
+.webhook-input::placeholder { color: #aaa; font-size: 11px; }
+
+.hint-text {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 4px;
+  padding-left: 2px;
+  line-height: 1.5;
+}
+
+/* ===== ITEM LIST ===== */
 .add-btn {
   width: 100%; padding: 11px; border-radius: 10px; border: none;
   background: #4ecca3; color: #062e2a;
@@ -71,10 +139,6 @@ body {
   background: rgba(255,255,255,0.1);
   border-radius: 10px; padding: 9px 12px;
   animation: fadeIn 0.2s ease;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
 }
 .item-info { display: flex; flex-direction: column; flex: 1; min-width: 0; }
 .item-name { font-size: 13px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -93,40 +157,7 @@ body {
   text-align: center; padding: 8px 0; font-style: italic;
 }
 
-.webhook-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
-.webhook-label { font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 600; letter-spacing: 0.5px; }
-.webhook-input {
-  width: 100%; padding: 11px 13px;
-  border-radius: 10px; border: none;
-  font-size: 12px; font-family: 'Poppins', sans-serif;
-  background: #ffffff !important; color: #000000 !important;
-  outline: none; -webkit-appearance: none;
-}
-.webhook-input:focus { box-shadow: 0 0 0 2px #4ecca3; }
-.webhook-input::placeholder { color: #aaa; font-size: 11px; }
-
-/* Badge helper */
-.section-badge {
-  display: inline-block;
-  background: rgba(78,204,163,0.15);
-  color: #4ecca3;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 20px;
-  margin-left: 8px;
-  letter-spacing: 0.5px;
-  vertical-align: middle;
-}
-
-.hint-text {
-  font-size: 10px;
-  color: rgba(255,255,255,0.35);
-  margin-top: 4px;
-  padding-left: 2px;
-  line-height: 1.5;
-}
-
+/* ===== SAVE BAR ===== */
 .save-bar {
   position: fixed; bottom: 0; left: 0; right: 0;
   background: #062e2a;
@@ -146,6 +177,7 @@ body {
 }
 .save-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #041f1c; }
 
+/* ===== OVERLAY & SIDE MENU ===== */
 .overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0); display: none; z-index: 9;
@@ -153,7 +185,6 @@ body {
   transition: background 0.35s ease, backdrop-filter 0.35s ease;
 }
 .overlay.active { background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); }
-
 .side-menu {
   position: fixed; top: 0; left: 0; width: 260px; height: 100%;
   background: #0d4f47; transform: translateX(-100%);
@@ -217,6 +248,7 @@ body {
 }
 .menu-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 10px; }
 
+/* ===== TOAST ===== */
 .toast {
   position: fixed; bottom: 90px; left: 50%;
   transform: translateX(-50%) translateY(20px);
@@ -227,6 +259,12 @@ body {
   z-index: 200; white-space: nowrap; pointer-events: none;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ===== DIVIDER ===== */
+.section-divider {
+  height: 1px; background: rgba(255,255,255,0.07);
+  margin: 4px 0 14px;
+}
 </style>
 </head>
 <body>
@@ -262,84 +300,143 @@ body {
     <img src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png" alt="Logo Geolin">
   </div>
 
-  <!-- SECTION: WEBHOOK -->
-  <div class="section-card">
-    <div class="section-title">Webhook URL</div>
-    <div class="webhook-row">
-      <div class="webhook-label">Webhook Follow Up</div>
-      <input class="webhook-input" type="url" id="webhookFollowUp" placeholder="https://n8n.../webhook/...">
-    </div>
-    <div class="webhook-row">
-      <div class="webhook-label">Webhook Send Event</div>
-      <input class="webhook-input" type="url" id="webhookSendEvent" placeholder="https://n8n.../webhook/...">
-    </div>
-    <div class="webhook-row">
-      <div class="webhook-label">Webhook Cari Promo</div>
-      <input class="webhook-input" type="url" id="webhookCariPromo" placeholder="https://n8n.../webhook/...">
-    </div>
+  <!-- TAB NAVIGATION -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('followup')">Follow Up</button>
+    <button class="tab-btn" onclick="switchTab('sendevent')">Send Event</button>
+    <button class="tab-btn" onclick="switchTab('caripromo')">Cari Promo</button>
   </div>
 
-  <!-- SECTION: SPREADSHEET (BARU) -->
-  <div class="section-card">
-    <div class="section-title">
-      Google Spreadsheet
-      <span class="section-badge">Cari Promo</span>
-    </div>
-    <div class="webhook-row">
-      <div class="webhook-label">URL Spreadsheet</div>
-      <input class="webhook-input" type="url" id="spreadsheetUrl"
-        placeholder="https://docs.google.com/spreadsheets/d/...">
-      <div class="hint-text">💡 Tempel URL lengkap Google Spreadsheet</div>
-    </div>
-    <div class="webhook-row">
-      <div class="webhook-label">ID Sheet</div>
-      <input class="webhook-input" type="text" id="sheetId"
-        placeholder="Sheet1 atau nama tab sheet">
-      <div class="hint-text">💡 ID sheet di bagian akhir URL Spreadsheet, misalnya: <strong style="color:#4ecca3">1064858876</strong></div>
-    </div>
-  </div>
+  <!-- ============================================================ -->
+  <!-- TAB: FOLLOW UP -->
+  <!-- ============================================================ -->
+  <div class="tab-panel active" id="tab-followup">
 
-  <!-- SECTION: PIXEL -->
-  <div class="section-card">
-    <div class="section-title">Pixel Tujuan</div>
-    <div class="input-group">
-      <input type="text" id="pixelId" placeholder="ID Pixel">
-      <input type="text" id="pixelNama" placeholder="Nama Pixel">
-      <input type="text" id="pixelToken" placeholder="Token Pixel">
+    <!-- Webhook Follow Up -->
+    <div class="section-card">
+      <div class="section-title">🔗 Webhook</div>
+      <div class="webhook-row">
+        <div class="webhook-label">URL Webhook Follow Up</div>
+        <input class="webhook-input" type="url" id="webhookFollowUp" placeholder="https://n8n.../webhook/...">
+      </div>
     </div>
-    <button class="add-btn" onclick="tambahPixel()">+ Tambah Pixel</button>
-    <div class="item-list" id="listPixel">
-      <div class="empty-text" id="emptyPixel">Belum ada pixel ditambahkan</div>
-    </div>
-  </div>
 
-  <!-- SECTION: AKUN WA -->
-  <div class="section-card">
-    <div class="section-title">Akun WhatsApp</div>
-    <div class="input-group">
-      <input type="text" id="akunNama" placeholder="Nama Akun">
-      <input type="text" id="akunSession" placeholder="Nama Session">
-      <input type="text" id="akunLabel" placeholder="ID Label">
+    <!-- Akun WhatsApp -->
+    <div class="section-card">
+      <div class="section-title">📱 Akun WhatsApp</div>
+      <div class="input-group">
+        <input type="text" id="akunNama" placeholder="Nama Akun">
+        <input type="text" id="akunSession" placeholder="Nama Session">
+        <input type="text" id="akunLabel" placeholder="ID Label">
+      </div>
+      <button class="add-btn" onclick="tambahAkun()">+ Tambah Akun WA</button>
+      <div class="item-list" id="listAkun">
+        <div class="empty-text" id="emptyAkun">Belum ada akun ditambahkan</div>
+      </div>
     </div>
-    <button class="add-btn" onclick="tambahAkun()">+ Tambah Akun WA</button>
-    <div class="item-list" id="listAkun">
-      <div class="empty-text" id="emptyAkun">Belum ada akun ditambahkan</div>
-    </div>
-  </div>
 
-  <!-- SECTION: AKSI FOLLOW UP -->
-  <div class="section-card">
-    <div class="section-title">Teks Aksi Follow Up</div>
-    <div class="input-group">
-      <input type="text" id="aksiValue" placeholder="Value (kode)">
-      <input type="text" id="aksiLabel" placeholder="Teks Tampilan">
+    <!-- Teks Aksi Follow Up -->
+    <div class="section-card">
+      <div class="section-title">💬 Teks Aksi Follow Up</div>
+      <div class="input-group">
+        <input type="text" id="aksiValue" placeholder="Value (kode)">
+        <input type="text" id="aksiLabel" placeholder="Teks Tampilan">
+      </div>
+      <button class="add-btn" onclick="tambahAksi()">+ Tambah Aksi</button>
+      <div class="item-list" id="listAksi">
+        <div class="empty-text" id="emptyAksi">Belum ada aksi ditambahkan</div>
+      </div>
     </div>
-    <button class="add-btn" onclick="tambahAksi()">+ Tambah Aksi</button>
-    <div class="item-list" id="listAksi">
-      <div class="empty-text" id="emptyAksi">Belum ada aksi ditambahkan</div>
+
+  </div><!-- /tab-followup -->
+
+  <!-- ============================================================ -->
+  <!-- TAB: SEND EVENT -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-sendevent">
+
+    <!-- Webhook Send Event -->
+    <div class="section-card">
+      <div class="section-title">🔗 Webhook</div>
+      <div class="webhook-row">
+        <div class="webhook-label">URL Webhook Send Event</div>
+        <input class="webhook-input" type="url" id="webhookSendEvent" placeholder="https://n8n.../webhook/...">
+      </div>
     </div>
-  </div>
-</div>
+
+    <!-- Google Spreadsheet (Send Event) -->
+    <div class="section-card">
+      <div class="section-title">
+        📊 Google Spreadsheet
+        <span class="section-badge">Send Event</span>
+      </div>
+      <div class="webhook-row">
+        <div class="webhook-label">URL Spreadsheet</div>
+        <input class="webhook-input" type="url" id="spreadsheetUrlSE"
+          placeholder="https://docs.google.com/spreadsheets/d/...">
+        <div class="hint-text">💡 Tempel URL lengkap Google Spreadsheet</div>
+      </div>
+      <div class="webhook-row">
+        <div class="webhook-label">ID Sheet</div>
+        <input class="webhook-input" type="text" id="sheetIdSE"
+          placeholder="Sheet1 atau nama tab sheet">
+        <div class="hint-text">💡 ID sheet di bagian akhir URL Spreadsheet, misalnya: <strong style="color:#4ecca3">1064858876</strong></div>
+      </div>
+    </div>
+
+    <!-- Pixel Tujuan (Send Event) -->
+    <div class="section-card">
+      <div class="section-title">🎯 Pixel Tujuan</div>
+      <div class="input-group">
+        <input type="text" id="pixelId" placeholder="ID Pixel">
+        <input type="text" id="pixelNama" placeholder="Nama Pixel">
+        <input type="text" id="pixelToken" placeholder="Token Pixel">
+      </div>
+      <button class="add-btn" onclick="tambahPixel()">+ Tambah Pixel</button>
+      <div class="item-list" id="listPixel">
+        <div class="empty-text" id="emptyPixel">Belum ada pixel ditambahkan</div>
+      </div>
+    </div>
+
+  </div><!-- /tab-sendevent -->
+
+  <!-- ============================================================ -->
+  <!-- TAB: CARI PROMO -->
+  <!-- ============================================================ -->
+  <div class="tab-panel" id="tab-caripromo">
+
+    <!-- Webhook Cari Promo -->
+    <div class="section-card">
+      <div class="section-title">🔗 Webhook</div>
+      <div class="webhook-row">
+        <div class="webhook-label">URL Webhook Cari Promo</div>
+        <input class="webhook-input" type="url" id="webhookCariPromo" placeholder="https://n8n.../webhook/...">
+      </div>
+    </div>
+
+    <!-- Google Spreadsheet (Cari Promo) -->
+    <div class="section-card">
+      <div class="section-title">
+        📊 Google Spreadsheet
+        <span class="section-badge">Cari Promo</span>
+      </div>
+      <div class="webhook-row">
+        <div class="webhook-label">URL Spreadsheet</div>
+        <input class="webhook-input" type="url" id="spreadsheetUrl"
+          placeholder="https://docs.google.com/spreadsheets/d/...">
+        <div class="hint-text">💡 Tempel URL lengkap Google Spreadsheet</div>
+      </div>
+      <div class="webhook-row">
+        <div class="webhook-label">ID Sheet</div>
+        <input class="webhook-input" type="text" id="sheetId"
+          placeholder="Sheet1 atau nama tab sheet">
+        <div class="hint-text">💡 ID sheet di bagian akhir URL Spreadsheet, misalnya: <strong style="color:#4ecca3">1064858876</strong></div>
+      </div>
+    </div>
+
+  </div><!-- /tab-caripromo -->
+
+</div><!-- /container -->
 
 <div class="save-bar">
   <div class="save-bar-inner">
@@ -350,6 +447,7 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
+/* ===== STORAGE HELPERS ===== */
 function getData(key) {
   try { return JSON.parse(localStorage.getItem(key)) || []; }
   catch { return []; }
@@ -358,21 +456,67 @@ function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); 
 function getString(key) { return localStorage.getItem(key) || ""; }
 function saveString(key, val) { localStorage.setItem(key, val); }
 
+/* ===== TOAST ===== */
 function showToast(msg) {
   const t = document.getElementById("toast");
   t.innerText = msg; t.classList.add("show");
   setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-function loadWebhooks() {
+/* ===== TAB SWITCHING ===== */
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+/* ===== LOAD ALL DATA ===== */
+function loadAll() {
+  // Webhooks
   document.getElementById("webhookFollowUp").value  = getString("geolin_webhook_fu");
   document.getElementById("webhookSendEvent").value = getString("geolin_webhook_se");
   document.getElementById("webhookCariPromo").value = getString("geolin_webhook_cari_promo");
-  // Spreadsheet
-  document.getElementById("spreadsheetUrl").value   = getString("geolin_spreadsheet_url");
-  document.getElementById("sheetId").value          = getString("geolin_sheet_id");
+
+  // Spreadsheet — Cari Promo (key lama tetap sama agar tidak hilang)
+  document.getElementById("spreadsheetUrl").value = getString("geolin_spreadsheet_url");
+  document.getElementById("sheetId").value        = getString("geolin_sheet_id");
+
+  // Spreadsheet — Send Event (key baru)
+  document.getElementById("spreadsheetUrlSE").value = getString("geolin_spreadsheet_url_se");
+  document.getElementById("sheetIdSE").value        = getString("geolin_sheet_id_se");
+
+  renderPixel();
+  renderAkun();
+  renderAksi();
 }
 
+/* ===== SIMPAN SEMUA ===== */
+function simpanSemua() {
+  // Webhooks
+  saveString("geolin_webhook_fu",         document.getElementById("webhookFollowUp").value.trim());
+  saveString("geolin_webhook_se",         document.getElementById("webhookSendEvent").value.trim());
+  saveString("geolin_webhook_cari_promo", document.getElementById("webhookCariPromo").value.trim());
+
+  // Spreadsheet Cari Promo (key lama — tidak diganti agar cari-promo.html tetap jalan)
+  saveString("geolin_spreadsheet_url",    document.getElementById("spreadsheetUrl").value.trim());
+  saveString("geolin_sheet_id",           document.getElementById("sheetId").value.trim());
+
+  // Spreadsheet Send Event (key baru)
+  saveString("geolin_spreadsheet_url_se", document.getElementById("spreadsheetUrlSE").value.trim());
+  saveString("geolin_sheet_id_se",        document.getElementById("sheetIdSE").value.trim());
+
+  const btn = document.getElementById("saveBtn");
+  btn.innerText = "✅ Tersimpan!";
+  btn.style.background = "linear-gradient(135deg, #2d8f72, #1a6b5c)";
+  showToast("✅ Semua pengaturan berhasil disimpan!");
+  setTimeout(() => {
+    btn.innerText = "Simpan Pengaturan";
+    btn.style.background = "";
+  }, 2000);
+}
+
+/* ===== PIXEL ===== */
 function tambahPixel() {
   const id    = document.getElementById("pixelId").value.trim();
   const nama  = document.getElementById("pixelNama").value.trim();
@@ -407,6 +551,7 @@ function renderPixel() {
   });
 }
 
+/* ===== AKUN WA ===== */
 function tambahAkun() {
   const nama    = document.getElementById("akunNama").value.trim();
   const session = document.getElementById("akunSession").value.trim();
@@ -441,6 +586,7 @@ function renderAkun() {
   });
 }
 
+/* ===== AKSI FOLLOW UP ===== */
 function tambahAksi() {
   const value = document.getElementById("aksiValue").value.trim();
   const label = document.getElementById("aksiLabel").value.trim();
@@ -473,24 +619,7 @@ function renderAksi() {
   });
 }
 
-function simpanSemua() {
-  saveString("geolin_webhook_fu",         document.getElementById("webhookFollowUp").value.trim());
-  saveString("geolin_webhook_se",         document.getElementById("webhookSendEvent").value.trim());
-  saveString("geolin_webhook_cari_promo", document.getElementById("webhookCariPromo").value.trim());
-  // Simpan spreadsheet
-  saveString("geolin_spreadsheet_url",    document.getElementById("spreadsheetUrl").value.trim());
-  saveString("geolin_sheet_id",           document.getElementById("sheetId").value.trim());
-
-  const btn = document.getElementById("saveBtn");
-  btn.innerText = "✅ Tersimpan!";
-  btn.style.background = "linear-gradient(135deg, #2d8f72, #1a6b5c)";
-  showToast("✅ Semua pengaturan berhasil disimpan!");
-  setTimeout(() => {
-    btn.innerText = "Simpan Pengaturan";
-    btn.style.background = "";
-  }, 2000);
-}
-
+/* ===== SIDE MENU ===== */
 function openMenu() {
   const menu = document.getElementById("sideMenu");
   const overlay = document.getElementById("overlay");
@@ -506,10 +635,7 @@ function closeMenu() {
   setTimeout(() => { overlay.style.display = "none"; }, 380);
 }
 
-loadWebhooks();
-renderPixel();
-renderAkun();
-renderAksi();
+loadAll();
 </script>
 </body>
 </html>
