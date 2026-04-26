@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bantuan - Geolin Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0b423c">
+<link rel="icon" href="icon-192.png">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #0b423c;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+
+/* ===== TOPBAR ===== */
+.topbar { padding: 5px; }
+.menu-btn {
+  font-size: 24px; color: white; cursor: pointer;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; transition: background 0.2s;
+}
+.menu-btn:hover { background: rgba(255,255,255,0.1); }
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 420px; width: 100%;
+  margin: 0 auto;
+  padding: 0 15px 60px;
+  flex: 1;
+}
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 10px 0 24px;
+}
+.hero img { width: 110px; max-width: 75%; margin-bottom: 14px; }
+.hero-title {
+  font-size: 20px; font-weight: 700; color: #fff; line-height: 1.3;
+}
+.hero-sub {
+  font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 5px;
+}
+
+/* ===== TAB NAVIGASI ===== */
+.tab-bar {
+  display: flex; gap: 6px; margin-bottom: 16px;
+  overflow-x: auto; padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 8px 14px; border-radius: 20px; border: none;
+  font-size: 12px; font-weight: 600; font-family: 'Poppins', sans-serif;
+  cursor: pointer; white-space: nowrap; transition: all 0.2s;
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6);
+}
+.tab-btn.active {
+  background: #4ecca3; color: #062e2a;
+}
+.tab-btn:active { transform: scale(0.96); }
+
+/* ===== SECTION PANEL ===== */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeUp 0.25s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CARD UMUM ===== */
+.card {
+  background: rgba(255,255,255,0.07);
+  border-radius: 16px; padding: 16px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.card-title {
+  font-size: 13px; font-weight: 700; color: #4ecca3;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.card-title .icon {
+  font-size: 17px; flex-shrink: 0;
+}
+
+/* ===== STEP LIST ===== */
+.step-list { display: flex; flex-direction: column; gap: 10px; }
+.step {
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.step-num {
+  width: 24px; height: 24px; min-width: 24px;
+  background: #4ecca3; color: #062e2a;
+  font-size: 11px; font-weight: 700;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.step-text {
+  font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.6;
+}
+.step-text strong { color: #fff; }
+.step-text .code {
+  display: inline-block;
+  background: rgba(78,204,163,0.15);
+  color: #4ecca3; font-size: 11px;
+  padding: 1px 7px; border-radius: 6px;
+  font-family: monospace; letter-spacing: 0.3px;
+}
+
+/* ===== INFO BOX ===== */
+.info-box {
+  padding: 10px 13px;
+  background: rgba(78,204,163,0.1);
+  border: 1px solid rgba(78,204,163,0.2);
+  border-radius: 10px; margin-top: 10px;
+  font-size: 11px; color: rgba(255,255,255,0.65); line-height: 1.6;
+}
+.info-box strong { color: #4ecca3; }
+.warn-box {
+  padding: 10px 13px;
+  background: rgba(230,126,34,0.1);
+  border: 1px solid rgba(230,126,34,0.25);
+  border-radius: 10px; margin-top: 10px;
+  font-size: 11px; color: rgba(255,255,255,0.65); line-height: 1.6;
+}
+.warn-box strong { color: #e67e22; }
+
+/* ===== ALUR DIAGRAM ===== */
+.flow {
+  display: flex; flex-direction: column; gap: 0;
+  margin: 4px 0;
+}
+.flow-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px; margin-bottom: 3px;
+  font-size: 12px; color: rgba(255,255,255,0.8);
+}
+.flow-item .fi-icon { font-size: 16px; flex-shrink: 0; }
+.flow-item .fi-label { flex: 1; }
+.flow-item .fi-label strong { color: #fff; display: block; font-size: 12px; }
+.flow-item .fi-label span { font-size: 10px; color: rgba(255,255,255,0.45); }
+.flow-arrow {
+  text-align: center; color: rgba(78,204,163,0.6);
+  font-size: 16px; line-height: 1; margin: 1px 0;
+  padding-left: 22px;
+}
+
+/* ===== STATUS BADGE ===== */
+.status-list { display: flex; flex-direction: column; gap: 7px; margin-top: 6px; }
+.status-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 12px; border-radius: 10px;
+}
+.status-row.ok    { background: rgba(11,158,114,0.15); }
+.status-row.warn  { background: rgba(230,126,34,0.15); }
+.status-row.error { background: rgba(192,57,43,0.15); }
+.status-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.status-text { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.55; }
+.status-text strong { color: #fff; }
+
+/* ===== KEY VALUE ===== */
+.kv-list { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+.kv-row {
+  display: flex; align-items: flex-start; gap: 0;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px; overflow: hidden;
+}
+.kv-key {
+  font-size: 10px; font-weight: 700; color: #4ecca3;
+  background: rgba(78,204,163,0.12);
+  padding: 8px 10px; min-width: 110px;
+  letter-spacing: 0.3px; flex-shrink: 0;
+  display: flex; align-items: center;
+}
+.kv-val {
+  font-size: 11px; color: rgba(255,255,255,0.75);
+  padding: 8px 10px; line-height: 1.5; flex: 1;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center; color: rgba(255,255,255,0.3);
+  font-size: 10px; padding: 20px 0 50px;
+}
+
+/* ===== SIDE MENU ===== */
+.overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0); display: none; z-index: 9;
+  backdrop-filter: blur(0px);
+  transition: background 0.35s ease, backdrop-filter 0.35s ease;
+}
+.overlay.active { background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); }
+.side-menu {
+  position: fixed; top: 0; left: 0; width: 260px; height: 100%;
+  background: #0d4f47; transform: translateX(-100%);
+  transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+  z-index: 10; box-shadow: 6px 0 30px rgba(0,0,0,0.4);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.side-menu.open { transform: translateX(0); }
+.menu-header {
+  background: #062e2a; padding: 50px 20px 24px;
+  position: relative; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.menu-header-logo { width: 100px; margin-bottom: 10px; display: block; }
+.menu-header-title { font-size: 18px; font-weight: 600; color: #fff; }
+.menu-header-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.menu-close-btn {
+  position: absolute; top: 14px; right: 14px;
+  width: 32px; height: 32px; background: rgba(255,255,255,0.1);
+  border: none; border-radius: 8px; color: #fff; font-size: 16px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s; font-family: 'Poppins', sans-serif;
+}
+.menu-close-btn:hover { background: rgba(255,255,255,0.2); }
+.menu-body { flex: 1; padding: 16px 12px; overflow-y: auto; }
+.menu-section-label {
+  font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.35);
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 10px 4px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 14px; border-radius: 12px; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  color: rgba(255,255,255,0.85); font-size: 14px; font-weight: 400;
+  position: relative; overflow: hidden;
+}
+.menu-item::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0); transition: background 0.2s; border-radius: 12px;
+}
+.menu-item:hover::before { background: rgba(255,255,255,0.07); }
+.menu-item:active { transform: scale(0.98); }
+.menu-item.active { background: rgba(255,255,255,0.12); color: #fff; font-weight: 600; }
+.menu-item.active::after {
+  content: ''; position: absolute; left: 0; top: 20%; height: 60%; width: 3px;
+  background: #4ecca3; border-radius: 0 3px 3px 0;
+}
+.menu-icon { font-size: 18px; width: 22px; text-align: center; flex-shrink: 0; }
+.side-menu.open .menu-item { animation: slideInItem 0.3s ease both; }
+.side-menu.open .menu-item:nth-child(1) { animation-delay: 0.05s; }
+.side-menu.open .menu-item:nth-child(2) { animation-delay: 0.1s; }
+.side-menu.open .menu-item:nth-child(3) { animation-delay: 0.15s; }
+.side-menu.open .menu-item:nth-child(4) { animation-delay: 0.2s; }
+.side-menu.open .menu-item:nth-child(5) { animation-delay: 0.25s; }
+@keyframes slideInItem {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.menu-footer {
+  padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 11px; color: rgba(255,255,255,0.3); text-align: center;
+}
+.menu-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 10px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="menu-btn" onclick="openMenu()">☰</div>
+</div>
+
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+<div id="sideMenu" class="side-menu">
+  <div class="menu-header">
+    <button class="menu-close-btn" onclick="closeMenu()">✕</button>
+    <img class="menu-header-logo" src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png" alt="Logo">
+    <div class="menu-header-title">Geolin Group</div>
+    <div class="menu-header-sub">Tools v1.0</div>
+  </div>
+  <div class="menu-body">
+    <div class="menu-section-label">Navigasi</div>
+    <div class="menu-item" onclick="window.location.href='follup-tools.html'">Follow up</div>
+    <div class="menu-item" onclick="window.location.href='Send Evend.html'">Send Event</div>
+    <div class="menu-item" onclick="window.location.href='cari-promo.html'">Cari Kode Promo</div>
+    <div class="menu-divider"></div>
+    <div class="menu-section-label">Lainnya</div>
+    <div class="menu-item" onclick="window.location.href='pengaturan.html'"><span class="menu-icon">⚙️</span> Pengaturan</div>
+    <div class="menu-item active"><span class="menu-icon">❓</span> Bantuan</div>
+  </div>
+  <div class="menu-footer">© 2026 Geolin Group</div>
+</div>
+
+<div class="container">
+  <div class="hero">
+    <img src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png" alt="Logo Geolin">
+    <div class="hero-title">Panduan Penggunaan</div>
+    <div class="hero-sub">Geolin Tools v1.0 — Pilih topik di bawah</div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('mulai')">🚀 Mulai</button>
+    <button class="tab-btn" onclick="showTab('pengaturan')">⚙️ Pengaturan</button>
+    <button class="tab-btn" onclick="showTab('followup')">💬 Follow Up</button>
+    <button class="tab-btn" onclick="showTab('sendevent')">📡 Send Event</button>
+    <button class="tab-btn" onclick="showTab('caripromo')">🔍 Cari Promo</button>
+    <button class="tab-btn" onclick="showTab('n8n')">🔧 n8n</button>
+  </div>
+
+  <!-- ==================== TAB: MULAI ==================== -->
+  <div class="tab-panel active" id="tab-mulai">
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📱</span> Apa itu Geolin Tools?</div>
+      <div class="step-text" style="margin-bottom:10px">
+        Geolin Tools adalah aplikasi web yang membantu tim marketing mengelola tiga hal utama secara otomatis melalui n8n:
+      </div>
+      <div class="flow">
+        <div class="flow-item">
+          <span class="fi-icon">💬</span>
+          <div class="fi-label">
+            <strong>Follow Up</strong>
+            <span>Kirim pesan WA massal ke kontak berlabel via WAHA + AI Gemini</span>
+          </div>
+        </div>
+        <div class="flow-item">
+          <span class="fi-icon">📡</span>
+          <div class="fi-label">
+            <strong>Send Event</strong>
+            <span>Kirim event Purchase ke Facebook CAPI berdasarkan kode promo</span>
+          </div>
+        </div>
+        <div class="flow-item">
+          <span class="fi-icon">🔍</span>
+          <div class="fi-label">
+            <strong>Cari Kode Promo</strong>
+            <span>Temukan kode promo customer berdasarkan waktu pesan masuk</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">✅</span> Urutan Setup Awal</div>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Import semua workflow n8n (<strong>Follow Up, Send Event, Lacak Waktu</strong>) ke akun n8n kamu</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Aktifkan semua workflow di n8n — pastikan statusnya <strong>Active</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Salin URL webhook dari setiap workflow di n8n</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Buka halaman <strong>Pengaturan</strong> di aplikasi ini, isi semua webhook URL dan data lainnya</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text">Klik <strong>Simpan Pengaturan</strong> — lalu siap digunakan!</div>
+        </div>
+      </div>
+      <div class="info-box">
+        💡 Pengaturan disimpan di browser masing-masing device. Setiap device/user perlu mengisi pengaturan sendiri.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🗂️</span> File yang Tersedia</div>
+      <div class="kv-list">
+        <div class="kv-row">
+          <div class="kv-key">follup-tools.html</div>
+          <div class="kv-val">Halaman Follow Up WA</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Send Evend.html</div>
+          <div class="kv-val">Halaman Send Event ke FB CAPI</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">cari-promo.html</div>
+          <div class="kv-val">Halaman Cari Kode Promo</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">pengaturan.html</div>
+          <div class="kv-val">Halaman konfigurasi semua data</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">auto_foll_up.json</div>
+          <div class="kv-val">Workflow n8n Follow Up</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">upload_data_evend.json</div>
+          <div class="kv-val">Workflow n8n Send Event</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">lacak_waktu.json</div>
+          <div class="kv-val">Workflow n8n Cari Kode Promo</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-mulai -->
+
+  <!-- ==================== TAB: PENGATURAN ==================== -->
+  <div class="tab-panel" id="tab-pengaturan">
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔗</span> Webhook URL</div>
+      <div class="step-text" style="margin-bottom:10px">Isi URL webhook sesuai workflow n8n yang sudah diaktifkan:</div>
+      <div class="kv-list">
+        <div class="kv-row">
+          <div class="kv-key">Follow Up</div>
+          <div class="kv-val">URL webhook dari workflow <em>auto_foll_up</em></div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Send Event</div>
+          <div class="kv-val">URL webhook dari workflow <em>upload_data_evend</em></div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Cari Promo</div>
+          <div class="kv-val">URL webhook dari workflow <em>lacak_waktu</em></div>
+        </div>
+      </div>
+      <div class="info-box">
+        💡 Cara dapat URL webhook: di n8n buka node <strong>Webhook</strong> → klik <strong>Copy URL</strong> → tempel di sini.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span> Google Spreadsheet</div>
+      <div class="step-text" style="margin-bottom:10px">Digunakan khusus untuk fitur <strong>Cari Kode Promo</strong>:</div>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>URL Spreadsheet</strong> — tempel URL lengkap Google Sheet yang berisi data kode promo, contoh:<br>
+            <span class="code">https://docs.google.com/spreadsheets/d/1ABC.../edit</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>ID Sheet</strong> — isi dengan ID numerik tab sheet. Cara cari: lihat URL setelah <span class="code">#gid=</span><br>
+            Contoh: <span class="code">0</span> atau <span class="code">1064858876</span>
+          </div>
+        </div>
+      </div>
+      <div class="warn-box">
+        ⚠️ Pastikan akun Google Sheets di n8n sudah punya <strong>akses baca</strong> ke spreadsheet ini.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📺</span> Pixel Facebook</div>
+      <div class="step-text" style="margin-bottom:10px">Data pixel digunakan oleh fitur <strong>Send Event</strong>:</div>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>ID Pixel</strong> — angka ID pixel dari Meta Business Suite</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Nama Pixel</strong> — nama bebas untuk membedakan pixel (misal: Pixel Tokped)</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>Token Pixel</strong> — Access Token dari Meta Events Manager → Pengaturan → Generate Access Token</div>
+        </div>
+      </div>
+      <div class="info-box">
+        💡 Bisa menambahkan banyak pixel. Saat Send Event, pilih pixel mana yang ingin digunakan.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📱</span> Akun WhatsApp</div>
+      <div class="step-text" style="margin-bottom:10px">Data akun WA digunakan oleh fitur <strong>Follow Up</strong>:</div>
+      <div class="kv-list">
+        <div class="kv-row">
+          <div class="kv-key">Nama Akun</div>
+          <div class="kv-val">Nama bebas untuk membedakan akun WA (misal: WA Marketing 1)</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Nama Session</div>
+          <div class="kv-val">Nama session dari WAHA yang sudah login (misal: <span style="color:#4ecca3">default</span>)</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">ID Label</div>
+          <div class="kv-val">ID label WA yang berisi kontak target follow up</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚡</span> Teks Aksi Follow Up</div>
+      <div class="step-text" style="margin-bottom:10px">Daftar aksi/template yang bisa dipilih saat Follow Up:</div>
+      <div class="kv-list">
+        <div class="kv-row">
+          <div class="kv-key">Value</div>
+          <div class="kv-val">Kode aksi yang dikirim ke n8n (misal: <span style="color:#4ecca3">followup_1</span>)</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Teks Tampilan</div>
+          <div class="kv-val">Nama yang tampil di dropdown (misal: Follow Up Hari 1)</div>
+        </div>
+      </div>
+      <div class="info-box">
+        💡 Value ini yang diterima n8n di field <strong>aksi</strong>, sesuaikan dengan logika kondisi di workflow.
+      </div>
+    </div>
+
+  </div><!-- /tab-pengaturan -->
+
+  <!-- ==================== TAB: FOLLOW UP ==================== -->
+  <div class="tab-panel" id="tab-followup">
+
+    <div class="card">
+      <div class="card-title"><span class="icon">💬</span> Apa itu Follow Up?</div>
+      <div class="step-text">
+        Fitur ini mengirim pesan WhatsApp otomatis ke semua kontak yang memiliki <strong>label tertentu</strong> di WA. Pesan dibuat oleh AI Google Gemini dan dikirim satu per satu secara berurutan via <strong>WAHA</strong>.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span> Cara Menggunakan</div>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Buka halaman <strong>Follow Up</strong> dari menu</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Pilih <strong>Akun WA</strong> yang akan digunakan untuk mengirim</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Pilih <strong>Aksi</strong> (template pesan follow up yang ingin dikirim)</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Klik <strong>Proses Sekarang</strong> — tunggu konfirmasi sukses</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text">n8n akan memproses pengiriman ke semua kontak berlabel secara otomatis di background</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        ⚠️ Jangan klik berulang kali — satu klik sudah memulai semua proses di n8n.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚙️</span> Alur Proses n8n</div>
+      <div class="flow">
+        <div class="flow-item">
+          <span class="fi-icon">🌐</span>
+          <div class="fi-label">
+            <strong>Webhook menerima request</strong>
+            <span>Menerima: session, id_label, aksi</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">🏷️</span>
+          <div class="fi-label">
+            <strong>Get All Labels</strong>
+            <span>Ambil semua label dari WA session</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">👥</span>
+          <div class="fi-label">
+            <strong>Get Chats by Label</strong>
+            <span>Ambil semua kontak dengan label tersebut</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">🔄</span>
+          <div class="fi-label">
+            <strong>Loop Over Items</strong>
+            <span>Proses setiap kontak satu per satu</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">🤖</span>
+          <div class="fi-label">
+            <strong>Google Gemini AI</strong>
+            <span>Generate teks pesan follow up</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">💬</span>
+          <div class="fi-label">
+            <strong>Send via WAHA</strong>
+            <span>Kirim pesan + gambar ke nomor WA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚠️</span> Prasyarat</div>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">✓</div>
+          <div class="step-text">WAHA sudah berjalan dan session sudah <strong>login/aktif</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">✓</div>
+          <div class="step-text">Kontak sudah diberi <strong>label</strong> di WA sebelum follow up dijalankan</div>
+        </div>
+        <div class="step">
+          <div class="step-num">✓</div>
+          <div class="step-text">Workflow n8n Follow Up sudah <strong>aktif</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">✓</div>
+          <div class="step-text">Google Gemini credentials sudah dikonfigurasi di n8n</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-followup -->
+
+  <!-- ==================== TAB: SEND EVENT ==================== -->
+  <div class="tab-panel" id="tab-sendevent">
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📡</span> Apa itu Send Event?</div>
+      <div class="step-text">
+        Fitur ini mengirim event <strong>Purchase</strong> ke <strong>Facebook Conversions API (CAPI)</strong> berdasarkan kode promo yang dimasukkan. Data diambil dari Google Sheets dan dikirim ke Meta untuk optimasi iklan.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span> Cara Menggunakan</div>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Buka halaman <strong>Send Event</strong> dari menu</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Pilih <strong>Pixel Tujuan</strong> yang ingin menerima event</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Masukkan <strong>Kode Promo</strong> yang diberikan customer</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Masukkan <strong>Nomor User</strong> (nomor HP customer)</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text">Klik <strong>Proses Sekarang</strong> → konfirmasi di popup → tunggu hasil</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚙️</span> Alur Proses n8n</div>
+      <div class="flow">
+        <div class="flow-item">
+          <span class="fi-icon">🌐</span>
+          <div class="fi-label">
+            <strong>Webhook menerima data</strong>
+            <span>pixel_id, pixel_token, kode_promo, nomor_user</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">📊</span>
+          <div class="fi-label">
+            <strong>Cari di Google Sheets</strong>
+            <span>Cari kode promo di sheet data</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">🔀</span>
+          <div class="fi-label">
+            <strong>Cek duplikat</strong>
+            <span>Jika sudah pernah dikirim → tolak</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">🔐</span>
+          <div class="fi-label">
+            <strong>Hash data (Crypto)</strong>
+            <span>Nomor user di-hash SHA256 untuk privasi</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">📤</span>
+          <div class="fi-label">
+            <strong>Kirim ke Facebook CAPI</strong>
+            <span>HTTP request ke graph.facebook.com</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">✅</span>
+          <div class="fi-label">
+            <strong>Update Sheet</strong>
+            <span>Tandai data sudah dikirim di Sheets</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔔</span> Arti Notifikasi</div>
+      <div class="status-list">
+        <div class="status-row ok">
+          <span class="status-icon">✅</span>
+          <div class="status-text"><strong>Event Berhasil Dikirim</strong> — Data Purchase sukses terkirim ke Facebook CAPI</div>
+        </div>
+        <div class="status-row warn">
+          <span class="status-icon">⚠️</span>
+          <div class="status-text"><strong>Data Sudah Ada</strong> — Kode promo ini sudah pernah dikirim, tidak perlu kirim ulang</div>
+        </div>
+        <div class="status-row error">
+          <span class="status-icon">🔍</span>
+          <div class="status-text"><strong>Event Tidak Ditemukan</strong> — Kode promo tidak ada di database Google Sheets</div>
+        </div>
+        <div class="status-row error">
+          <span class="status-icon">❌</span>
+          <div class="status-text"><strong>Gagal Terhubung</strong> — Cek URL webhook atau koneksi internet</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-sendevent -->
+
+  <!-- ==================== TAB: CARI PROMO ==================== -->
+  <div class="tab-panel" id="tab-caripromo">
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔍</span> Apa itu Cari Kode Promo?</div>
+      <div class="step-text">
+        Fitur ini membantu mencari kode promo yang digunakan customer berdasarkan <strong>waktu pesan masuk</strong> di WhatsApp. Berguna ketika customer tidak menyebutkan kode promonya secara langsung.
+      </div>
+      <div class="info-box">
+        💡 Bisa beda tanggal — misalnya customer klik promo jam <strong>23:58</strong> tapi pesan WA masuk jam <strong>00:02</strong> keesokan harinya. Sistem tetap bisa menemukan kode promonya.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span> Cara Menggunakan</div>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Lihat waktu pesan WA customer masuk (jam dan tanggal)</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Buka halaman <strong>Cari Kode Promo</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Koreksi <strong>Waktu Pesan Masuk</strong> sesuai waktu di WA (defaultnya waktu sekarang)</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Pilih <strong>Toleransi Waktu</strong> — gunakan ± 5 menit untuk kebanyakan kasus</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text">Klik <strong>🔍 Cari Kode Promo</strong> — hasil akan muncul di bawah</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚙️</span> Alur Proses n8n</div>
+      <div class="flow">
+        <div class="flow-item">
+          <span class="fi-icon">🌐</span>
+          <div class="fi-label">
+            <strong>Webhook menerima request</strong>
+            <span>waktu_input, timestamp_target, toleransi_menit, spreadsheet_url, sheet_id</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">📊</span>
+          <div class="fi-label">
+            <strong>Baca Google Sheets</strong>
+            <span>Ambil semua baris dari sheet yang dipilih</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">🧮</span>
+          <div class="fi-label">
+            <strong>Hitung Selisih Waktu</strong>
+            <span>Bandingkan timestamp setiap baris dengan waktu target ± toleransi</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">
+          <span class="fi-icon">✅</span>
+          <div class="fi-label">
+            <strong>Kembalikan hasil</strong>
+            <span>Kode promo terdekat dalam rentang toleransi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span> Format Data di Spreadsheet</div>
+      <div class="step-text" style="margin-bottom:10px">Kolom yang wajib ada di Google Sheets:</div>
+      <div class="kv-list">
+        <div class="kv-row">
+          <div class="kv-key">timestamp</div>
+          <div class="kv-val">Waktu klik promo dalam format <strong>Unix milliseconds</strong> (angka, bukan tanggal teks)</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">promo</div>
+          <div class="kv-val">Kode promo yang digenerate saat customer klik</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">phone</div>
+          <div class="kv-val">Nomor HP customer (opsional, ditampilkan di hasil)</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">utm_campaign</div>
+          <div class="kv-val">Nama campaign iklan (opsional)</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">utm_content</div>
+          <div class="kv-val">Konten iklan (opsional)</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">fbclid</div>
+          <div class="kv-val">Facebook Click ID (opsional)</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">page</div>
+          <div class="kv-val">URL halaman yang diklik (opsional)</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        ⚠️ Kolom <strong>timestamp</strong> dan <strong>promo</strong> wajib ada. Tanpa itu pencarian tidak akan berhasil.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔔</span> Arti Hasil Pencarian</div>
+      <div class="status-list">
+        <div class="status-row ok">
+          <span class="status-icon">✅</span>
+          <div class="status-text"><strong>Kode Promo Ditemukan</strong> — Tampil kode promo, waktu klik, selisih waktu, dan info tambahan</div>
+        </div>
+        <div class="status-row error">
+          <span class="status-icon">🔍</span>
+          <div class="status-text"><strong>Tidak Ditemukan</strong> — Tidak ada data dalam rentang waktu tersebut. Coba perluas toleransi atau cek tanggalnya</div>
+        </div>
+        <div class="status-row warn">
+          <span class="status-icon">⚙️</span>
+          <div class="status-text"><strong>Spreadsheet belum lengkap</strong> — Isi URL Spreadsheet dan ID Sheet di Pengaturan terlebih dahulu</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">💡</span> Tips Toleransi Waktu</div>
+      <div class="kv-list">
+        <div class="kv-row">
+          <div class="kv-key">± 2 menit</div>
+          <div class="kv-val">Koneksi internet stabil, pesan masuk cepat</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">± 5 menit</div>
+          <div class="kv-val">Standar — cocok untuk kebanyakan kasus</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">± 10 menit</div>
+          <div class="kv-val">Koneksi lambat atau customer sempat menunggu</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">± 15 menit</div>
+          <div class="kv-val">Customer klik jauh sebelum kirim pesan WA</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-caripromo -->
+
+  <!-- ==================== TAB: N8N ==================== -->
+  <div class="tab-panel" id="tab-n8n">
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔧</span> Cara Import Workflow n8n</div>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Login ke dashboard n8n kamu</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Klik tombol <strong>+</strong> atau <strong>New Workflow</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Klik ikon <strong>⋯ (tiga titik)</strong> di kanan atas → pilih <strong>Import from File</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Upload file <span class="code">.json</span> yang tersedia</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text">Klik <strong>Save</strong> lalu aktifkan dengan toggle <strong>Active</strong> di kanan atas</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔗</span> Cara Mendapatkan URL Webhook</div>
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Buka workflow yang sudah diimport</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Klik node <strong>Webhook</strong> (node pertama berwarna hijau/oranye)</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Salin URL yang tertera di bagian <strong>Webhook URL</strong> (gunakan URL <em>Production</em>)</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Tempel URL tersebut di halaman <strong>Pengaturan</strong> sesuai fungsinya</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        ⚠️ Gunakan <strong>Production URL</strong> (bukan Test URL) agar webhook berjalan saat workflow aktif tanpa harus buka n8n.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔑</span> Credentials yang Dibutuhkan</div>
+      <div class="kv-list">
+        <div class="kv-row">
+          <div class="kv-key">Google Sheets</div>
+          <div class="kv-val">OAuth2 — digunakan di workflow Send Event & Lacak Waktu</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">Google Gemini</div>
+          <div class="kv-val">API Key — digunakan di workflow Follow Up untuk generate pesan</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-key">WAHA</div>
+          <div class="kv-val">URL + API Key WAHA — digunakan di workflow Follow Up</div>
+        </div>
+      </div>
+      <div class="info-box">
+        💡 Credentials diatur di n8n → <strong>Settings → Credentials</strong>. Setiap node yang membutuhkan credentials akan menampilkan dropdown untuk memilihnya.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🗂️</span> Ringkasan Workflow</div>
+
+      <div style="margin-bottom:12px">
+        <div class="step-text" style="color:#4ecca3; font-weight:700; margin-bottom:6px">📁 auto_foll_up.json (Follow Up)</div>
+        <div class="step-list">
+          <div class="step"><div class="step-num" style="background:rgba(78,204,163,0.2);color:#4ecca3">→</div>
+            <div class="step-text">Menerima: <span class="code">session</span>, <span class="code">id_label</span>, <span class="code">aksi</span></div></div>
+          <div class="step"><div class="step-num" style="background:rgba(78,204,163,0.2);color:#4ecca3">→</div>
+            <div class="step-text">Proses: ambil label WA → loop kontak → generate AI → kirim pesan + gambar via WAHA</div></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:12px">
+        <div class="step-text" style="color:#4ecca3; font-weight:700; margin-bottom:6px">📁 upload_data_evend.json (Send Event)</div>
+        <div class="step-list">
+          <div class="step"><div class="step-num" style="background:rgba(78,204,163,0.2);color:#4ecca3">→</div>
+            <div class="step-text">Menerima: <span class="code">pixel_id</span>, <span class="code">pixel_token</span>, <span class="code">kode_promo</span>, <span class="code">nomor_user</span></div></div>
+          <div class="step"><div class="step-num" style="background:rgba(78,204,163,0.2);color:#4ecca3">→</div>
+            <div class="step-text">Proses: cari promo di Sheets → cek duplikat → hash nomor → kirim ke FB CAPI → update Sheets</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="step-text" style="color:#4ecca3; font-weight:700; margin-bottom:6px">📁 lacak_waktu.json (Cari Promo)</div>
+        <div class="step-list">
+          <div class="step"><div class="step-num" style="background:rgba(78,204,163,0.2);color:#4ecca3">→</div>
+            <div class="step-text">Menerima: <span class="code">timestamp_target</span>, <span class="code">toleransi_menit</span>, <span class="code">spreadsheet_url</span>, <span class="code">sheet_id</span></div></div>
+          <div class="step"><div class="step-num" style="background:rgba(78,204,163,0.2);color:#4ecca3">→</div>
+            <div class="step-text">Proses: baca Sheets dinamis → hitung selisih waktu → kembalikan kode promo terdekat</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🚨</span> Troubleshooting</div>
+      <div class="status-list">
+        <div class="status-row error">
+          <span class="status-icon">❌</span>
+          <div class="status-text"><strong>Webhook tidak merespons</strong> — Pastikan workflow n8n sudah <strong>Active</strong> dan URL webhook benar</div>
+        </div>
+        <div class="status-row error">
+          <span class="status-icon">❌</span>
+          <div class="status-text"><strong>Google Sheets error</strong> — Cek credentials Google Sheets di n8n dan akses sheet sudah benar</div>
+        </div>
+        <div class="status-row warn">
+          <span class="status-icon">⚠️</span>
+          <div class="status-text"><strong>Pesan WA tidak terkirim</strong> — Cek session WAHA apakah masih aktif dan terhubung</div>
+        </div>
+        <div class="status-row warn">
+          <span class="status-icon">⚠️</span>
+          <div class="status-text"><strong>Cari promo selalu kosong</strong> — Pastikan kolom <strong>timestamp</strong> di Sheets berisi angka Unix milliseconds, bukan format tanggal</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-n8n -->
+
+</div><!-- /container -->
+
+<div class="footer">© 2026 Geolin Group · Tools v1.0</div>
+
+<!-- SIDE MENU SCRIPTS -->
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("overlay");
+  overlay.style.display = "block";
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    menu.classList.add("open"); overlay.classList.add("active");
+  }));
+}
+function closeMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("overlay");
+  menu.classList.remove("open"); overlay.classList.remove("active");
+  setTimeout(() => { overlay.style.display = "none"; }, 380);
+}
+</script>
+</body>
+</html>
