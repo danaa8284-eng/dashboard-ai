@@ -32,6 +32,35 @@ select, input {
 input::placeholder { color: #999; }
 input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 
+/* ===== INFO SHEET BAR (mirip cari-promo) ===== */
+.sheet-info-bar {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(78,204,163,0.1);
+  border: 1px solid rgba(78,204,163,0.25);
+  border-radius: 10px; padding: 9px 12px; margin-top: 12px;
+}
+.sheet-info-bar .sheet-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #4ecca3; flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(78,204,163,0.2);
+}
+.sheet-info-bar .sheet-text {
+  font-size: 11px; color: rgba(255,255,255,0.7); flex: 1; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sheet-info-bar .sheet-text strong { color: #4ecca3; }
+.sheet-info-bar.warn {
+  background: rgba(230,126,34,0.1); border-color: rgba(230,126,34,0.3);
+}
+.sheet-info-bar.warn .sheet-dot { background: #e67e22; box-shadow: 0 0 0 3px rgba(230,126,34,0.2); }
+.sheet-info-bar.warn .sheet-text { color: rgba(255,255,255,0.6); }
+.sheet-info-bar.warn .sheet-text strong { color: #e67e22; }
+.sheet-goto {
+  font-size: 10px; color: #4ecca3; font-weight: 600;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+
 /* ===== TOMBOL PROSES + LOADING ===== */
 .proc-btn {
   width: 100%; padding: 14px; margin-top: 10px;
@@ -50,8 +79,6 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   opacity: 0.85; cursor: not-allowed;
   transform: none; box-shadow: 0 3px 0 #041f1c;
 }
-
-/* Spinner SVG di dalam tombol */
 .btn-spinner {
   display: none;
   width: 20px; height: 20px;
@@ -61,8 +88,6 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 .proc-btn.loading .btn-spinner { display: block; }
 .proc-btn.loading .btn-text { opacity: 0.85; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* Shimmer saat loading */
 .proc-btn.loading::after {
   content: '';
   position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
@@ -108,7 +133,6 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   transition: background 0.35s ease, backdrop-filter 0.35s ease;
 }
 .overlay.active { background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); }
-
 .side-menu {
   position: fixed; top: 0; left: 0; width: 260px; height: 100%;
   background: #0d4f47; transform: translateX(-100%);
@@ -171,7 +195,7 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 }
 .menu-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 10px; }
 
-/* ===== POPUP KONFIRMASI (sama seperti asli) ===== */
+/* ===== POPUP KONFIRMASI ===== */
 .popup-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
@@ -195,9 +219,8 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   flex: 1; padding: 11px; border-radius: 10px;
   border: 1.5px solid #ddd; background: #fff;
   color: #666; font-size: 13px; font-weight: 600;
-  font-family: 'Poppins', sans-serif; cursor: pointer; box-shadow: none;
+  font-family: 'Poppins', sans-serif; cursor: pointer;
 }
-.popup-cancel:active { transform: none; box-shadow: none; }
 .popup-confirm {
   flex: 1; padding: 11px; border-radius: 10px; border: none;
   background: linear-gradient(135deg, #0b423c, #062e2a);
@@ -207,7 +230,7 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 }
 .popup-confirm:active { transform: translateY(3px); box-shadow: 0 1px 0 #041f1c; }
 
-/* ===== NOTIF POPUP (sukses & data sudah ada) ===== */
+/* ===== NOTIF OVERLAYS ===== */
 .notif-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
@@ -216,7 +239,6 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   transition: opacity 0.25s ease;
 }
 .notif-overlay.show { opacity: 1; pointer-events: all; }
-
 .notif-box {
   background: #fff; border-radius: 20px;
   padding: 30px 24px 24px; max-width: 300px; width: 90%;
@@ -227,40 +249,27 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   position: relative; overflow: hidden;
 }
 .notif-overlay.show .notif-box { transform: scale(1) translateY(0); }
-
-/* Garis aksen atas */
 .notif-box::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
   border-radius: 20px 20px 0 0;
 }
-.notif-box.type-success::before { background: linear-gradient(90deg, #4ecca3, #0b9e72); }
+.notif-box.type-success::before   { background: linear-gradient(90deg, #4ecca3, #0b9e72); }
 .notif-box.type-duplicate::before { background: linear-gradient(90deg, #f5a623, #e67e22); }
-
-/* Lingkaran ikon animasi */
+.notif-box.type-notfound::before  { background: linear-gradient(90deg, #e74c3c, #c0392b); }
 .notif-icon-wrap {
   width: 68px; height: 68px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 14px; font-size: 30px;
-  position: relative;
+  margin: 0 auto 14px; font-size: 30px; position: relative;
 }
-.notif-box.type-success .notif-icon-wrap {
-  background: #e6f9f2;
-  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
-}
-.notif-box.type-duplicate .notif-icon-wrap {
-  background: #fff5e6;
-  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
-}
+.notif-box.type-success .notif-icon-wrap   { background: #e6f9f2; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both; }
+.notif-box.type-duplicate .notif-icon-wrap { background: #fff5e6; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both; }
+.notif-box.type-notfound .notif-icon-wrap  { background: #fff0f0; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both; }
 @keyframes popIn {
   from { transform: scale(0.5); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
 }
-
-/* Lingkaran "ripple" di belakang ikon saat sukses */
 .notif-box.type-success .notif-icon-wrap::after {
-  content: '';
-  position: absolute; inset: -6px; border-radius: 50%;
+  content: ''; position: absolute; inset: -6px; border-radius: 50%;
   border: 2px solid #4ecca3; opacity: 0;
   animation: ripple 1.5s ease-out 0.3s infinite;
 }
@@ -268,42 +277,20 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   0%   { transform: scale(0.85); opacity: 0.6; }
   100% { transform: scale(1.4);  opacity: 0; }
 }
-
-.notif-title {
-  font-size: 15px; font-weight: 600; margin-bottom: 6px;
-}
-.notif-box.type-success .notif-title { color: #0b6b4a; }
+.notif-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.notif-box.type-success .notif-title   { color: #0b6b4a; }
 .notif-box.type-duplicate .notif-title { color: #c07a10; }
-
-.notif-text {
-  font-size: 12px; color: #777; line-height: 1.6; margin-bottom: 20px;
-}
-
+.notif-box.type-notfound .notif-title  { color: #c0392b; }
+.notif-text { font-size: 12px; color: #777; line-height: 1.6; margin-bottom: 20px; }
 .notif-close {
   width: 100%; padding: 12px; border-radius: 12px; border: none;
   font-size: 13px; font-weight: 600; font-family: 'Poppins', sans-serif;
-  cursor: pointer; transition: all 0.15s ease;
-  box-shadow: 0 4px 0;
+  cursor: pointer; transition: all 0.15s ease; box-shadow: 0 4px 0;
 }
-.notif-box.type-success .notif-close {
-  background: linear-gradient(135deg, #0b9e72, #0b423c);
-  color: #fff; box-shadow: 0 4px 0 #084f39;
-}
-.notif-box.type-duplicate .notif-close {
-  background: linear-gradient(135deg, #f5a623, #e67e22);
-  color: #fff; box-shadow: 0 4px 0 #a0571a;
-}
+.notif-box.type-success .notif-close   { background: linear-gradient(135deg, #0b9e72, #0b423c); color: #fff; box-shadow: 0 4px 0 #084f39; }
+.notif-box.type-duplicate .notif-close { background: linear-gradient(135deg, #f5a623, #e67e22); color: #fff; box-shadow: 0 4px 0 #a0571a; }
+.notif-box.type-notfound .notif-close  { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; box-shadow: 0 4px 0 #922b21; }
 .notif-close:active { transform: translateY(3px); box-shadow: 0 1px 0; }
-.notif-box.type-notfound::before { background: linear-gradient(90deg, #e74c3c, #c0392b); }
-.notif-box.type-notfound .notif-icon-wrap {
-  background: #fff0f0;
-  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
-}
-.notif-box.type-notfound .notif-title { color: #c0392b; }
-.notif-box.type-notfound .notif-close {
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
-  color: #fff; box-shadow: 0 4px 0 #922b21;
-}
 </style>
 </head>
 <body>
@@ -334,8 +321,7 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   <div class="menu-footer">© 2026 Geolin Group</div>
 </div>
 
-
-<!-- ===== NOTIF EVENT TIDAK DITEMUKAN ===== -->
+<!-- NOTIF: EVENT TIDAK DITEMUKAN -->
 <div class="notif-overlay" id="notifTidakDitemukan">
   <div class="notif-box type-notfound">
     <div class="notif-icon-wrap">🔍</div>
@@ -345,7 +331,7 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   </div>
 </div>
 
-<!-- POPUP KONFIRMASI (asli) -->
+<!-- POPUP KONFIRMASI -->
 <div class="popup-overlay" id="popupOverlay">
   <div class="popup-box">
     <div class="popup-icon">⚠️</div>
@@ -358,7 +344,7 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   </div>
 </div>
 
-<!-- ===== NOTIF SUKSES ===== -->
+<!-- NOTIF SUKSES -->
 <div class="notif-overlay" id="notifSukses">
   <div class="notif-box type-success">
     <div class="notif-icon-wrap">✅</div>
@@ -368,7 +354,7 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   </div>
 </div>
 
-<!-- ===== NOTIF DATA SUDAH ADA ===== -->
+<!-- NOTIF DATA SUDAH ADA -->
 <div class="notif-overlay" id="notifDuplikat">
   <div class="notif-box type-duplicate">
     <div class="notif-icon-wrap">⚠️</div>
@@ -383,6 +369,9 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
     <img src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png">
   </div>
 
+  <!-- Info Spreadsheet Send Event (mirip cari-promo) -->
+  <div id="sheetInfoBar" class="sheet-info-bar" style="display:none"></div>
+
   <select id="pixel"></select>
 
   <div class="empty-hint" id="emptyHint">
@@ -393,7 +382,6 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   <input type="text" id="nomor" placeholder="Masukkan Nomor User" />
 
   <button class="proc-btn" id="btn" onclick="showPopup()">
-    <!-- Spinner SVG -->
     <svg class="btn-spinner" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
       <path d="M12 2a10 10 0 0 1 10 10" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
@@ -410,6 +398,33 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 function getData(key) {
   try { return JSON.parse(localStorage.getItem(key)) || []; }
   catch { return []; }
+}
+function getString(key) { return localStorage.getItem(key) || ""; }
+
+/* ===== RENDER INFO BAR SPREADSHEET (Send Event) ===== */
+function renderSheetInfoBar() {
+  const url   = getString("geolin_spreadsheet_url_se");
+  const sheet = getString("geolin_sheet_id_se");
+  const bar   = document.getElementById("sheetInfoBar");
+
+  if (!url && !sheet) { bar.style.display = "none"; return; }
+
+  bar.style.display = "flex";
+  if (url && sheet) {
+    bar.className = "sheet-info-bar";
+    bar.innerHTML = `
+      <div class="sheet-dot"></div>
+      <span class="sheet-text">Sheet SE: <strong>${sheet}</strong></span>
+      <span class="sheet-goto" onclick="window.location.href='pengaturan.html'">Ubah ⚙️</span>
+    `;
+  } else {
+    bar.className = "sheet-info-bar warn";
+    bar.innerHTML = `
+      <div class="sheet-dot"></div>
+      <span class="sheet-text"><strong>Spreadsheet belum lengkap</strong> — URL atau ID Sheet kosong</span>
+      <span class="sheet-goto" onclick="window.location.href='pengaturan.html'">Atur ⚙️</span>
+    `;
+  }
 }
 
 function loadDropdowns() {
@@ -437,16 +452,14 @@ function closeNotif(id) {
   setTimeout(() => { el.style.display = "none"; }, 280);
 }
 
-/* ===== LOADING STATE TOMBOL ===== */
+/* ===== LOADING STATE ===== */
 function setLoading(on) {
   const btn = document.getElementById("btn");
   if (on) {
-    btn.classList.add("loading");
-    btn.disabled = true;
+    btn.classList.add("loading"); btn.disabled = true;
     btn.querySelector(".btn-text").textContent = "Mengirim...";
   } else {
-    btn.classList.remove("loading");
-    btn.disabled = false;
+    btn.classList.remove("loading"); btn.disabled = false;
     btn.querySelector(".btn-text").textContent = "Proses Sekarang";
   }
 }
@@ -462,14 +475,12 @@ function showPopup() {
     output.innerText = "⚠️ Semua kolom harus diisi terlebih dahulu!";
     return;
   }
-
-  const webhook = localStorage.getItem("geolin_webhook_se") || "";
+  const webhook = getString("geolin_webhook_se");
   if (!webhook) {
     output.className = "output show error";
     output.innerText = "⚠️ Webhook Send Event belum diatur! Buka Pengaturan.";
     return;
   }
-
   output.className = "output";
   output.style.display = "none";
   const popup = document.getElementById("popupOverlay");
@@ -490,9 +501,8 @@ async function kirimData() {
   const promoEl = document.getElementById("promo");
   const nomorEl = document.getElementById("nomor");
   const output  = document.getElementById("output");
-  const webhook = localStorage.getItem("geolin_webhook_se") || "";
+  const webhook = getString("geolin_webhook_se");
 
-  // --- GUARD: validasi ulang sebelum fetch ---
   if (!webhook) {
     output.className = "output show error";
     output.innerText = "⚠️ Webhook belum diatur di Pengaturan!";
@@ -523,11 +533,14 @@ async function kirimData() {
   output.style.display = "none";
 
   const payload = {
-    pixel_id:    pixel.id,
-    pixel_nama:  pixel.nama,
-    pixel_token: pixel.token,
+    pixel_id:         pixel.id,
+    pixel_nama:       pixel.nama,
+    pixel_token:      pixel.token,
     kode_promo,
-    nomor_user
+    nomor_user,
+    // Kirim juga data spreadsheet Send Event ke webhook
+    spreadsheet_url:  getString("geolin_spreadsheet_url_se"),
+    sheet_id:         getString("geolin_sheet_id_se")
   };
 
   console.log("[SendEvent] Mengirim ke:", webhook);
@@ -544,7 +557,6 @@ async function kirimData() {
     console.log("[SendEvent] Status HTTP:", res.status);
     console.log("[SendEvent] Raw response:", rawText);
 
-    // Parse JSON, kalau kosong/gagal tetap lanjut
     let result = {};
     try {
       const parsed = JSON.parse(rawText);
@@ -553,51 +565,37 @@ async function kirimData() {
       console.warn("[SendEvent] Response bukan JSON:", rawText);
     }
 
-    console.log("[SendEvent] Result object:", result);
-
     const rawLower = rawText.toLowerCase();
 
-    // Deteksi DUPLIKAT
     const isDuplikat =
       result.my_field_1 === "data sudah ada" ||
       rawLower.includes("data sudah ada") ||
       rawLower.includes("sudah ada");
 
-    // Deteksi EVENT TIDAK DITEMUKAN
     const isTidakDitemukan =
       result.my_field_1 === "evend tidak di temukan" ||
       rawLower.includes("tidak di temukan") ||
       rawLower.includes("tidak ditemukan") ||
       rawLower.includes("evend tidak");
 
-    // Deteksi SUKSES — wajib ada konfirmasi eksplisit dari body
     const isSukses =
       result.success === true ||
       (typeof result.message === "string" && result.message.toLowerCase().includes("berhasil")) ||
       typeof result.events_received === "number";
 
     if (isDuplikat) {
-      console.log("[SendEvent] → Duplikat terdeteksi");
       showNotif("notifDuplikat");
-
     } else if (isTidakDitemukan) {
-      console.log("[SendEvent] → Event tidak ditemukan");
       showNotif("notifTidakDitemukan");
-
     } else if (isSukses) {
-      console.log("[SendEvent] → Sukses dikonfirmasi dari body");
       promoEl.value = "";
       nomorEl.value = "";
       pixelEl.value = "";
       showNotif("notifSukses");
-
     } else if (rawText.trim() === "") {
-      console.warn("[SendEvent] → Body kosong, workflow belum selesai atau error");
       output.className = "output show error";
       output.innerText = "⚠️ Tidak ada respon dari server. Pastikan workflow n8n sudah aktif.";
-
     } else {
-      console.error("[SendEvent] → Respon tidak dikenali", res.status, rawText);
       output.className = "output show error";
       output.innerText = result.message || "❌ Respon tidak dikenali dari server.";
     }
@@ -619,7 +617,6 @@ function openMenu() {
     menu.classList.add("open"); overlay.classList.add("active");
   }));
 }
-
 function closeMenu() {
   const menu = document.getElementById("sideMenu");
   const overlay = document.getElementById("overlay");
@@ -628,6 +625,7 @@ function closeMenu() {
 }
 
 loadDropdowns();
+renderSheetInfoBar();
 </script>
 </body>
 </html>
