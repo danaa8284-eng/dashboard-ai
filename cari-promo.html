@@ -40,6 +40,37 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
   margin-top: 4px; padding-left: 2px;
 }
 
+/* Info sheet aktif */
+.sheet-info-bar {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(78,204,163,0.1);
+  border: 1px solid rgba(78,204,163,0.25);
+  border-radius: 10px; padding: 9px 12px; margin-top: 12px;
+}
+.sheet-info-bar .sheet-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #4ecca3; flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(78,204,163,0.2);
+}
+.sheet-info-bar .sheet-text {
+  font-size: 11px; color: rgba(255,255,255,0.7); flex: 1; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sheet-info-bar .sheet-text strong { color: #4ecca3; }
+.sheet-info-bar.warn {
+  background: rgba(230,126,34,0.1); border-color: rgba(230,126,34,0.3);
+}
+.sheet-info-bar.warn .sheet-dot { background: #e67e22; box-shadow: 0 0 0 3px rgba(230,126,34,0.2); }
+.sheet-info-bar.warn .sheet-text { color: rgba(255,255,255,0.6); }
+.sheet-info-bar.warn .sheet-text strong {
+  color: #e67e22; text-decoration: none;
+}
+.sheet-goto {
+  font-size: 10px; color: #4ecca3; font-weight: 600;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+
 .proc-btn {
   width: 100%; padding: 14px; margin-top: 14px;
   border-radius: 12px; border: none;
@@ -232,6 +263,9 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
     <img src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png">
   </div>
 
+  <!-- Info spreadsheet aktif -->
+  <div id="sheetInfoBar" class="sheet-info-bar" style="display:none"></div>
+
   <span class="input-label">Waktu Pesan Masuk (Tanggal &amp; Jam)</span>
   <input type="datetime-local" id="waktuPesan" />
   <div class="hint-text">📋 Otomatis terisi waktu sekarang — koreksi sesuai pesan WA customer</div>
@@ -268,6 +302,8 @@ input:focus, select:focus { box-shadow: 0 0 0 2px #4ecca3; }
 <div class="footer">© 2026 Follow Up Tools by Geolin Group. All rights reserved.</div>
 
 <script>
+function getString(key) { return localStorage.getItem(key) || ""; }
+
 function setDefaultDatetime() {
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
@@ -275,7 +311,34 @@ function setDefaultDatetime() {
   document.getElementById("waktuPesan").value = val;
 }
 
-function getString(key) { return localStorage.getItem(key) || ""; }
+function renderSheetInfoBar() {
+  const url   = getString("geolin_spreadsheet_url");
+  const sheet = getString("geolin_sheet_id");
+  const bar   = document.getElementById("sheetInfoBar");
+
+  if (!url && !sheet) {
+    bar.style.display = "none";
+    return;
+  }
+
+  bar.style.display = "flex";
+
+  if (url && sheet) {
+    bar.className = "sheet-info-bar";
+    bar.innerHTML = `
+      <div class="sheet-dot"></div>
+      <span class="sheet-text">Sheet: <strong>${sheet}</strong></span>
+      <span class="sheet-goto" onclick="window.location.href='pengaturan.html'">Ubah ⚙️</span>
+    `;
+  } else {
+    bar.className = "sheet-info-bar warn";
+    bar.innerHTML = `
+      <div class="sheet-dot"></div>
+      <span class="sheet-text"><strong>Spreadsheet belum lengkap</strong> — URL atau ID Sheet kosong</span>
+      <span class="sheet-goto" onclick="window.location.href='pengaturan.html'">Atur ⚙️</span>
+    `;
+  }
+}
 
 function setLoading(on) {
   const btn = document.getElementById("btn");
@@ -314,14 +377,23 @@ async function cariPromo() {
     return;
   }
 
-  const webhook = getString("geolin_webhook_cari_promo");
+  const webhook        = getString("geolin_webhook_cari_promo");
+  const spreadsheetUrl = getString("geolin_spreadsheet_url");
+  const sheetId        = getString("geolin_sheet_id");
+
   if (!webhook) {
     showResult("error", "⚙️", "Webhook belum diatur",
       `<p class="result-msg">Webhook Cari Promo belum diatur. Buka menu <strong>Pengaturan</strong> dan isi Webhook Cari Promo.</p>`);
     return;
   }
 
-  // new Date("2026-04-26T23:58") → timestamp ms lokal, handle beda tanggal otomatis
+  // Peringatan jika spreadsheet belum diisi (tapi tetap lanjut)
+  if (!spreadsheetUrl || !sheetId) {
+    showResult("warning", "⚙️", "Spreadsheet belum lengkap",
+      `<p class="result-msg">URL Spreadsheet atau ID Sheet belum diatur. Buka <strong>Pengaturan</strong> dan isi data Google Spreadsheet terlebih dahulu.</p>`);
+    return;
+  }
+
   const targetTs = new Date(waktuInput).getTime();
 
   if (isNaN(targetTs)) {
@@ -337,9 +409,11 @@ async function cariPromo() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        waktu_input:      waktuInput,   // "2026-04-26T23:58"
-        timestamp_target: targetTs,     // ms — sudah handle lintas tanggal
-        toleransi_menit:  toleransi
+        waktu_input:       waktuInput,      // "2026-04-26T23:58"
+        timestamp_target:  targetTs,        // ms — sudah handle lintas tanggal
+        toleransi_menit:   toleransi,
+        spreadsheet_url:   spreadsheetUrl,  // URL Google Spreadsheet dari pengaturan
+        sheet_id:          sheetId          // Nama tab / ID sheet dari pengaturan
       })
     });
 
@@ -448,6 +522,7 @@ function closeMenu() {
 }
 
 setDefaultDatetime();
+renderSheetInfoBar();
 </script>
 </body>
 </html>
