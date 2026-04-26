@@ -105,6 +105,28 @@ body {
 .webhook-input:focus { box-shadow: 0 0 0 2px #4ecca3; }
 .webhook-input::placeholder { color: #aaa; font-size: 11px; }
 
+/* Badge helper */
+.section-badge {
+  display: inline-block;
+  background: rgba(78,204,163,0.15);
+  color: #4ecca3;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-left: 8px;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+}
+
+.hint-text {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 4px;
+  padding-left: 2px;
+  line-height: 1.5;
+}
+
 .save-bar {
   position: fixed; bottom: 0; left: 0; right: 0;
   background: #062e2a;
@@ -226,7 +248,7 @@ body {
     <div class="menu-section-label">Navigasi</div>
     <div class="menu-item" onclick="window.location.href='follup-tools.html'">Follow up</div>
     <div class="menu-item" onclick="window.location.href='Send Evend.html'">Send Event</div>
-     <div class="menu-item" onclick="window.location.href='cari-promo.html'">Cari Kode Promo</div>
+    <div class="menu-item" onclick="window.location.href='cari-promo.html'">Cari Kode Promo</div>
     <div class="menu-divider"></div>
     <div class="menu-section-label">Lainnya</div>
     <div class="menu-item active"><span class="menu-icon">⚙️</span> Pengaturan</div>
@@ -252,8 +274,28 @@ body {
       <input class="webhook-input" type="url" id="webhookSendEvent" placeholder="https://n8n.../webhook/...">
     </div>
     <div class="webhook-row">
-      <div class="webhook-label">Webhook Cari Promo </div>
+      <div class="webhook-label">Webhook Cari Promo</div>
       <input class="webhook-input" type="url" id="webhookCariPromo" placeholder="https://n8n.../webhook/...">
+    </div>
+  </div>
+
+  <!-- SECTION: SPREADSHEET (BARU) -->
+  <div class="section-card">
+    <div class="section-title">
+      Google Spreadsheet
+      <span class="section-badge">Cari Promo</span>
+    </div>
+    <div class="webhook-row">
+      <div class="webhook-label">URL Spreadsheet</div>
+      <input class="webhook-input" type="url" id="spreadsheetUrl"
+        placeholder="https://docs.google.com/spreadsheets/d/...">
+      <div class="hint-text">💡 Tempel URL lengkap Google Spreadsheet</div>
+    </div>
+    <div class="webhook-row">
+      <div class="webhook-label">ID Sheet (Nama Tab)</div>
+      <input class="webhook-input" type="text" id="sheetId"
+        placeholder="Sheet1 atau nama tab sheet">
+      <div class="hint-text">💡 Nama tab di bagian bawah Spreadsheet, misalnya: <strong style="color:#4ecca3">Data Promo</strong></div>
     </div>
   </div>
 
@@ -326,6 +368,9 @@ function loadWebhooks() {
   document.getElementById("webhookFollowUp").value  = getString("geolin_webhook_fu");
   document.getElementById("webhookSendEvent").value = getString("geolin_webhook_se");
   document.getElementById("webhookCariPromo").value = getString("geolin_webhook_cari_promo");
+  // Spreadsheet
+  document.getElementById("spreadsheetUrl").value   = getString("geolin_spreadsheet_url");
+  document.getElementById("sheetId").value          = getString("geolin_sheet_id");
 }
 
 function tambahPixel() {
@@ -429,9 +474,13 @@ function renderAksi() {
 }
 
 function simpanSemua() {
-  saveString("geolin_webhook_fu",          document.getElementById("webhookFollowUp").value.trim());
-  saveString("geolin_webhook_se",          document.getElementById("webhookSendEvent").value.trim());
-  saveString("geolin_webhook_cari_promo",  document.getElementById("webhookCariPromo").value.trim());
+  saveString("geolin_webhook_fu",         document.getElementById("webhookFollowUp").value.trim());
+  saveString("geolin_webhook_se",         document.getElementById("webhookSendEvent").value.trim());
+  saveString("geolin_webhook_cari_promo", document.getElementById("webhookCariPromo").value.trim());
+  // Simpan spreadsheet
+  saveString("geolin_spreadsheet_url",    document.getElementById("spreadsheetUrl").value.trim());
+  saveString("geolin_sheet_id",           document.getElementById("sheetId").value.trim());
+
   const btn = document.getElementById("saveBtn");
   btn.innerText = "✅ Tersimpan!";
   btn.style.background = "linear-gradient(135deg, #2d8f72, #1a6b5c)";
