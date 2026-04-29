@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Dashboard - Geolin Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0b423c">
+<link rel="icon" href="icon-192.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: 'Poppins', sans-serif;
+  background: #0b423c;
+  color: #e8f0ea;
+  min-height: 100%;
+  font-size: 14px;
+  overflow-x: hidden;
+}
+
+/* icon helper */
+.ic { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ic svg { display: block; }
+
+/* ===== TOPBAR ===== */
+.topbar {
+  padding: 5px 5px 5px 12px;
+  background: #0b423c;
+  flex-shrink: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+}
+.topbar-left { display: flex; align-items: center; gap: 8px; }
+.menu-btn {
+  color: white; cursor: pointer;
+  width: 46px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; transition: background 0.2s;
+  background: none; border: none;
+}
+.menu-btn:hover { background: rgba(255,255,255,0.1); }
+.menu-btn svg { stroke: #fff; }
+
+.topbar-brand {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 8px; padding-right: 10px; }
+.live-dot {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10px; color: rgba(255,255,255,0.45);
+}
+.live-dot::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #4ecca3;
+  animation: pulse 2s infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(78,204,163,0.4); }
+  50% { opacity: .7; box-shadow: 0 0 0 5px rgba(78,204,163,0); }
+}
+.btn-refresh {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-refresh:hover { border-color: #4ecca3; color: #4ecca3; }
+.btn-refresh.spinning svg { animation: spin .6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== OVERLAY & SIDE MENU ===== */
+.overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0); display: none; z-index: 9;
+  backdrop-filter: blur(0px);
+  transition: background 0.35s ease, backdrop-filter 0.35s ease;
+}
+.overlay.active { background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); }
+
+.side-menu {
+  position: fixed; top: 0; left: 0; width: 260px; height: 100%;
+  background: #0d4f47; transform: translateX(-100%);
+  transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+  z-index: 10; box-shadow: 6px 0 30px rgba(0,0,0,0.4);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.side-menu.open { transform: translateX(0); }
+
+.menu-header {
+  background: #062e2a; padding: 50px 20px 24px;
+  position: relative; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.menu-header-logo { width: 100px; margin-bottom: 10px; display: block; }
+.menu-header-title { font-size: 18px; font-weight: 600; color: #fff; }
+.menu-header-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.menu-close-btn {
+  position: absolute; top: 14px; right: 14px;
+  width: 32px; height: 32px; background: rgba(255,255,255,0.1);
+  border: none; border-radius: 8px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.menu-close-btn svg { stroke: #fff; }
+.menu-close-btn:hover { background: rgba(255,255,255,0.2); }
+
+.menu-body { flex: 1; padding: 16px 12px; overflow-y: auto; }
+.menu-section-label {
+  font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.35);
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 10px 4px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 14px; border-radius: 12px; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  color: rgba(255,255,255,0.85); font-size: 14px; font-weight: 400;
+  position: relative; overflow: hidden;
+  text-decoration: none;
+}
+.menu-item svg { stroke: rgba(255,255,255,0.55); flex-shrink: 0; transition: stroke 0.2s; }
+.menu-item::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0); transition: background 0.2s; border-radius: 12px;
+}
+.menu-item:hover::before { background: rgba(255,255,255,0.07); }
+.menu-item:active { transform: scale(0.98); }
+.menu-item.active { background: rgba(255,255,255,0.12); color: #fff; font-weight: 600; }
+.menu-item.active svg { stroke: #4ecca3; }
+.menu-item.active::after {
+  content: ''; position: absolute; left: 0; top: 20%; height: 60%; width: 3px;
+  background: #4ecca3; border-radius: 0 3px 3px 0;
+}
+.menu-item.danger { color: #ff8080; }
+.menu-item.danger svg { stroke: #ff8080; }
+
+.side-menu.open .menu-item { animation: slideInItem 0.3s ease both; }
+.side-menu.open .menu-item:nth-child(1) { animation-delay: 0.05s; }
+.side-menu.open .menu-item:nth-child(2) { animation-delay: 0.1s; }
+.side-menu.open .menu-item:nth-child(3) { animation-delay: 0.15s; }
+.side-menu.open .menu-item:nth-child(4) { animation-delay: 0.2s; }
+.side-menu.open .menu-item:nth-child(5) { animation-delay: 0.25s; }
+@keyframes slideInItem {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.menu-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 10px; }
+.menu-footer {
+  padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 11px; color: rgba(255,255,255,0.3); text-align: center;
+}
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  background: #0b423c;
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+.filter-label {
+  font-size: 10px; color: rgba(255,255,255,0.3);
+  font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; white-space: nowrap;
+}
+.filter-btn {
+  padding: 5px 14px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  color: rgba(255,255,255,0.55);
+  font-size: 11px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.filter-btn:hover { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.85); }
+.filter-btn.active { background: rgba(78,204,163,0.15); border-color: #4ecca3; color: #4ecca3; }
+.filter-sep { width: 1px; height: 14px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
+.date-range-wrap {
+  display: flex; align-items: center; gap: 0;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  overflow: hidden; flex-shrink: 0;
+  transition: border-color .15s;
+}
+.date-range-wrap:focus-within { border-color: #4ecca3; }
+.date-range-wrap input[type="date"] {
+  padding: 5px 8px;
+  background: transparent; border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 11px;
+  font-family: 'Poppins', sans-serif;
+  outline: none; cursor: pointer; width: 116px;
+}
+.date-range-wrap input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.5); cursor: pointer; }
+.date-range-sep {
+  padding: 0 6px; color: rgba(255,255,255,0.3); font-size: 10px;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  height: 100%; display: flex; align-items: center; background: rgba(0,0,0,0.1);
+}
+
+/* ===== MAIN ===== */
+.main { padding: 14px 14px 30px; max-width: 480px; margin: 0 auto; }
+
+/* ===== METRICS ===== */
+.metrics { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 12px; }
+.metric {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 14px 14px 16px;
+  position: relative; overflow: hidden;
+}
+.metric-label {
+  font-size: 9px; font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px;
+}
+.metric-value {
+  font-size: 28px; font-weight: 700;
+  line-height: 1; letter-spacing: -0.03em; margin-bottom: 3px;
+}
+.metric-sub { font-size: 10px; color: rgba(255,255,255,0.4); }
+.metric-bar {
+  position: absolute; bottom: 0; left: 0;
+  height: 2px; border-radius: 0 2px 2px 0;
+}
+.m-green .metric-value { color: #4ecca3; }
+.m-green .metric-bar { background: #4ecca3; width: 100%; }
+.m-pink .metric-value { color: #e879a0; }
+.m-pink .metric-bar { background: #e879a0; width: 60%; }
+.m-amber .metric-value { color: #f5a623; }
+.m-amber .metric-bar { background: #f5a623; width: 100%; }
+.m-cr .metric-value { color: #4ecca3; }
+.m-cr .metric-bar { background: #4ecca3; }
+.m-red .metric-value { color: #e05252; }
+.m-red .metric-bar { background: #e05252; }
+
+/* ===== CARD ===== */
+.card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.card-title {
+  font-size: 11px; font-weight: 700;
+  color: #4ecca3;
+  letter-spacing: .05em; text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-badge {
+  font-size: 10px; padding: 2px 10px; border-radius: 10px;
+  background: rgba(78,204,163,0.15); color: #4ecca3;
+  font-weight: 600; letter-spacing: 0.3px;
+}
+
+/* ===== TABLE ===== */
+.summary-table {
+  width: 100%; border-collapse: collapse;
+  margin-top: 12px; font-size: 11px;
+}
+.summary-table th {
+  text-align: left; color: rgba(255,255,255,0.35);
+  font-size: 9px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 0 8px 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.summary-table td {
+  padding: 7px 8px 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.6); vertical-align: middle;
+}
+.summary-table tr:last-child td { border-bottom: none; }
+.summary-table .td-date { color: #fff; }
+.summary-table .td-closing { color: #e879a0; font-weight: 600; }
+.summary-table .td-wa { color: #4ecca3; font-weight: 600; }
+.summary-table .td-rate { font-weight: 600; }
+.rate-bar-wrap { display: flex; align-items: center; gap: 6px; }
+.rate-bar { height: 3px; border-radius: 2px; background: #4ecca3; }
+
+/* ===== LOADING ===== */
+.loading-overlay {
+  position: fixed; inset: 0;
+  background: #0b423c;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 14px;
+  z-index: 999; transition: opacity .4s;
+}
+.loading-overlay.hide { opacity: 0; pointer-events: none; }
+.loader {
+  width: 34px; height: 34px;
+  border: 2px solid rgba(255,255,255,0.1);
+  border-top-color: #4ecca3;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+.loading-text { font-size: 11px; color: rgba(255,255,255,0.35); font-weight: 600; }
+
+canvas { width: 100% !important; }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <img src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png" style="width:80px;border-radius:16px;opacity:.9">
+  <div class="loader"></div>
+  <div class="loading-text">Memuat data...</div>
+</div>
+
+<!-- OVERLAY -->
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+<!-- SIDE MENU -->
+<div id="sideMenu" class="side-menu">
+  <div class="menu-header">
+    <button class="menu-close-btn" onclick="closeMenu()" aria-label="Tutup menu">
+      <i data-lucide="x" width="16" height="16"></i>
+    </button>
+    <img class="menu-header-logo" src="https://raw.githubusercontent.com/danaa8284-eng/dashboard-ai/refs/heads/main/LOGO_GEOLIN.png" alt="Logo">
+    <div class="menu-header-title">Geolin Group</div>
+    <div class="menu-header-sub">Tools v1.2</div>
+  </div>
+  <div class="menu-body">
+    <div class="menu-section-label">Navigasi</div>
+    <div class="menu-item active">
+      <i data-lucide="layout-dashboard" width="18" height="18"></i> Dashboard
+    </div>
+    <div class="menu-item" onclick="window.location.href='/followup-tools/'">
+      <i data-lucide="message-circle" width="18" height="18"></i> Follow Up
+    </div>
+    <div class="menu-item" onclick="window.location.href='/send-evend/'">
+      <i data-lucide="send" width="18" height="18"></i> Send Event
+    </div>
+    <div class="menu-item" onclick="window.location.href='/cari-promo/'">
+      <i data-lucide="search" width="18" height="18"></i> Cari Kode Promo
+    </div>
+    <div class="menu-divider"></div>
+    <div class="menu-section-label">Lainnya</div>
+    <div class="menu-item" onclick="window.location.href='/pengaturan/'">
+      <i data-lucide="settings" width="18" height="18"></i> Pengaturan
+    </div>
+    <div class="menu-item" onclick="window.location.href='/bantuan/'">
+      <i data-lucide="help-circle" width="18" height="18"></i> Bantuan
+    </div>
+    <div class="menu-divider"></div>
+    <div class="menu-item danger" onclick="AuthGuard && AuthGuard.logout()">
+      <i data-lucide="log-out" width="18" height="18"></i> Logout
+    </div>
+  </div>
+  <div class="menu-footer">© 2026 Geolin Group</div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="menu-btn" onclick="openMenu()" aria-label="Buka menu">
+      <i data-lucide="menu" width="22" height="22"></i>
+    </button>
+    <span class="topbar-brand">Dashboard</span>
+  </div>
+  <div class="topbar-right">
+    <div class="live-dot" id="lastUpdate">—</div>
+    <button class="btn-refresh" id="btnRefresh" onclick="loadData()">
+      <i data-lucide="refresh-cw" id="refreshIcon" width="15" height="15"></i>
+    </button>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Filter</span>
+  <button class="filter-btn" data-range="all" onclick="setRange('all',this)">Semua</button>
+  <button class="filter-btn" data-range="7" onclick="setRange('7',this)">7 hari</button>
+  <button class="filter-btn active" data-range="today" onclick="setRange('today',this)">Hari ini</button>
+  <div class="filter-sep"></div>
+  <div class="date-range-wrap">
+    <input type="date" id="dateFrom" onchange="setCustomRange()">
+    <div class="date-range-sep">→</div>
+    <input type="date" id="dateTo" onchange="setCustomRange()">
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- METRICS -->
+  <div class="metrics">
+    <div class="metric m-green">
+      <div class="metric-label">Customer WA</div>
+      <div class="metric-value" id="mWA">—</div>
+      <div class="metric-sub">chat masuk</div>
+      <div class="metric-bar"></div>
+    </div>
+    <div class="metric m-pink">
+      <div class="metric-label">Closing</div>
+      <div class="metric-value" id="mClosing">—</div>
+      <div class="metric-sub">order berhasil</div>
+      <div class="metric-bar"></div>
+    </div>
+    <div class="metric m-cr" id="mCRCard">
+      <div class="metric-label">Rate Closing</div>
+      <div class="metric-value" id="mCR">—</div>
+      <div class="metric-sub">closing / WA</div>
+      <div class="metric-bar" id="mCRBar" style="width:0%"></div>
+    </div>
+    <div class="metric m-amber">
+      <div class="metric-label">Periode</div>
+      <div class="metric-value" id="mPeriode" style="font-size:15px;margin-top:4px">—</div>
+      <div class="metric-sub" id="mPeriodeSub">rentang aktif</div>
+      <div class="metric-bar" style="background:#f5a623;width:100%"></div>
+    </div>
+  </div>
+
+  <!-- CHART -->
+  <div class="card">
+    <div class="card-title">
+      <span id="chartTitle">Closing per jam</span>
+      <span class="card-badge" id="crBadge">Rate —%</span>
+    </div>
+    <canvas id="chartMain" height="120"></canvas>
+
+    <div id="tableSummaryWrap" style="display:none">
+      <table class="summary-table" id="tableSummary">
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>WA</th>
+            <th>Closing</th>
+            <th>Rate</th>
+            <th style="width:60px"></th>
+          </tr>
+        </thead>
+        <tbody id="tableSummaryBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+lucide.createIcons();
+
+const API = 'https://script.google.com/macros/s/AKfycbyWyhc-x1yNqh5MYCsrROtr44UdJcDXsfI8C0VjicYePFVSQ4TyRtKfysjAk-uwQVMnLg/exec';
+
+let currentFilter = { range: 'today', from: null, to: null };
+let chartMain = null;
+document.getElementById('dateFrom').addEventListener('click', function() {
+  this.showPicker && this.showPicker();
+});
+
+document.getElementById('dateTo').addEventListener('click', function() {
+  this.showPicker && this.showPicker();
+});
+
+// ── MENU ──
+function openMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("overlay");
+  overlay.style.display = "block";
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    menu.classList.add("open");
+    overlay.classList.add("active");
+  }));
+}
+function closeMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("overlay");
+  menu.classList.remove("open");
+  overlay.classList.remove("active");
+  setTimeout(() => { overlay.style.display = "none"; }, 380);
+}
+
+// ── DATE HELPERS ──
+function today() {
+  const d = new Date();
+  const offset = d.getTimezoneOffset();
+  const local = new Date(d.getTime() - (offset * 60000));
+  return local.toISOString().slice(0,10);
+}
+function daysAgo(n) {
+  const d = new Date(); d.setDate(d.getDate() - n);
+  return d.toISOString().slice(0,10);
+}
+function isMultiDay() {
+  if (currentFilter.range === 'today') return false;
+  if (currentFilter.range === '7') return true;
+  if (currentFilter.range === 'all') return true;
+  if (currentFilter.range === 'custom') {
+    if (currentFilter.from && currentFilter.to) return currentFilter.from !== currentFilter.to;
+    return true;
+  }
+  return false;
+}
+
+// ── FILTER ──
+function setRange(range, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter.range = range; currentFilter.from = null; currentFilter.to = null;
+  document.getElementById('dateFrom').value = '';
+  document.getElementById('dateTo').value = '';
+  loadData();
+}
+function setCustomRange() {
+  const from = document.getElementById('dateFrom').value;
+  const to   = document.getElementById('dateTo').value;
+
+  // ❗ jangan jalan kalau belum lengkap
+  if (!from || !to) return;
+
+  // ❗ validasi biar gak kebalik
+  if (from > to) {
+    alert('Tanggal mulai tidak boleh lebih besar dari tanggal akhir');
+    return;
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+
+  currentFilter.range = 'custom';
+  currentFilter.from = from;
+  currentFilter.to = to;
+
+  loadData();
+}
+function buildParams() {
+  const p = new URLSearchParams({ type: 'summary' });
+  if (currentFilter.range === 'today') { p.set('date', today()); }
+  else if (currentFilter.range === '7') { p.set('from', daysAgo(6)); p.set('to', today()); }
+  else if (currentFilter.range === 'custom') {
+    if (currentFilter.from) p.set('from', currentFilter.from);
+    if (currentFilter.to) p.set('to', currentFilter.to);
+  }
+  return p.toString();
+}
+
+// ── LOAD DATA ──
+function loadData() {
+  const btn = document.getElementById('btnRefresh');
+  btn.classList.add('spinning');
+  const old = document.getElementById('__jsonpScript');
+  if (old) old.remove();
+  if (window.__jsonpTO) clearTimeout(window.__jsonpTO);
+
+  const cbName = '__cb' + Date.now();
+  function done(ok) {
+    btn.classList.remove('spinning');
+    lucide.createIcons();
+    delete window[cbName];
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) { overlay.classList.add('hide'); setTimeout(() => overlay.remove(), 500); }
+    if (!ok) setText('lastUpdate', 'Error');
+  }
+
+  window[cbName] = function(json) {
+    clearTimeout(window.__jsonpTO);
+    try {
+      if (!json.success) throw new Error(json.error || 'Gagal');
+      render(json.data);
+      const now = new Date();
+      setText('lastUpdate', String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0'));
+      done(true);
+    } catch(e) { done(false); }
+  };
+
+  window.__jsonpTO = setTimeout(() => done(false), 15000);
+  const s = document.createElement('script');
+  s.id = '__jsonpScript';
+  s.src = API + '?' + buildParams() + '&callback=' + cbName;
+  s.onerror = () => done(false);
+  document.head.appendChild(s);
+}
+
+// ── RENDER ──
+function render(d) {
+  const totalWA      = d.total_wa      || 0;
+  const totalClosing = d.total_closing || 0;
+  const rateClosing  = totalWA > 0 ? parseFloat(((totalClosing / totalWA) * 100).toFixed(1)) : 0;
+
+  setText('mWA', totalWA);
+  setText('mClosing', totalClosing);
+  setText('mCR', rateClosing + '%');
+
+  const crCard = document.getElementById('mCRCard');
+  crCard.className = 'metric ' + (rateClosing >= 30 ? 'm-green' : rateClosing >= 15 ? 'm-amber' : 'm-red');
+  const crBar = document.getElementById('mCRBar');
+  if (crBar) crBar.style.width = Math.min(rateClosing, 100) + '%';
+
+  setText('crBadge', 'Rate ' + rateClosing + '%');
+
+  let periodeLabel = 'Semua', periodeSub = 'semua data';
+  if (currentFilter.range === 'today') { periodeLabel = 'Hari ini'; periodeSub = today(); }
+  else if (currentFilter.range === '7') { periodeLabel = '7 hari'; periodeSub = daysAgo(6) + '→' + today(); }
+  else if (currentFilter.range === 'custom') {
+    periodeLabel = (currentFilter.from === currentFilter.to) ? '1 hari' : 'Custom';
+    periodeSub = [currentFilter.from, currentFilter.to].filter(Boolean).join('→');
+  }
+  setText('mPeriode', periodeLabel);
+  setText('mPeriodeSub', periodeSub);
+
+  if (isMultiDay()) {
+    setText('chartTitle', 'Closing per tanggal');
+    renderChartMultiDay(d);
+    renderTable(d);
+  } else {
+    setText('chartTitle', 'Closing per jam');
+    renderChartHour(d.hour_distribution);
+    document.getElementById('tableSummaryWrap').style.display = 'none';
+  }
+}
+
+function renderChartHour(hourDist) {
+  const labels = Array.from({length:24}, (_,i) => i + ':00');
+  const data   = Array.from({length:24}, (_,i) => (hourDist && hourDist[i]) ? hourDist[i] : 0);
+  if (chartMain) chartMain.destroy();
+  chartMain = new Chart(document.getElementById('chartMain'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Chat masuk', data,
+        borderColor: 'rgba(78,204,163,0.9)',
+        backgroundColor: 'rgba(78,204,163,0.08)',
+        borderWidth: 2, tension: 0, fill: true,
+        pointRadius: data.map(v => v > 0 ? 3 : 0),
+        pointBackgroundColor: '#4ecca3',
+        pointBorderColor: '#0b423c', pointBorderWidth: 2,
+      }]
+    },
+    options: lineOpts()
+  });
+}
+
+function renderChartMultiDay(d) {
+  const closingByDate = d.closing_by_date || {};
+  const waByDate = d.wa_by_date || {};
+  const allDates = [...new Set([...Object.keys(closingByDate), ...Object.keys(waByDate)])].sort();
+  if (!allDates.length) { if (chartMain) chartMain.destroy(); return; }
+
+  const labels = allDates.map(dt => dt.slice(5));
+  const waData = allDates.map(dt => waByDate[dt] || 0);
+  const clData = allDates.map(dt => closingByDate[dt] || 0);
+
+  if (chartMain) chartMain.destroy();
+  chartMain = new Chart(document.getElementById('chartMain'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'WA Chat', data: waData,
+          borderColor: 'rgba(78,204,163,0.85)',
+          backgroundColor: 'rgba(78,204,163,0.07)',
+          borderWidth: 2, tension: 0, fill: true,
+          pointRadius: 3, pointBackgroundColor: '#4ecca3',
+          pointBorderColor: '#0b423c', pointBorderWidth: 2,
+        },
+        {
+          label: 'Closing', data: clData,
+          borderColor: 'rgba(232,121,160,0.9)',
+          backgroundColor: 'rgba(232,121,160,0.07)',
+          borderWidth: 2, tension: 0, fill: true,
+          pointRadius: 3, pointBackgroundColor: 'rgba(232,121,160,1)',
+          pointBorderColor: '#0b423c', pointBorderWidth: 2,
+        }
+      ]
+    },
+    options: {
+      ...lineOpts(),
+      plugins: {
+        legend: {
+          display: true,
+          labels: { color: 'rgba(255,255,255,0.4)', font: { size: 10, family: 'Poppins' }, boxWidth: 8, boxHeight: 8 }
+        },
+        tooltip: tooltipStyle()
+      }
+    }
+  });
+}
+
+function renderTable(d) {
+  const closingByDate = d.closing_by_date || {};
+  const waByDate = d.wa_by_date || {};
+  const allDates = [...new Set([...Object.keys(closingByDate), ...Object.keys(waByDate)])].sort().reverse();
+  const wrap = document.getElementById('tableSummaryWrap');
+  const tbody = document.getElementById('tableSummaryBody');
+  if (!allDates.length) { wrap.style.display = 'none'; return; }
+  tbody.innerHTML = '';
+  allDates.forEach(dt => {
+    const wa   = waByDate[dt] || 0;
+    const cl   = closingByDate[dt] || 0;
+    const rate = wa > 0 ? ((cl / wa) * 100).toFixed(0) : 0;
+    const rc   = rate >= 30 ? '#4ecca3' : rate >= 15 ? '#f5a623' : '#e05252';
+    tbody.innerHTML += `<tr>
+      <td class="td-date">${dt}</td>
+      <td class="td-wa">${wa}</td>
+      <td class="td-closing">${cl}</td>
+      <td class="td-rate" style="color:${rc}">${rate}%</td>
+      <td><div class="rate-bar-wrap"><div class="rate-bar" style="width:${Math.min(rate,100)}%;background:${rc};max-width:60px"></div></div></td>
+    </tr>`;
+  });
+  wrap.style.display = 'block';
+}
+
+function lineOpts() {
+  return {
+    responsive: true, maintainAspectRatio: true,
+    animation: { duration: 400 },
+    plugins: { legend: { display: false }, tooltip: tooltipStyle() },
+    scales: {
+      x: {
+        ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 9, family: 'Poppins' }, maxRotation: 0, maxTicksLimit: 8 },
+        grid: { color: 'rgba(255,255,255,0.05)' },
+      },
+      y: {
+        beginAtZero: true,
+        ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 9, family: 'Poppins' }, precision: 0 },
+        grid: { color: 'rgba(255,255,255,0.05)' },
+      }
+    }
+  };
+}
+function tooltipStyle() {
+  return {
+    backgroundColor: '#062e2a', borderColor: 'rgba(78,204,163,0.2)', borderWidth: 1,
+    titleColor: 'rgba(255,255,255,0.5)', bodyColor: '#e8f0ea',
+    titleFont: { family: 'Poppins', size: 10 },
+    bodyFont: { family: 'Poppins', size: 12 },
+    padding: 10, cornerRadius: 8,
+  };
+}
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = (val === null || val === undefined) ? '—' : val;
+}
+
+loadData();
+</script>
+</body>
+</html>
