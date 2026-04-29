@@ -326,6 +326,28 @@ html, body {
 .loading-text { font-size: 11px; color: rgba(255,255,255,0.35); font-weight: 600; }
 
 canvas { width: 100% !important; }
+
+.filter-bar {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.filter-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.date-range-wrap.full {
+  width: 100%;
+}
+
+.date-range-wrap.full input {
+  width: 100%;
+}
+
 </style>
 </head>
 <body>
@@ -398,16 +420,20 @@ canvas { width: 100% !important; }
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
-  <span class="filter-label">Filter</span>
-  <button class="filter-btn" data-range="all" onclick="setRange('all',this)">Semua</button>
-  <button class="filter-btn" data-range="7" onclick="setRange('7',this)">7 hari</button>
-  <button class="filter-btn active" data-range="today" onclick="setRange('today',this)">Hari ini</button>
-  <div class="filter-sep"></div>
-  <div class="date-range-wrap">
+
+  <div class="filter-row">
+    <button class="filter-btn" data-range="all" onclick="setRange('all',this)">Semua</button>
+    <button class="filter-btn" data-range="7" onclick="setRange('7',this)">7 hari</button>
+    <button class="filter-btn" data-range="yesterday" onclick="setRange('yesterday',this)">Kemarin</button>
+    <button class="filter-btn active" data-range="today" onclick="setRange('today',this)">Hari ini</button>
+  </div>
+
+  <div class="date-range-wrap full">
     <input type="date" id="dateFrom" onchange="setCustomRange()">
     <div class="date-range-sep">→</div>
     <input type="date" id="dateTo" onchange="setCustomRange()">
   </div>
+
 </div>
 
 <!-- MAIN -->
@@ -508,8 +534,13 @@ function today() {
   return local.toISOString().slice(0,10);
 }
 function daysAgo(n) {
-  const d = new Date(); d.setDate(d.getDate() - n);
-  return d.toISOString().slice(0,10);
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+
+  const offset = d.getTimezoneOffset();
+  const local = new Date(d.getTime() - (offset * 60000));
+
+  return local.toISOString().slice(0,10);
 }
 function isMultiDay() {
   if (currentFilter.range === 'today') return false;
@@ -531,6 +562,11 @@ function setRange(range, btn) {
   document.getElementById('dateTo').value = '';
   loadData();
 }
+
+function yesterday() {
+  return daysAgo(1);
+}
+
 function setCustomRange() {
   const from = document.getElementById('dateFrom').value;
   const to   = document.getElementById('dateTo').value;
@@ -554,12 +590,22 @@ function setCustomRange() {
 }
 function buildParams() {
   const p = new URLSearchParams({ type: 'summary' });
-  if (currentFilter.range === 'today') { p.set('date', today()); }
-  else if (currentFilter.range === '7') { p.set('from', daysAgo(6)); p.set('to', today()); }
+
+  if (currentFilter.range === 'today') {
+    p.set('date', today());
+  }
+  else if (currentFilter.range === 'yesterday') {
+    p.set('date', yesterday());
+  }
+  else if (currentFilter.range === '7') {
+    p.set('from', daysAgo(6));
+    p.set('to', today());
+  }
   else if (currentFilter.range === 'custom') {
     if (currentFilter.from) p.set('from', currentFilter.from);
     if (currentFilter.to) p.set('to', currentFilter.to);
   }
+
   return p.toString();
 }
 
@@ -618,12 +664,23 @@ function render(d) {
   setText('crBadge', 'Rate ' + rateClosing + '%');
 
   let periodeLabel = 'Semua', periodeSub = 'semua data';
-  if (currentFilter.range === 'today') { periodeLabel = 'Hari ini'; periodeSub = today(); }
-  else if (currentFilter.range === '7') { periodeLabel = '7 hari'; periodeSub = daysAgo(6) + '→' + today(); }
-  else if (currentFilter.range === 'custom') {
-    periodeLabel = (currentFilter.from === currentFilter.to) ? '1 hari' : 'Custom';
-    periodeSub = [currentFilter.from, currentFilter.to].filter(Boolean).join('→');
-  }
+
+if (currentFilter.range === 'today') {
+  periodeLabel = 'Hari ini';
+  periodeSub = today();
+}
+else if (currentFilter.range === 'yesterday') {
+  periodeLabel = 'Kemarin';
+  periodeSub = yesterday();
+}
+else if (currentFilter.range === '7') {
+  periodeLabel = '7 hari';
+  periodeSub = daysAgo(6) + '→' + today();
+}
+else if (currentFilter.range === 'custom') {
+  periodeLabel = (currentFilter.from === currentFilter.to) ? '1 hari' : 'Custom';
+  periodeSub = [currentFilter.from, currentFilter.to].filter(Boolean).join('→');
+}
   setText('mPeriode', periodeLabel);
   setText('mPeriodeSub', periodeSub);
 
